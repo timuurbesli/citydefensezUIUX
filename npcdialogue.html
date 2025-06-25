@@ -1,0 +1,1029 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NPC Dialogue System - City Defense Z</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Courier New', monospace;
+            background: linear-gradient(135deg, #2c1810 0%, #8B4513 50%, #CD853F 100%);
+            height: 100vh;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Background City Scene */
+        .game-background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 70%;
+            background: url('bg-cdz.jpg') center/cover no-repeat;
+            background-color: #D2B48C;
+        }
+
+        /* NPC Dialogue Popup Container */
+        .npc-dialogue-popup {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 30vh;
+            background: rgba(0, 0, 0, 0.9);
+            backdrop-filter: blur(10px);
+            border-top: 3px solid #00ffff;
+            display: flex;
+            align-items: center;
+            padding: 20px;
+            gap: 20px;
+            transform: translateY(100%);
+            transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            z-index: 1000;
+        }
+
+        .npc-dialogue-popup.active {
+            transform: translateY(0);
+        }
+
+        /* Character Portrait Panel */
+        .character-panel {
+            width: 300px;
+            height: 100%;
+            background: linear-gradient(145deg, rgba(45, 45, 45, 0.9), rgba(25, 25, 25, 0.9));
+            border-radius: 15px;
+            border: 2px solid #444;
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            box-shadow: 0 0 20px rgba(0, 255, 255, 0.3);
+        }
+
+        .character-portrait {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: linear-gradient(145deg, #4a4a4a, #2a2a2a);
+            border: 3px solid #00ffff;
+            margin-bottom: 10px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .character-avatar {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* Farmer Avatar Placeholder */
+        .farmer-avatar {
+            background: linear-gradient(145deg, #8B4513, #A0522D);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 48px;
+            color: #F5E6D3;
+        }
+
+        /* Soldier Avatar Placeholder */
+        .soldier-avatar {
+            background: linear-gradient(145deg, #2F4F2F, #556B2F);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 48px;
+            color: #F0F0F0;
+        }
+
+        .character-name {
+            font-size: 18px;
+            font-weight: bold;
+            color: #00ffff;
+            text-align: center;
+            margin-bottom: 5px;
+            text-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+        }
+
+        .character-title {
+            font-size: 12px;
+            color: #888;
+            text-align: center;
+            margin-bottom: 15px;
+            font-style: italic;
+        }
+
+        .audio-indicator {
+            width: 100%;
+            height: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 2px;
+        }
+
+        .audio-bar {
+            width: 3px;
+            height: 100%;
+            background: #00ffff;
+            border-radius: 2px;
+            opacity: 0.3;
+            transition: all 0.3s ease;
+        }
+
+        .audio-bar.active {
+            opacity: 1;
+            animation: audioWave 1s infinite alternate;
+        }
+
+        @keyframes audioWave {
+            0% { height: 20%; }
+            100% { height: 100%; }
+        }
+
+        /* Transmission Panel */
+        .transmission-panel {
+            flex: 1;
+            height: 100%;
+            background: linear-gradient(145deg, rgba(15, 35, 45, 0.95), rgba(5, 15, 25, 0.95));
+            border-radius: 15px;
+            border: 2px solid #00ffff;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .transmission-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            border-bottom: 1px solid rgba(0, 255, 255, 0.3);
+            padding-bottom: 10px;
+        }
+
+        .transmission-title {
+            font-size: 14px;
+            color: #00ffff;
+            font-weight: bold;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .signal-controls {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .signal-strength {
+            display: flex;
+            gap: 2px;
+        }
+
+        .signal-bar {
+            width: 4px;
+            height: 12px;
+            background: #00ffff;
+            border-radius: 1px;
+        }
+
+        .signal-bar:nth-child(2) { height: 16px; }
+        .signal-bar:nth-child(3) { height: 20px; }
+
+        .audio-controls {
+            display: flex;
+            gap: 8px;
+        }
+
+        .control-btn {
+            width: 20px;
+            height: 20px;
+            background: rgba(0, 255, 255, 0.2);
+            border: 1px solid #00ffff;
+            border-radius: 3px;
+            color: #00ffff;
+            font-size: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .control-btn:hover {
+            background: rgba(0, 255, 255, 0.4);
+        }
+
+        .dialogue-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            position: relative;
+        }
+
+        .dialogue-text {
+            font-size: 16px;
+            color: #ffffff;
+            line-height: 1.6;
+            text-shadow: 0 0 5px rgba(255, 255, 255, 0.3);
+            opacity: 0;
+            animation: typewriterFade 0.5s ease forwards;
+        }
+
+        @keyframes typewriterFade {
+            to {
+                opacity: 1;
+            }
+        }
+
+        .waveform-display {
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1px;
+            margin: 15px 0;
+            padding: 5px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 5px;
+        }
+
+        .wave-bar {
+            width: 2px;
+            height: 4px;
+            background: #00ffff;
+            border-radius: 1px;
+            opacity: 0.4;
+            transition: all 0.1s ease;
+        }
+
+        .wave-bar.active {
+            opacity: 1;
+            animation: waveAnimation 0.5s infinite alternate;
+        }
+
+        @keyframes waveAnimation {
+            0% { height: 4px; }
+            100% { height: 20px; }
+        }
+
+        .timestamp {
+            position: absolute;
+            bottom: 10px;
+            right: 15px;
+            font-size: 12px;
+            color: #888;
+            font-family: 'Courier New', monospace;
+        }
+
+        /* Control Buttons */
+        .dialogue-controls {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            display: flex;
+            gap: 10px;
+            z-index: 1001;
+        }
+
+        .demo-btn {
+            padding: 10px 15px;
+            background: rgba(0, 255, 255, 0.2);
+            border: 2px solid #00ffff;
+            color: #00ffff;
+            border-radius: 5px;
+            cursor: pointer;
+            font-family: inherit;
+            font-size: 12px;
+            text-transform: uppercase;
+            transition: all 0.3s ease;
+        }
+
+        .demo-btn:hover {
+            background: rgba(0, 255, 255, 0.4);
+            transform: translateY(-2px);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .npc-dialogue-popup {
+                height: 35vh;
+                flex-direction: column;
+                padding: 15px;
+                gap: 15px;
+            }
+
+            .character-panel {
+                width: 100%;
+                height: 120px;
+                flex-direction: row;
+                justify-content: flex-start;
+                gap: 15px;
+            }
+
+            .character-portrait {
+                width: 80px;
+                height: 80px;
+            }
+
+            .character-info {
+                flex: 1;
+                text-align: left;
+            }
+
+            .transmission-panel {
+                height: 150px;
+            }
+
+            .dialogue-text {
+                font-size: 14px;
+            }
+        }
+
+        /* Interaction Prompt */
+        .interaction-prompt {
+            position: absolute;
+            bottom: 32vh;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.8);
+            color: #00ffff;
+            padding: 10px 20px;
+            border-radius: 20px;
+            border: 2px solid #00ffff;
+            font-size: 14px;
+            opacity: 0;
+            transition: all 0.3s ease;
+            z-index: 999;
+        }
+
+        .interaction-prompt.visible {
+            opacity: 1;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: translateX(-50%) scale(1); }
+            50% { transform: translateX(-50%) scale(1.05); }
+        }
+
+        /* NPC Selection Modal Styles */
+        .npc-selection-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: linear-gradient(135deg, rgba(0,15,25,0.95), rgba(5,20,15,0.95));
+            backdrop-filter: blur(8px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            animation: fadeIn 0.8s ease-out;
+        }
+
+        .background-effects {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0.1;
+            background: 
+                radial-gradient(circle at 20% 30%, rgba(0,150,255,0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 70%, rgba(255,100,0,0.1) 0%, transparent 50%),
+                linear-gradient(45deg, transparent 48%, rgba(0,255,150,0.02) 49%, rgba(0,255,150,0.02) 51%, transparent 52%);
+            animation: staticNoise 2s infinite;
+        }
+
+        .selection-container {
+            position: relative;
+            width: 90%;
+            max-width: 1400px;
+            height: 80vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            animation: slideIn 1s ease-out 0.3s both;
+        }
+
+        .selection-header {
+            text-align: center;
+            margin-bottom: 3rem;
+            color: #ffffff;
+        }
+
+        .main-title {
+            font-family: 'Orbitron', monospace;
+            font-size: 2.5rem;
+            font-weight: 900;
+            letter-spacing: 3px;
+            margin-bottom: 1rem;
+            text-shadow: 0 0 20px rgba(0,255,150,0.5);
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+
+        .context-info {
+            font-size: 1.2rem;
+            color: #00ff96;
+            font-weight: 400;
+            letter-spacing: 1px;
+            opacity: 0.8;
+        }
+
+        .cards-container {
+            display: flex;
+            gap: 150px;
+            justify-content: center;
+            align-items: stretch;
+            flex: 1;
+        }
+
+        .npc-card {
+            width: 600px;
+            height: 950px;
+            background: linear-gradient(145deg, rgba(20,25,35,0.9), rgba(10,15,20,0.9));
+            border-radius: 15px;
+            border: 2px solid rgba(255,255,255,0.1);
+            position: relative;
+            overflow: visible;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            animation: cardFlicker 1.5s ease-out;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .npc-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--faction-color);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.5), 0 0 30px var(--faction-glow);
+        }
+
+        .npc-card.research {
+            --faction-color: #0080ff;
+            --faction-glow: rgba(0,128,255,0.3);
+        }
+
+        .npc-card.military {
+            --faction-color: #00ff80;
+            --faction-glow: rgba(0,255,128,0.3);
+        }
+
+        .card-header {
+            background: var(--faction-color);
+            color: white;
+            padding: 1rem;
+            text-align: center;
+            font-family: 'Orbitron', monospace;
+            font-weight: 700;
+            position: relative;
+        }
+
+        .division-name {
+            font-size: 1.1rem;
+            letter-spacing: 2px;
+            margin-bottom: 0.5rem;
+        }
+
+        .role-title {
+            font-size: 0.9rem;
+            opacity: 0.9;
+            letter-spacing: 1px;
+        }
+
+        .faction-icon {
+            position: absolute;
+            right: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 1.5rem;
+        }
+
+        .portrait-section {
+            height: 300px;
+            background: linear-gradient(135deg, rgba(50,60,80,0.3), rgba(30,40,50,0.3));
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .character-portrait-card {
+            width: 280px;
+            height: 280px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            border: 4px solid var(--faction-color);
+            box-shadow: 0 0 20px var(--faction-glow);
+            background: var(--faction-color);
+            font-size: 4rem;
+            color: white;
+            font-weight: bold;
+        }
+
+        .character-portrait-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .character-portrait-card .fallback-text {
+            position: absolute;
+            display: none;
+        }
+
+        .character-info-card {
+            padding: 1.5rem;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+            justify-content: space-between;
+        }
+
+        .character-name-card {
+            font-family: 'Orbitron', monospace;
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: var(--faction-color);
+        }
+
+        .character-role-card {
+            font-size: 1.1rem;
+            opacity: 0.8;
+            margin-bottom: 1.5rem;
+        }
+
+        .character-quote {
+            font-style: italic;
+            font-size: 1rem;
+            line-height: 1.4;
+            margin-bottom: 2rem;
+            padding: 1rem;
+            background: rgba(0,0,0,0.3);
+            border-left: 3px solid var(--faction-color);
+            border-radius: 0 5px 5px 0;
+            position: relative;
+        }
+
+        .character-quote::before {
+            content: '"';
+            font-size: 2rem;
+            position: absolute;
+            left: 0.5rem;
+            top: 0.2rem;
+            color: var(--faction-color);
+        }
+
+        .benefits-section {
+            margin-bottom: 2rem;
+        }
+
+        .benefits-title {
+            font-family: 'Orbitron', monospace;
+            font-size: 1rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            margin-bottom: 1rem;
+            color: #ffffff;
+        }
+
+        .benefit-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 0.8rem;
+            font-size: 1rem;
+        }
+
+        .benefit-icon {
+            color: #00ff96;
+            margin-right: 0.8rem;
+            font-weight: bold;
+        }
+
+        .select-button {
+            width: 100%;
+            padding: 1.5rem;
+            background: linear-gradient(135deg, var(--faction-color), rgba(255,255,255,0.1));
+            border: 2px solid var(--faction-color);
+            border-radius: 10px;
+            color: white;
+            font-family: 'Orbitron', monospace;
+            font-size: 1.2rem;
+            font-weight: 900;
+            letter-spacing: 2px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            position: relative;
+            overflow: hidden;
+            margin-top: 1rem;
+            text-shadow: 0 0 10px rgba(255,255,255,0.5);
+            box-shadow: 0 0 20px rgba(0,0,0,0.3), 0 0 20px var(--faction-glow);
+        }
+
+        .select-button:hover {
+            background: linear-gradient(135deg, rgba(255,255,255,0.2), var(--faction-color));
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+        }
+
+        .cancel-button {
+            position: absolute;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.3);
+            color: rgba(255,255,255,0.7);
+            padding: 0.8rem 2rem;
+            border-radius: 25px;
+            font-family: 'Roboto Condensed', sans-serif;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .cancel-button:hover {
+            background: rgba(255,255,255,0.2);
+            color: white;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideIn {
+            from { 
+                opacity: 0; 
+                transform: translateY(50px);
+            }
+            to { 
+                opacity: 1; 
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes cardFlicker {
+            0% { opacity: 0; transform: translateX(-20px); }
+            10% { opacity: 0.3; }
+            20% { opacity: 0.1; }
+            30% { opacity: 0.8; }
+            40% { opacity: 0.3; }
+            50% { opacity: 1; transform: translateX(0); }
+            100% { opacity: 1; transform: translateX(0); }
+        }
+
+        @keyframes glow {
+            from { text-shadow: 0 0 20px rgba(0,255,150,0.5); }
+            to { text-shadow: 0 0 30px rgba(0,255,150,0.8), 0 0 40px rgba(0,255,150,0.3); }
+        }
+
+        @keyframes staticNoise {
+            0%, 100% { opacity: 0.1; }
+            50% { opacity: 0.05; }
+        }
+
+        /* Responsive Design for Selection Modal */
+        @media (max-width: 1200px) {
+            .cards-container {
+                gap: 100px;
+            }
+            
+            .npc-card {
+                width: 500px;
+                height: 850px;
+            }
+        }
+
+        @media (max-width: 900px) {
+            .cards-container {
+                flex-direction: column;
+                gap: 2rem;
+                align-items: center;
+            }
+            
+            .npc-card {
+                width: 400px;
+                height: 750px;
+            }
+            
+            .main-title {
+                font-size: 2rem;
+            }
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Roboto+Condensed:wght@300;400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Game Background -->
+    <div class="game-background"></div>
+
+    <!-- Interaction Prompt -->
+    <div class="interaction-prompt" id="interactionPrompt">
+        Press E to interact
+    </div>
+
+    <!-- Demo Controls -->
+    <div class="dialogue-controls">
+        <button class="demo-btn" onclick="showFarmerDialogue()">Show Farmer</button>
+        <button class="demo-btn" onclick="showSoldierDialogue()">Show Soldier</button>
+        <button class="demo-btn" onclick="showNPCSelectionModal()">Select NPC</button>
+        <button class="demo-btn" onclick="hideDialogue()">Hide Dialogue</button>
+    </div>
+
+    <!-- NPC Dialogue Popup -->
+    <div class="npc-dialogue-popup" id="npcDialogue">
+        <!-- Character Portrait Panel -->
+        <div class="character-panel">
+            <div class="character-portrait">
+                <div class="character-avatar farmer-avatar" id="characterAvatar">👨‍🌾</div>
+            </div>
+            <div class="character-info">
+                <div class="character-name" id="characterName">Jake Morrison</div>
+                <div class="character-title" id="characterTitle">Crop Specialist</div>
+            </div>
+            <div class="audio-indicator">
+                <div class="audio-bar"></div>
+                <div class="audio-bar"></div>
+                <div class="audio-bar"></div>
+                <div class="audio-bar"></div>
+                <div class="audio-bar"></div>
+                <div class="audio-bar"></div>
+                <div class="audio-bar"></div>
+                <div class="audio-bar"></div>
+            </div>
+        </div>
+
+        <!-- Transmission Panel -->
+        <div class="transmission-panel">
+            <div class="transmission-header">
+                <div class="transmission-title">TRANSMISSION</div>
+                <div class="signal-controls">
+                    <div class="signal-strength">
+                        <div class="signal-bar"></div>
+                        <div class="signal-bar"></div>
+                        <div class="signal-bar"></div>
+                    </div>
+                    <div class="audio-controls">
+                        <div class="control-btn">🔊</div>
+                        <div class="control-btn">⏸</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="dialogue-content">
+                <div class="dialogue-text" id="dialogueText">
+                    "Harvest is coming in strong this season, should keep the city fed for months."
+                </div>
+                
+                <div class="waveform-display">
+                    <div class="wave-bar"></div>
+                    <div class="wave-bar"></div>
+                    <div class="wave-bar"></div>
+                    <div class="wave-bar"></div>
+                    <div class="wave-bar"></div>
+                    <div class="wave-bar"></div>
+                    <div class="wave-bar"></div>
+                    <div class="wave-bar"></div>
+                    <div class="wave-bar"></div>
+                    <div class="wave-bar"></div>
+                    <div class="wave-bar"></div>
+                    <div class="wave-bar"></div>
+                    <div class="wave-bar"></div>
+                    <div class="wave-bar"></div>
+                    <div class="wave-bar"></div>
+                    <div class="wave-bar"></div>
+                    <div class="wave-bar"></div>
+                    <div class="wave-bar"></div>
+                    <div class="wave-bar"></div>
+                    <div class="wave-bar"></div>
+                </div>
+            </div>
+
+            <div class="timestamp" id="timestamp">REC 07:23 :14</div>
+        </div>
+    </div>
+
+   
+
+    <script>
+        // NPC Dialogue Data from npc_dialogue_uiux.md
+        const npcData = {
+            farmer: {
+                names: ["Jake Morrison", "Maria Santos", "Tom Bradley"],
+                titles: ["Crop Specialist", "Livestock Manager", "Supply Coordinator"],
+                avatar: "👨‍🌾",
+                avatarClass: "farmer-avatar",
+                dialogues: [
+                    "Harvest is coming in strong this season, should keep the city fed for months.",
+                    "Water reserves are running low - we need to prioritize the irrigation systems.",
+                    "New families arrived yesterday, they'll need housing near the farming district.",
+                    "Storm season's coming early this year, better secure the equipment.",
+                    "Kids are learning to read again - first time in years we've had a proper school."
+                ]
+            },
+            soldier: {
+                names: ["Sergeant Alex Torres", "Lieutenant Sarah Kim", "Corporal Mike Chen"],
+                titles: ["Defense Coordinator", "Patrol Leader", "Weapons Specialist"],
+                avatar: "🪖",
+                avatarClass: "soldier-avatar",
+                dialogues: [
+                    "Perimeter is secure, but we've spotted movement three clicks south.",
+                    "Lost two good soldiers in yesterday's skirmish, but we held the line.",
+                    "Command wants us to expand the safe zone, but we don't have the manpower.",
+                    "Maintenance crew got the generators running at full capacity again.",
+                    "Morale's high despite everything - these people are tougher than they look."
+                ]
+            }
+        };
+
+        let currentNPC = null;
+        let isDialogueActive = false;
+
+        // Initialize
+        function init() {
+            updateTimestamp();
+            setInterval(updateTimestamp, 1000);
+        }
+
+        // Update timestamp
+        function updateTimestamp() {
+            const now = new Date();
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            const seconds = String(now.getSeconds()).padStart(2, '0');
+            document.getElementById('timestamp').textContent = `REC ${minutes}:${seconds} :14`;
+        }
+
+        // Show farmer dialogue
+        function showFarmerDialogue() {
+            showNPCDialogue('farmer');
+        }
+
+        // Show soldier dialogue
+        function showSoldierDialogue() {
+            showNPCDialogue('soldier');
+        }
+
+        // Show NPC dialogue with random selection
+        function showNPCDialogue(npcType) {
+            if (isDialogueActive) return;
+            
+            const npc = npcData[npcType];
+            currentNPC = npcType;
+            
+            // Random dialogue selection
+            const dialogueIndex = Math.floor(Math.random() * npc.dialogues.length);
+            const dialogue = npc.dialogues[dialogueIndex];
+            
+            // Update UI
+            document.getElementById('characterName').textContent = npc.names[0];
+            document.getElementById('characterTitle').textContent = npc.titles[0];
+            document.getElementById('characterAvatar').textContent = npc.avatar;
+            document.getElementById('characterAvatar').className = `character-avatar ${npc.avatarClass}`;
+            document.getElementById('dialogueText').textContent = `"${dialogue}"`;
+            
+            // Show dialogue popup
+            document.getElementById('npcDialogue').classList.add('active');
+            document.getElementById('interactionPrompt').classList.remove('visible');
+            
+            isDialogueActive = true;
+            
+            // Auto-hide after 5 seconds
+            setTimeout(() => {
+                if (isDialogueActive) {
+                    hideDialogue();
+                }
+            }, 5000);
+        }
+
+        // Hide dialogue
+        function hideDialogue() {
+            document.getElementById('npcDialogue').classList.remove('active');
+            isDialogueActive = false;
+            currentNPC = null;
+        }
+
+        // Show interaction prompt (for demo purposes)
+        function showInteractionPrompt() {
+            if (!isDialogueActive) {
+                document.getElementById('interactionPrompt').classList.add('visible');
+            }
+        }
+
+        // Keyboard controls
+        document.addEventListener('keydown', (e) => {
+            if (e.key.toLowerCase() === 'e' && !isDialogueActive) {
+                // Random NPC type selection
+                const npcTypes = ['farmer', 'soldier'];
+                const randomType = npcTypes[Math.floor(Math.random() * npcTypes.length)];
+                showNPCDialogue(randomType);
+            } else if (e.key === 'Escape' && isDialogueActive) {
+                hideDialogue();
+            }
+        });
+
+        // Demo: Show interaction prompt periodically
+        setInterval(() => {
+            if (!isDialogueActive && Math.random() < 0.3) {
+                showInteractionPrompt();
+                setTimeout(() => {
+                    document.getElementById('interactionPrompt').classList.remove('visible');
+                }, 3000);
+            }
+        }, 8000);
+
+        // Initialize on load
+        window.addEventListener('load', init);
+
+        // NPC Selection Modal Functions
+        function showNPCSelectionModal() {
+            const modal = document.getElementById('npcSelectionModal');
+            modal.style.display = 'flex';
+            modal.style.animation = 'fadeIn 0.8s ease-out';
+            console.log('NPC Selection Modal opened');
+        }
+
+        function closeNPCSelectionModal() {
+            const modal = document.getElementById('npcSelectionModal');
+            modal.style.animation = 'fadeOut 0.5s ease-out forwards';
+            
+            setTimeout(() => {
+                modal.style.display = 'none';
+            }, 500);
+            console.log('NPC Selection Modal closed');
+        }
+
+        function selectSpecialist(specialistId) {
+            console.log('Selected specialist:', specialistId);
+            
+            // Play selection sound and add confirmation animation
+            const selectedCard = event.target.closest('.npc-card');
+            selectedCard.style.transform = 'scale(1.05)';
+            selectedCard.style.borderColor = selectedCard.style.getPropertyValue('--faction-color');
+            
+            setTimeout(() => {
+                alert(`You have selected ${specialistId.replace('-', ' ').toUpperCase()}!\n\nSpecialist will be added to your base.`);
+                closeNPCSelectionModal();
+            }, 500);
+        }
+
+        // Add hover sound effects for NPC cards and keyboard controls
+        document.addEventListener('DOMContentLoaded', function() {
+            // Add hover sound effects for NPC cards
+            document.querySelectorAll('.npc-card').forEach(card => {
+                card.addEventListener('mouseenter', function() {
+                    console.log('Playing hover sound for:', this.dataset.specialist);
+                });
+            });
+
+            // Keyboard controls for selection modal
+            document.addEventListener('keydown', function(e) {
+                const modal = document.getElementById('npcSelectionModal');
+                if (modal.style.display === 'flex') {
+                    if (e.key === 'Escape') {
+                        closeNPCSelectionModal();
+                    } else if (e.key === '1') {
+                        selectSpecialist('sarah-chen');
+                    } else if (e.key === '2') {
+                        selectSpecialist('marcus-daniels');
+                    }
+                }
+            });
+
+            // Add fadeOut animation dynamically
+            const style = document.createElement('style');
+            style.textContent = `
+                @keyframes fadeOut {
+                    from { opacity: 1; }
+                    to { opacity: 0; }
+                }
+            `;
+            document.head.appendChild(style);
+        });
+    </script>
+</body>
+</html> 

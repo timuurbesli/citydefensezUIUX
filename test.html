@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home Building Test</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            font-family: Arial, sans-serif;
+            background: #333;
+            color: white;
+        }
+        
+        .home-building-clickable {
+            position: absolute;
+            top: 100px;
+            left: 100px;
+            width: 140px;
+            height: 90px;
+            background: rgba(255, 215, 0, 0.5);
+            border: 2px solid rgba(255, 215, 0, 0.8);
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: black;
+        }
+        
+        .home-building-clickable:hover {
+            background: rgba(255, 215, 0, 0.7);
+        }
+        
+        .log {
+            margin-top: 200px;
+            padding: 10px;
+            background: #222;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Home Building Click Test</h1>
+    
+    <div class="home-building-clickable" id="home-building">
+        CLICK ME
+    </div>
+    
+    <div class="log" id="log">
+        <h3>Log:</h3>
+        <div id="log-content">Waiting for clicks...</div>
+    </div>
+    
+    <script>
+        console.log('Test script loaded');
+        
+        function addLog(message) {
+            const logContent = document.getElementById('log-content');
+            logContent.innerHTML += '<br>' + new Date().toLocaleTimeString() + ': ' + message;
+            console.log(message);
+        }
+        
+        document.addEventListener('DOMContentLoaded', () => {
+            addLog('DOM Content Loaded');
+            
+            const homeBuilding = document.getElementById('home-building');
+            if (homeBuilding) {
+                addLog('Home building element found');
+                
+                homeBuilding.addEventListener('click', () => {
+                    addLog('Home building clicked!');
+                    alert('Home building clicked!');
+                });
+                
+                addLog('Event listener added');
+            } else {
+                addLog('ERROR: Home building element not found');
+            }
+        });
+        
+        addLog('Script initialization complete');
+    </script>
+</body>
+</html> 

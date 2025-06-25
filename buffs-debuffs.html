@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>City Defense Z - Buffs & Debuffs</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background: linear-gradient(135deg, #0a0f1a 0%, #1a2332 50%, #0f1419 100%);
+            color: #ffffff;
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        .background-effects {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0.1;
+            background: 
+                radial-gradient(circle at 20% 30%, rgba(0,255,128,0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 70%, rgba(255,100,0,0.1) 0%, transparent 50%),
+                linear-gradient(45deg, transparent 48%, rgba(0,255,150,0.02) 49%, rgba(0,255,150,0.02) 51%, transparent 52%);
+            animation: staticNoise 3s infinite;
+            z-index: -1;
+        }
+
+        @keyframes staticNoise {
+            0%, 100% { opacity: 0.1; }
+            50% { opacity: 0.15; }
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .main-title {
+            font-family: 'Orbitron', monospace;
+            font-size: 2.5rem;
+            font-weight: 900;
+            letter-spacing: 3px;
+            margin-bottom: 1rem;
+            text-shadow: 0 0 20px rgba(0,255,150,0.5);
+            animation: titleGlow 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes titleGlow {
+            from { text-shadow: 0 0 20px rgba(0,255,150,0.5); }
+            to { text-shadow: 0 0 30px rgba(0,255,150,0.8), 0 0 40px rgba(0,255,150,0.3); }
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            color: #00ff96;
+            font-weight: 400;
+            letter-spacing: 1px;
+            opacity: 0.8;
+        }
+
+        .effects-panel {
+            background: linear-gradient(145deg, rgba(20,25,35,0.9), rgba(10,15,20,0.9));
+            border-radius: 15px;
+            border: 2px solid rgba(255,255,255,0.1);
+            padding: 2rem;
+            margin-bottom: 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .panel-title {
+            font-family: 'Orbitron', monospace;
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            color: #ffffff;
+            text-shadow: 0 0 10px rgba(255,255,255,0.3);
+        }
+
+        .effects-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            min-height: 80px;
+            align-items: flex-start;
+        }
+
+        .effect-card {
+            width: 60px;
+            height: 60px;
+            border-radius: 8px;
+            border: 2px solid;
+            background: rgba(0,0,0,0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            backdrop-filter: blur(5px);
+        }
+
+        .effect-card.buff {
+            border-color: #00ff80;
+            box-shadow: 0 0 10px rgba(0,255,128,0.3);
+            animation: buffGlow 2s ease-in-out infinite alternate;
+        }
+
+        .effect-card.debuff {
+            border-color: #ff4444;
+            box-shadow: 0 0 10px rgba(255,68,68,0.3);
+            animation: debuffPulse 1.5s ease-in-out infinite;
+        }
+
+        @keyframes buffGlow {
+            from { box-shadow: 0 0 10px rgba(0,255,128,0.3); }
+            to { box-shadow: 0 0 20px rgba(0,255,128,0.5), 0 0 30px rgba(0,255,128,0.2); }
+        }
+
+        @keyframes debuffPulse {
+            0%, 100% { box-shadow: 0 0 10px rgba(255,68,68,0.3); }
+            50% { box-shadow: 0 0 20px rgba(255,68,68,0.6), 0 0 30px rgba(255,68,68,0.3); }
+        }
+
+        .effect-card:hover {
+            transform: scale(1.1);
+            z-index: 10;
+        }
+
+        .effect-card.buff:hover {
+            box-shadow: 0 0 25px rgba(0,255,128,0.6), 0 0 40px rgba(0,255,128,0.3);
+        }
+
+        .effect-card.debuff:hover {
+            box-shadow: 0 0 25px rgba(255,68,68,0.6), 0 0 40px rgba(255,68,68,0.3);
+        }
+
+        .effect-icon {
+            font-size: 24px;
+            color: inherit;
+        }
+
+        .effect-card.buff .effect-icon {
+            color: #00ff80;
+        }
+
+        .effect-card.debuff .effect-icon {
+            color: #ff4444;
+        }
+
+        .effect-tooltip {
+            position: absolute;
+            bottom: 70px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(145deg, rgba(20,25,35,0.95), rgba(10,15,20,0.95));
+            border: 2px solid;
+            border-radius: 10px;
+            padding: 1rem;
+            min-width: 200px;
+            max-width: 300px;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+        }
+
+        .effect-card:hover .effect-tooltip {
+            opacity: 1;
+            visibility: visible;
+            transform: translateX(-50%) translateY(-5px);
+        }
+
+        .effect-card.buff .effect-tooltip {
+            border-color: #00ff80;
+            box-shadow: 0 0 20px rgba(0,255,128,0.3);
+        }
+
+        .effect-card.debuff .effect-tooltip {
+            border-color: #ff4444;
+            box-shadow: 0 0 20px rgba(255,68,68,0.3);
+        }
+
+        .tooltip-title {
+            font-family: 'Orbitron', monospace;
+            font-size: 14px;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: inherit;
+        }
+
+        .effect-card.buff .tooltip-title {
+            color: #00ff80;
+        }
+
+        .effect-card.debuff .tooltip-title {
+            color: #ff4444;
+        }
+
+        .tooltip-description {
+            font-size: 12px;
+            color: #ffffff;
+            margin-bottom: 0.5rem;
+            line-height: 1.4;
+        }
+
+        .tooltip-source {
+            font-size: 11px;
+            color: #aaaaaa;
+            font-style: italic;
+        }
+
+        .tooltip-value {
+            font-family: 'Orbitron', monospace;
+            font-size: 13px;
+            font-weight: 700;
+            margin-top: 0.5rem;
+            text-align: center;
+            padding: 0.25rem;
+            border-radius: 4px;
+            background: rgba(0,0,0,0.3);
+        }
+
+        .effect-card.buff .tooltip-value {
+            color: #00ff80;
+            border: 1px solid rgba(0,255,128,0.3);
+        }
+
+        .effect-card.debuff .tooltip-value {
+            color: #ff4444;
+            border: 1px solid rgba(255,68,68,0.3);
+        }
+
+        .no-effects {
+            text-align: center;
+            color: #666666;
+            font-style: italic;
+            padding: 2rem;
+            font-size: 1.1rem;
+        }
+
+        .controls-panel {
+            background: linear-gradient(145deg, rgba(20,25,35,0.9), rgba(10,15,20,0.9));
+            border-radius: 15px;
+            border: 2px solid rgba(255,255,255,0.1);
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .control-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .control-button {
+            padding: 0.75rem 1.5rem;
+            background: linear-gradient(145deg, rgba(255,140,66,0.2), rgba(255,100,0,0.1));
+            border: 2px solid #ff8c42;
+            border-radius: 8px;
+            color: #ffffff;
+            font-family: 'Orbitron', monospace;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .control-button:hover {
+            background: linear-gradient(145deg, rgba(255,140,66,0.4), rgba(255,100,0,0.2));
+            box-shadow: 0 0 20px rgba(255,140,66,0.3);
+            transform: translateY(-2px);
+        }
+
+        .resource-display {
+            display: flex;
+            gap: 2rem;
+            margin-top: 1rem;
+            align-items: center;
+        }
+
+        .resource-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-family: 'Orbitron', monospace;
+            font-weight: 700;
+        }
+
+        .resource-icon {
+            font-size: 20px;
+            color: #ff8c42;
+        }
+
+        .resource-value {
+            color: #ffffff;
+        }
+
+        .resource-requirement {
+            color: #ffcc00;
+            font-size: 0.9em;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+
+            .main-title {
+                font-size: 2rem;
+            }
+
+            .effects-grid {
+                justify-content: center;
+            }
+
+            .control-group {
+                justify-content: center;
+            }
+
+            .resource-display {
+                flex-direction: column;
+                gap: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="background-effects"></div>
+    
+    <div class="container">
+        <div class="header">
+            <h1 class="main-title">ACTIVE EFFECTS</h1>
+            <p class="subtitle">Buffs & Debuffs System</p>
+        </div>
+
+        <div class="effects-panel">
+            <h2 class="panel-title">🔋 ACTIVE BUFFS</h2>
+            <div class="effects-grid" id="buffsGrid">
+                <div class="no-effects" id="noBuffs">No active buffs</div>
+            </div>
+        </div>
+
+        <div class="effects-panel">
+            <h2 class="panel-title">⚠️ ACTIVE DEBUFFS</h2>
+            <div class="effects-grid" id="debuffsGrid">
+                <div class="no-effects" id="noDebuffs">No active debuffs</div>
+            </div>
+        </div>
+
+        <div class="controls-panel">
+            <h2 class="panel-title">SIMULATION CONTROLS</h2>
+            
+            <div class="control-group">
+                <button class="control-button" onclick="toggleNPCBuff('soldier')">Toggle Soldier Buff</button>
+                <button class="control-button" onclick="toggleNPCBuff('medic')">Toggle Medic Buff</button>
+                <button class="control-button" onclick="toggleNPCBuff('engineer')">Toggle Engineer Buff</button>
+                <button class="control-button" onclick="toggleNPCBuff('scout')">Toggle Scout Buff</button>
+            </div>
+
+            <div class="control-group">
+                <button class="control-button" onclick="simulateHunger()">Simulate Hunger</button>
+                <button class="control-button" onclick="clearAllEffects()">Clear All Effects</button>
+            </div>
+
+            <div class="resource-display">
+                <div class="resource-item">
+                    <i class="fas fa-apple-alt resource-icon"></i>
+                    <span class="resource-value" id="currentFood">100</span>
+                    <span class="resource-requirement">/ <span id="requiredFood">80</span> required</span>
+                </div>
+                <div class="resource-item">
+                    <i class="fas fa-users resource-icon"></i>
+                    <span class="resource-value" id="population">40</span>
+                    <span class="resource-requirement">population</span>
+                </div>
+                <button class="control-button" onclick="adjustFood(-20)">-20 Food</button>
+                <button class="control-button" onclick="adjustFood(20)">+20 Food</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Game state
+        let gameState = {
+            npcs: {
+                soldier: false,
+                medic: false,
+                engineer: false,
+                scout: false
+            },
+            resources: {
+                food: 100,
+                population: 40,
+                dailyFoodRequirement: 2
+            },
+            effects: {
+                buffs: [],
+                debuffs: []
+            }
+        };
+
+        // Effect definitions
+        const effectDefinitions = {
+            soldier_leadership: {
+                id: "soldier_leadership",
+                name: "Soldier's Leadership",
+                type: "buff",
+                source: "Sgt. Jackson",
+                icon: "fas fa-chevron-up",
+                description: "All soldiers deal increased damage",
+                value: "+20% Damage",
+                category: "combat"
+            },
+            medical_support: {
+                id: "medical_support",
+                name: "Medical Support",
+                type: "buff",
+                source: "Dr. Chen",
+                icon: "fas fa-plus-circle",
+                description: "Enhanced healing rate for all units",
+                value: "+30% Healing",
+                category: "support"
+            },
+            engineering_expertise: {
+                id: "engineering_expertise",
+                name: "Engineering Expertise",
+                type: "buff",
+                source: "Maya Rodriguez",
+                icon: "fas fa-cog",
+                description: "Faster building construction speed",
+                value: "+25% Build Speed",
+                category: "construction"
+            },
+            scout_intel: {
+                id: "scout_intel",
+                name: "Scout's Intelligence",
+                type: "buff",
+                source: "Marcus Reed",
+                icon: "fas fa-eye",
+                description: "Improved resource gathering efficiency",
+                value: "+15% Resources",
+                category: "economy"
+            },
+            hunger_debuff: {
+                id: "hunger_debuff",
+                name: "Hunger",
+                type: "debuff",
+                source: "Food Shortage",
+                icon: "fas fa-skull",
+                description: "Soldiers weakened by lack of food",
+                value: "-50% Damage & HP",
+                category: "survival",
+                severity: "critical"
+            }
+        };
+
+        function updateEffectsDisplay() {
+            const buffsGrid = document.getElementById('buffsGrid');
+            const debuffsGrid = document.getElementById('debuffsGrid');
+            const noBuffs = document.getElementById('noBuffs');
+            const noDebuffs = document.getElementById('noDebuffs');
+
+            // Clear existing effects
+            buffsGrid.innerHTML = '';
+            debuffsGrid.innerHTML = '';
+
+            // Display buffs
+            const activeBuffs = gameState.effects.buffs;
+            if (activeBuffs.length === 0) {
+                buffsGrid.appendChild(noBuffs);
+            } else {
+                activeBuffs.forEach(effectId => {
+                    const effect = effectDefinitions[effectId];
+                    if (effect) {
+                        buffsGrid.appendChild(createEffectCard(effect));
+                    }
+                });
+            }
+
+            // Display debuffs
+            const activeDebuffs = gameState.effects.debuffs;
+            if (activeDebuffs.length === 0) {
+                debuffsGrid.appendChild(noDebuffs);
+            } else {
+                activeDebuffs.forEach(effectId => {
+                    const effect = effectDefinitions[effectId];
+                    if (effect) {
+                        debuffsGrid.appendChild(createEffectCard(effect));
+                    }
+                });
+            }
+        }
+
+        function createEffectCard(effect) {
+            const card = document.createElement('div');
+            card.className = `effect-card ${effect.type}`;
+            
+            card.innerHTML = `
+                <i class="${effect.icon} effect-icon"></i>
+                <div class="effect-tooltip">
+                    <div class="tooltip-title">${effect.name}</div>
+                    <div class="tooltip-description">${effect.description}</div>
+                    <div class="tooltip-source">Source: ${effect.source}</div>
+                    <div class="tooltip-value">${effect.value}</div>
+                </div>
+            `;
+
+            return card;
+        }
+
+        function toggleNPCBuff(npcType) {
+            const npcEffectMap = {
+                soldier: 'soldier_leadership',
+                medic: 'medical_support',
+                engineer: 'engineering_expertise',
+                scout: 'scout_intel'
+            };
+
+            const effectId = npcEffectMap[npcType];
+            if (!effectId) return;
+
+            gameState.npcs[npcType] = !gameState.npcs[npcType];
+
+            if (gameState.npcs[npcType]) {
+                // Add buff
+                if (!gameState.effects.buffs.includes(effectId)) {
+                    gameState.effects.buffs.push(effectId);
+                }
+            } else {
+                // Remove buff
+                gameState.effects.buffs = gameState.effects.buffs.filter(id => id !== effectId);
+            }
+
+            updateEffectsDisplay();
+        }
+
+        function checkHungerDebuff() {
+            const requiredFood = gameState.resources.population * gameState.resources.dailyFoodRequirement;
+            const hasHungerDebuff = gameState.effects.debuffs.includes('hunger_debuff');
+
+            document.getElementById('requiredFood').textContent = requiredFood;
+
+            if (gameState.resources.food < requiredFood) {
+                // Apply hunger debuff
+                if (!hasHungerDebuff) {
+                    gameState.effects.debuffs.push('hunger_debuff');
+                }
+            } else {
+                // Remove hunger debuff
+                if (hasHungerDebuff) {
+                    gameState.effects.debuffs = gameState.effects.debuffs.filter(id => id !== 'hunger_debuff');
+                }
+            }
+
+            updateEffectsDisplay();
+        }
+
+        function simulateHunger() {
+            gameState.resources.food = Math.max(0, gameState.resources.population * gameState.resources.dailyFoodRequirement - 20);
+            document.getElementById('currentFood').textContent = gameState.resources.food;
+            checkHungerDebuff();
+        }
+
+        function adjustFood(amount) {
+            gameState.resources.food = Math.max(0, gameState.resources.food + amount);
+            document.getElementById('currentFood').textContent = gameState.resources.food;
+            checkHungerDebuff();
+        }
+
+        function clearAllEffects() {
+            gameState.effects.buffs = [];
+            gameState.effects.debuffs = [];
+            gameState.npcs = {
+                soldier: false,
+                medic: false,
+                engineer: false,
+                scout: false
+            };
+            updateEffectsDisplay();
+        }
+
+        // Initialize display
+        updateEffectsDisplay();
+        checkHungerDebuff();
+    </script>
+</body>
+</html> 

@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NPC Selection - City Defense Z</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Roboto+Condensed:wght@300;400;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Roboto Condensed', sans-serif;
+            background: transparent;
+            overflow: hidden;
+        }
+
+        /* Modal Overlay */
+        .npc-selection-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: transparent;
+            display: flex;
+            align-items: flex-start;
+            justify-content: center;
+            z-index: 1000;
+            animation: fadeIn 0.8s ease-out;
+            padding-top: 2vh;
+        }
+
+        /* Main Container */
+        .selection-container {
+            position: relative;
+            width: 90%;
+            max-width: 1400px;
+            height: 95vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            animation: slideIn 1s ease-out 0.3s both;
+        }
+
+        /* Header Section */
+        .selection-header {
+            text-align: center;
+            margin-bottom: 1rem;
+            color: #ffffff;
+        }
+
+        .main-title {
+            font-family: 'Orbitron', monospace;
+            font-size: 2.5rem;
+            font-weight: 900;
+            letter-spacing: 3px;
+            margin-bottom: 1rem;
+            text-shadow: 0 0 20px rgba(0,255,150,0.5);
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+
+        .context-info {
+            font-size: 1.2rem;
+            color: #00ff96;
+            font-weight: 400;
+            letter-spacing: 1px;
+            opacity: 0.8;
+        }
+
+        /* Cards Container */
+        .cards-container {
+            display: flex;
+            gap: 150px;
+            justify-content: center;
+            align-items: stretch;
+            flex: 1;
+        }
+
+        /* NPC Card */
+        .npc-card {
+            width: 600px;
+            height: 750px;
+            background: linear-gradient(145deg, rgba(20,25,35,0.9), rgba(10,15,20,0.9));
+            border-radius: 15px;
+            border: 2px solid rgba(255,255,255,0.1);
+            position: relative;
+            overflow: visible;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            animation: cardFlicker 1.5s ease-out;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .npc-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--faction-color);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.5), 0 0 30px var(--faction-glow);
+        }
+
+        .npc-card.research {
+            --faction-color: #0080ff;
+            --faction-glow: rgba(0,128,255,0.3);
+        }
+
+        .npc-card.military {
+            --faction-color: #00ff80;
+            --faction-glow: rgba(0,255,128,0.3);
+        }
+
+        /* Card Header */
+        .card-header {
+            background: var(--faction-color);
+            color: white;
+            padding: 1rem;
+            text-align: center;
+            font-family: 'Orbitron', monospace;
+            font-weight: 700;
+            position: relative;
+        }
+
+        .division-name {
+            font-size: 1.1rem;
+            letter-spacing: 2px;
+            margin-bottom: 0.5rem;
+        }
+
+        .role-title {
+            font-size: 0.9rem;
+            opacity: 0.9;
+            letter-spacing: 1px;
+        }
+
+        .faction-icon {
+            position: absolute;
+            right: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 1.5rem;
+        }
+
+        /* Portrait Section */
+        .portrait-section {
+            height: 250px;
+            background: linear-gradient(135deg, rgba(50,60,80,0.3), rgba(30,40,50,0.3));
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .character-portrait {
+            width: 280px;
+            height: 280px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4rem;
+            color: white;
+            font-weight: bold;
+            overflow: hidden;
+            border: 4px solid var(--faction-color);
+            box-shadow: 0 0 20px var(--faction-glow);
+            background: var(--faction-color);
+        }
+
+        .character-portrait img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .character-portrait .fallback-text {
+            position: absolute;
+            display: none;
+        }
+
+        /* Character Info */
+        .character-info {
+            padding: 1.5rem;
+            color: white;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .character-name {
+            font-family: 'Orbitron', monospace;
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: var(--faction-color);
+        }
+
+        .character-role {
+            font-size: 1.1rem;
+            opacity: 0.8;
+            margin-bottom: 1.5rem;
+        }
+
+        .character-quote {
+            font-style: italic;
+            font-size: 1rem;
+            line-height: 1.4;
+            margin-bottom: 1.5rem;
+            padding: 1rem;
+            background: rgba(0,0,0,0.3);
+            border-left: 3px solid var(--faction-color);
+            border-radius: 0 5px 5px 0;
+            position: relative;
+        }
+
+        .character-quote::before {
+            content: '"';
+            font-size: 2rem;
+            position: absolute;
+            left: 0.5rem;
+            top: 0.2rem;
+            color: var(--faction-color);
+        }
+
+        /* Benefits Section */
+        .benefits-section {
+            margin-bottom: 2rem;
+            background: linear-gradient(135deg, rgba(0,255,150,0.05), rgba(0,200,255,0.05));
+            border: 1px solid rgba(0,255,150,0.2);
+            border-radius: 10px;
+            padding: 1.5rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .benefits-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--faction-color), transparent);
+        }
+
+        .benefits-title {
+            font-family: 'Orbitron', monospace;
+            font-size: 1.1rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            margin-bottom: 1.2rem;
+            color: #00ff96;
+            text-shadow: 0 0 10px rgba(0,255,150,0.5);
+            text-transform: uppercase;
+        }
+
+        .benefit-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+            font-weight: 500;
+            padding: 0.5rem;
+            background: rgba(0,0,0,0.2);
+            border-radius: 5px;
+            border-left: 3px solid #00ff96;
+        }
+
+        .benefit-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .benefit-icon {
+            color: #00ff96;
+            margin-right: 1rem;
+            font-weight: bold;
+            font-size: 1.2rem;
+            text-shadow: 0 0 5px rgba(0,255,150,0.7);
+        }
+
+        /* Select Button */
+        .select-button {
+            width: 100%;
+            padding: 1.2rem;
+            background: linear-gradient(135deg, var(--faction-color), rgba(255,255,255,0.1));
+            border: 2px solid var(--faction-color);
+            border-radius: 10px;
+            color: white;
+            font-family: 'Orbitron', monospace;
+            font-size: 1.2rem;
+            font-weight: 900;
+            letter-spacing: 2px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            position: relative;
+            overflow: hidden;
+            margin-top: auto;
+            text-shadow: 0 0 10px rgba(255,255,255,0.5);
+            box-shadow: 0 0 20px rgba(0,0,0,0.3), 0 0 20px var(--faction-glow);
+        }
+
+        .select-button:hover {
+            background: linear-gradient(135deg, rgba(255,255,255,0.3), var(--faction-color));
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.4), 0 0 30px var(--faction-glow);
+            border-color: rgba(255,255,255,0.6);
+        }
+
+        .select-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .select-button:hover::before {
+            left: 100%;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideIn {
+            from { 
+                opacity: 0; 
+                transform: translateY(50px);
+            }
+            to { 
+                opacity: 1; 
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes cardFlicker {
+            0% { opacity: 0; transform: translateX(-20px); }
+            10% { opacity: 0.3; }
+            20% { opacity: 0.1; }
+            30% { opacity: 0.8; }
+            40% { opacity: 0.3; }
+            50% { opacity: 1; transform: translateX(0); }
+            100% { opacity: 1; transform: translateX(0); }
+        }
+
+        @keyframes glow {
+            from { text-shadow: 0 0 20px rgba(0,255,150,0.5); }
+            to { text-shadow: 0 0 30px rgba(0,255,150,0.8), 0 0 40px rgba(0,255,150,0.3); }
+        }
+
+        @keyframes staticNoise {
+            0%, 100% { opacity: 0.1; }
+            50% { opacity: 0.05; }
+        }
+
+        /* Cancel Button */
+        .cancel-button {
+            position: absolute;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.3);
+            color: rgba(255,255,255,0.7);
+            padding: 0.8rem 2rem;
+            border-radius: 25px;
+            font-family: 'Roboto Condensed', sans-serif;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .cancel-button:hover {
+            background: rgba(255,255,255,0.2);
+            color: white;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1200px) {
+            .cards-container {
+                gap: 100px;
+            }
+            
+            .npc-card {
+                width: 500px;
+                height: 700px;
+            }
+        }
+
+        @media (max-width: 900px) {
+            .cards-container {
+                flex-direction: column;
+                gap: 2rem;
+                align-items: center;
+            }
+            
+            .npc-card {
+                width: 400px;
+                height: 650px;
+            }
+            
+            .main-title {
+                font-size: 2rem;
+            }
+            
+            .portrait-section {
+                height: 200px;
+            }
+            
+            .character-portrait {
+                width: 200px;
+                height: 200px;
+                font-size: 3rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="npc-selection-overlay" id="npcSelectionModal">
+        <div class="selection-container">
+            <!-- Header Section -->
+            <div class="selection-header">
+                <h1 class="main-title">CHOOSE YOUR NEXT SPECIALIST</h1>
+                <div class="context-info">DAY 5 - SECTOR 1</div>
+            </div>
+
+            <!-- Cards Container -->
+            <div class="cards-container">
+                <!-- Research Division Card -->
+                <div class="npc-card research" data-specialist="research">
+                    <div class="card-header">
+                        <div class="division-name">RESEARCH DIVISION</div>
+                        <div class="role-title">RESEARCH OFFICER</div>
+                        <div class="faction-icon">🔬</div>
+                    </div>
+                    
+                    <div class="portrait-section">
+                        <div class="character-portrait">
+                            <img src="npc2.png" alt="Dr. Sarah Chen" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                            <span class="fallback-text">SC</span>
+                        </div>
+                    </div>
+                    
+                    <div class="character-info">
+                        <div class="character-name">Dr. Sarah Chen</div>
+                        <div class="character-role">Research Officer</div>
+                        
+                        <div class="character-quote">
+                            If only I had more test subjects... We could solve this crisis in weeks, not years.
+                        </div>
+                        
+                        <div class="benefits-section">
+                            <div class="benefits-title">SPECIALIST BENEFITS</div>
+                            <div class="benefit-item">
+                                <span class="benefit-icon">+</span>
+                                <span>100% Research Speed</span>
+                            </div>
+                            <div class="benefit-item">
+                                <span class="benefit-icon">+</span>
+                                <span>30% Weapon Efficiency</span>
+                            </div>
+                        </div>
+                        
+                        <button class="select-button" onclick="selectSpecialist('sarah-chen')">
+                            SELECT DR. SARAH CHEN
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Military Division Card -->
+                <div class="npc-card military" data-specialist="military">
+                    <div class="card-header">
+                        <div class="division-name">MILITARY DIVISION</div>
+                        <div class="role-title">DEFENSE COORDINATOR</div>
+                        <div class="faction-icon">🛡️</div>
+                    </div>
+                    
+                    <div class="portrait-section">
+                        <div class="character-portrait">
+                            <img src="npc1.png" alt="Sgt. Marcus Daniels" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                            <span class="fallback-text">MD</span>
+                        </div>
+                    </div>
+                    
+                    <div class="character-info">
+                        <div class="character-name">Sgt. Marcus Daniels</div>
+                        <div class="character-role">Defense Coordinator</div>
+                        
+                        <div class="character-quote">
+                            These walls won't hold themselves. Give me a week, and I'll turn this camp into a fortress.
+                        </div>
+                        
+                        <div class="benefits-section">
+                            <div class="benefits-title">SPECIALIST BENEFITS</div>
+                            <div class="benefit-item">
+                                <span class="benefit-icon">+</span>
+                                <span>75% Wall Durability</span>
+                            </div>
+                            <div class="benefit-item">
+                                <span class="benefit-icon">+</span>
+                                <span>50% Guard Efficiency</span>
+                            </div>
+                        </div>
+                        
+                        <button class="select-button" onclick="selectSpecialist('marcus-daniels')">
+                            SELECT SGT. MARCUS DANIELS
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Cancel Button -->
+            <button class="cancel-button" onclick="closeModal()">CANCEL SELECTION</button>
+        </div>
+    </div>
+
+    <script>
+        // Add hover sound effects and interactions
+        document.querySelectorAll('.npc-card').forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                // Play hover sound effect here
+                console.log('Playing hover sound for:', this.dataset.specialist);
+                
+                // Add glow effect
+                this.style.boxShadow = `0 20px 40px rgba(0,0,0,0.5), 0 0 30px ${this.style.getPropertyValue('--faction-glow')}`;
+            });
+
+            card.addEventListener('mouseleave', function() {
+                // Remove glow effect
+                this.style.boxShadow = '';
+            });
+        });
+
+        // Selection function
+        function selectSpecialist(specialistId) {
+            console.log('Selected specialist:', specialistId);
+            
+            // Play selection sound
+            // Add selection confirmation animation
+            
+            // Simulate selection process
+            const selectedCard = event.target.closest('.npc-card');
+            selectedCard.style.transform = 'scale(1.05)';
+            selectedCard.style.borderColor = selectedCard.style.getPropertyValue('--faction-color');
+            
+            setTimeout(() => {
+                alert(`You have selected ${specialistId.replace('-', ' ').toUpperCase()}!\n\nSpecialist will be added to your base.`);
+                
+                // Check if we're in an iframe (popup mode) or standalone
+                if (window.parent && window.parent !== window) {
+                    // We're in an iframe, send message to parent
+                    window.parent.postMessage({
+                        type: 'specialist-selected',
+                        specialist: specialistId
+                    }, '*');
+                } else {
+                    // Standalone mode, navigate back
+                    window.location.href = 'index.html';
+                }
+            }, 500);
+        }
+
+        // Close modal function
+        function closeModal() {
+            // Check if we're in an iframe (popup mode) or standalone
+            if (window.parent && window.parent !== window) {
+                // We're in an iframe, send message to parent
+                window.parent.postMessage({
+                    type: 'modal-close'
+                }, '*');
+            } else {
+                // Standalone mode, navigate back
+                window.location.href = 'index.html';
+            }
+        }
+
+        // Add fadeOut animation
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes fadeOut {
+                from { opacity: 1; }
+                to { opacity: 0; }
+            }
+        `;
+        document.head.appendChild(style);
+
+        // Keyboard navigation
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeModal();
+            } else if (e.key === '1') {
+                selectSpecialist('sarah-chen');
+            } else if (e.key === '2') {
+                selectSpecialist('marcus-daniels');
+            }
+        });
+
+        // Initialize modal
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('NPC Selection Modal initialized');
+        });
+    </script>
+</body>
+</html> 

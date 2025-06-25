@@ -1,0 +1,1131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>City Defense Z - Meta Upgrade System</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+            color: white;
+            overflow: hidden;
+            height: 100vh;
+        }
+
+        /* Background Game View */
+        .game-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('bg-cdz.jpg') center/cover no-repeat;
+            filter: blur(2px);
+            z-index: 1;
+        }
+
+        /* Modal Overlay */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* Main Modal Container */
+        .meta-upgrade-modal {
+            width: 90%;
+            height: 85%;
+            background: #2C2C2C;
+            border: 2px solid #FF8C00;
+            border-radius: 10px;
+            box-shadow: 0 0 30px rgba(255, 140, 0, 0.3);
+            display: flex;
+            position: relative;
+            animation: slideIn 0.4s ease-out;
+            padding-bottom: 80px;
+        }
+
+        @keyframes slideIn {
+            from { transform: scale(0.8) translateY(-50px); opacity: 0; }
+            to { transform: scale(1) translateY(0); opacity: 1; }
+        }
+
+        /* Close Button */
+        .close-button {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            background: none;
+            border: none;
+            color: #FF8C00;
+            font-size: 28px;
+            cursor: pointer;
+            z-index: 10;
+            transition: color 0.2s;
+        }
+
+        .close-button:hover {
+            color: #FFA500;
+            transform: scale(1.1);
+        }
+
+        /* Left Sidebar */
+        .sidebar {
+            width: 15%;
+            background: #1E1E1E;
+            border-right: 1px solid #444;
+            padding: 20px 10px;
+            display: flex;
+            flex-direction: column;
+            max-height: 100%;
+            overflow-y: auto;
+            scrollbar-width: thin;
+            scrollbar-color: #FF8C00 #2C2C2C;
+        }
+
+        /* Custom Scrollbar for Webkit browsers */
+        .sidebar::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .sidebar::-webkit-scrollbar-track {
+            background: #2C2C2C;
+            border-radius: 4px;
+            margin: 10px 0;
+        }
+
+        .sidebar::-webkit-scrollbar-thumb {
+            background: linear-gradient(180deg, #FF8C00 0%, #FFA500 100%);
+            border-radius: 4px;
+            transition: all 0.3s ease;
+        }
+
+        .sidebar::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(180deg, #FFA500 0%, #FFB347 100%);
+            box-shadow: 0 0 10px rgba(255, 140, 0, 0.5);
+        }
+
+        .sidebar::-webkit-scrollbar-thumb:active {
+            background: linear-gradient(180deg, #FF7F00 0%, #FF8C00 100%);
+        }
+
+        /* Scrollbar corner */
+        .sidebar::-webkit-scrollbar-corner {
+            background: #2C2C2C;
+        }
+
+        /* Research Points Display */
+        .rp-display {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 10px 15px;
+            background: rgba(65, 105, 225, 0.15);
+            border: 1px solid rgba(65, 105, 225, 0.3);
+            border-radius: 8px;
+            margin-bottom: 15px;
+            flex-shrink: 0;
+            transition: all 0.3s ease;
+        }
+
+        .rp-display:hover {
+            background: rgba(65, 105, 225, 0.2);
+            border-color: rgba(65, 105, 225, 0.5);
+        }
+
+        .rp-icon {
+            font-size: 24px;
+            color: #4169E1;
+            filter: drop-shadow(0 0 8px rgba(65, 105, 225, 0.6));
+        }
+
+        .rp-content {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .rp-amount {
+            font-size: 20px;
+            font-weight: bold;
+            color: #4169E1;
+            text-shadow: 0 0 10px rgba(65, 105, 225, 0.5);
+            line-height: 1;
+        }
+
+        .rp-label {
+            font-size: 10px;
+            color: #888;
+            font-weight: normal;
+            line-height: 1;
+        }
+
+        /* Category Icons */
+        .category-list {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            overflow-y: auto;
+            padding-bottom: 10px;
+            scrollbar-width: thin;
+            scrollbar-color: #FF8C00 #2C2C2C;
+        }
+
+        /* Custom Scrollbar for Category List */
+        .category-list::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .category-list::-webkit-scrollbar-track {
+            background: #2C2C2C;
+            border-radius: 3px;
+        }
+
+        .category-list::-webkit-scrollbar-thumb {
+            background: linear-gradient(180deg, #FF8C00 0%, #FFA500 100%);
+            border-radius: 3px;
+            transition: all 0.3s ease;
+        }
+
+        .category-list::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(180deg, #FFA500 0%, #FFB347 100%);
+            box-shadow: 0 0 8px rgba(255, 140, 0, 0.4);
+        }
+
+        .category-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .category-label {
+            font-size: 10px;
+            color: #CCC;
+            text-align: center;
+            font-weight: bold;
+            max-width: 60px;
+            line-height: 1.2;
+            word-wrap: break-word;
+        }
+
+        .category-item.active .category-label {
+            color: #FF8C00;
+        }
+
+        .category-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: #404040;
+            border: 2px solid #666;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            margin: 0 auto 5px auto;
+            flex-shrink: 0;
+        }
+
+        .category-icon:hover {
+            transform: scale(1.1);
+            border-color: #FF8C00;
+        }
+
+        .category-item.active .category-icon {
+            background: #FF8C00;
+            border-color: #FFA500;
+            box-shadow: 0 0 15px rgba(255, 140, 0, 0.5);
+        }
+
+        .category-icon .icon {
+            font-size: 20px;
+        }
+
+        .category-icon .notification {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            width: 18px;
+            height: 18px;
+            background: #32CD32;
+            border-radius: 50%;
+            font-size: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        /* Main Content Area */
+        .main-content {
+            flex: 1;
+            padding: 30px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Content Header */
+        .content-header {
+            margin-bottom: 30px;
+            border-bottom: 1px solid #444;
+            padding-bottom: 20px;
+        }
+
+        .category-title {
+            font-size: 28px;
+            font-weight: bold;
+            color: #FF8C00;
+            margin-bottom: 10px;
+        }
+
+        .progress-indicator {
+            font-size: 14px;
+            color: #FF8C00;
+            margin-bottom: 10px;
+        }
+
+        .category-description {
+            font-size: 14px;
+            color: #CCC;
+            line-height: 1.4;
+        }
+
+        /* Upgrade Tree Container */
+        .upgrade-tree {
+            flex: 1;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding-top: 20px;
+        }
+
+        /* Upgrade Path */
+        .upgrade-path {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 60px;
+            position: relative;
+        }
+
+        /* Connection Lines */
+        .connection-line {
+            position: absolute;
+            width: 3px;
+            background: #666;
+            left: 50%;
+            transform: translateX(-50%);
+            transition: background 0.3s;
+        }
+
+        .connection-line.unlocked {
+            background: linear-gradient(to bottom, #FF8C00, #FFA500);
+            box-shadow: 0 0 10px rgba(255, 140, 0, 0.3);
+        }
+
+        .connection-line.available {
+            background: linear-gradient(to bottom, #FF8C00, #666);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        /* Upgrade Nodes */
+        .upgrade-node {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            border: 3px solid #666;
+            background: #404040;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            z-index: 5;
+        }
+
+        .upgrade-node:hover {
+            transform: scale(1.1);
+        }
+
+        .upgrade-node.unlocked {
+            background: #FF8C00;
+            border-color: #FFA500;
+            box-shadow: 0 0 20px rgba(255, 140, 0, 0.4);
+        }
+
+        .upgrade-node.available {
+            background: #F5F5F5;
+            border-color: white;
+            color: #333;
+            animation: availablePulse 2s infinite;
+        }
+
+        .upgrade-node.selected {
+            border-color: #FFA500;
+            box-shadow: 0 0 25px rgba(255, 165, 0, 0.6);
+        }
+
+        .upgrade-node.locked {
+            background: #404040;
+            border-color: #666;
+            opacity: 0.6;
+        }
+
+        @keyframes availablePulse {
+            0%, 100% { border-color: white; }
+            50% { border-color: #FF8C00; }
+        }
+
+        .upgrade-node .node-icon {
+            font-size: 20px;
+            margin-bottom: 3px;
+        }
+
+        .upgrade-node .node-level {
+            font-size: 10px;
+            font-weight: bold;
+        }
+
+        .upgrade-node .node-cost {
+            position: absolute;
+            bottom: -25px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 11px;
+            color: #4169E1;
+            font-weight: bold;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 2px 6px;
+            border-radius: 3px;
+        }
+
+        .upgrade-node .lock-icon {
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            background: #666;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+        }
+
+        /* Upgrade Details Panel */
+        .upgrade-details {
+            position: absolute;
+            bottom: 80px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.95);
+            padding: 15px 25px;
+            border-radius: 8px;
+            border: 1px solid #FF8C00;
+            min-width: 300px;
+            text-align: center;
+            z-index: 101;
+        }
+
+        .upgrade-name {
+            font-size: 16px;
+            font-weight: bold;
+            color: #FF8C00;
+            margin-bottom: 8px;
+        }
+
+        .upgrade-effect {
+            font-size: 14px;
+            color: #CCC;
+            margin-bottom: 10px;
+        }
+
+        /* Unlock Button */
+        .unlock-button {
+            position: absolute;
+            bottom: 30px;
+            right: 30px;
+            padding: 15px 30px;
+            font-size: 16px;
+            font-weight: bold;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            z-index: 10;
+        }
+
+        .unlock-button.can-afford {
+            background: #32CD32;
+            color: white;
+        }
+
+        .unlock-button.can-afford:hover {
+            background: #228B22;
+            transform: scale(1.05);
+        }
+
+        .unlock-button.cannot-afford {
+            background: #DC143C;
+            color: white;
+            cursor: not-allowed;
+        }
+
+        .unlock-button.no-selection {
+            background: #666;
+            color: #CCC;
+            cursor: not-allowed;
+        }
+
+        /* Unlock Animation */
+        @keyframes unlockSuccess {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.3); background: #32CD32; }
+            100% { transform: scale(1); }
+        }
+
+        .upgrade-node.unlock-animation {
+            animation: unlockSuccess 0.6s ease-out;
+        }
+
+        /* Tooltip */
+        .tooltip {
+            position: absolute;
+            background: #2C2C2C;
+            padding: 15px;
+            border-radius: 8px;
+            border: 2px solid #FF8C00;
+            font-size: 13px;
+            color: white;
+            z-index: 1000;
+            pointer-events: none;
+            width: 250px;
+            box-shadow: 0 0 20px rgba(255, 140, 0, 0.3);
+        }
+
+        .tooltip-icon {
+            text-align: center;
+            font-size: 32px;
+            margin-bottom: 10px;
+        }
+
+        .tooltip-title {
+            text-align: center;
+            font-size: 16px;
+            font-weight: bold;
+            color: #FF8C00;
+            margin-bottom: 8px;
+        }
+
+        .tooltip-effect {
+            text-align: center;
+            font-size: 14px;
+            color: #FFA500;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+
+        .tooltip-description {
+            text-align: center;
+            font-size: 12px;
+            color: #CCC;
+            margin-bottom: 10px;
+            line-height: 1.3;
+        }
+
+        .tooltip-status {
+            text-align: center;
+            font-size: 12px;
+            font-weight: bold;
+            padding: 4px 8px;
+            border-radius: 4px;
+        }
+
+        .tooltip-status.unlocked {
+            background: #228B22;
+            color: white;
+        }
+
+        .tooltip-status.locked {
+            background: #666;
+            color: #CCC;
+        }
+
+        .tooltip-status.available {
+            background: #FF8C00;
+            color: white;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1366px) {
+            .meta-upgrade-modal {
+                width: 95%;
+                height: 90%;
+            }
+            
+            .sidebar {
+                width: 18%;
+            }
+            
+            .category-icon {
+                width: 50px;
+                height: 50px;
+            }
+            
+            .upgrade-node {
+                width: 70px;
+                height: 70px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Game Background -->
+    <div class="game-background"></div>
+
+    <!-- Meta Upgrade Modal -->
+    <div class="modal-overlay">
+        <div class="meta-upgrade-modal">
+            <!-- Close Button -->
+            <button class="close-button" onclick="closeModal()">&times;</button>
+
+            <!-- Left Sidebar -->
+            <div class="sidebar">
+                <!-- Research Points Display -->
+                <div class="rp-display">
+                    <div class="rp-icon">
+                        <i class="fas fa-flask"></i>
+                    </div>
+                    <div class="rp-content">
+                        <div class="rp-amount" id="rpAmount">300</div>
+                        <div class="rp-label">Research Points</div>
+                    </div>
+                </div>
+
+                <!-- Category Icons -->
+                <div class="category-list">
+                    <div class="category-item active" data-category="buildings">
+                        <div class="category-icon" data-category="buildings">
+                            <span class="icon">🏗️</span>
+                            <span class="notification">3</span>
+                        </div>
+                        <div class="category-label">Buildings</div>
+                    </div>
+                    <div class="category-item" data-category="soldiers">
+                        <div class="category-icon" data-category="soldiers">
+                            <span class="icon">👥</span>
+                            <span class="notification">2</span>
+                        </div>
+                        <div class="category-label">Soldiers</div>
+                    </div>
+                    <div class="category-item" data-category="walls">
+                        <div class="category-icon" data-category="walls">
+                            <span class="icon">🧱</span>
+                            <span class="notification">1</span>
+                        </div>
+                        <div class="category-label">Walls</div>
+                    </div>
+                    <div class="category-item" data-category="farm">
+                        <div class="category-icon" data-category="farm">
+                            <span class="icon">🌾</span>
+                        </div>
+                        <div class="category-label">Farm</div>
+                    </div>
+                    <div class="category-item" data-category="laboratory">
+                        <div class="category-icon" data-category="laboratory">
+                            <span class="icon">🧪</span>
+                        </div>
+                        <div class="category-label">Laboratory</div>
+                    </div>
+                    <div class="category-item" data-category="expeditions">
+                        <div class="category-icon" data-category="expeditions">
+                            <span class="icon">🗺️</span>
+                        </div>
+                        <div class="category-label">Expeditions</div>
+                    </div>
+                    <div class="category-item" data-category="npc">
+                        <div class="category-icon" data-category="npc">
+                            <span class="icon">👤</span>
+                        </div>
+                        <div class="category-label">NPC Buffs</div>
+                    </div>
+                    <div class="category-item" data-category="revive">
+                        <div class="category-icon" data-category="revive">
+                            <span class="icon">❤️</span>
+                        </div>
+                        <div class="category-label">Revive</div>
+                    </div>
+                    <div class="category-item" data-category="weapons">
+                        <div class="category-icon" data-category="weapons">
+                            <span class="icon">🔫</span>
+                        </div>
+                        <div class="category-label">Weapons</div>
+                    </div>
+                    <div class="category-item" data-category="airstrike">
+                        <div class="category-icon" data-category="airstrike">
+                            <span class="icon">✈️</span>
+                        </div>
+                        <div class="category-label">Airstrike</div>
+                    </div>
+                    <div class="category-item" data-category="reroll">
+                        <div class="category-icon" data-category="reroll">
+                            <span class="icon">🔄</span>
+                        </div>
+                        <div class="category-label">Reroll Cards</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Main Content Area -->
+            <div class="main-content">
+                <!-- Content Header -->
+                <div class="content-header">
+                    <div class="category-title" id="categoryTitle">Buildings Upgrade Tree</div>
+                    <div class="progress-indicator" id="progressIndicator">2/5 Unlocked</div>
+                    <div class="category-description" id="categoryDescription">
+                        Increases the default level of all building cards, making them more powerful from the start of each run.
+                    </div>
+                </div>
+
+                <!-- Upgrade Tree -->
+                <div class="upgrade-tree" id="upgradeTree">
+                    <!-- Dynamic content will be populated here -->
+                </div>
+            </div>
+
+            <!-- Unlock Button -->
+            <button class="unlock-button no-selection" id="unlockButton" onclick="unlockUpgrade()">
+                SELECT UPGRADE
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // Game State
+        let currentRP = 300;
+        let selectedUpgrade = null;
+        let currentCategory = 'buildings';
+
+        // Upgrade Data
+        const upgradeData = {
+            buildings: {
+                title: "Buildings Upgrade Tree",
+                description: "Increases the default level of all building cards, making them more powerful from the start of each run.",
+                upgrades: [
+                    { id: 1, name: "Basic Buildings", cost: 50, effect: "+1 Default Building Level", unlocked: true, icon: "🏠" },
+                    { id: 2, name: "Improved Buildings", cost: 100, effect: "+1 Default Building Level", unlocked: true, icon: "🏢" },
+                    { id: 3, name: "Advanced Buildings", cost: 150, effect: "+1 Default Building Level", unlocked: false, icon: "🏭" },
+                    { id: 4, name: "Superior Buildings", cost: 200, effect: "+1 Default Building Level", unlocked: false, icon: "🏗️" },
+                    { id: 5, name: "Master Buildings", cost: 300, effect: "+1 Default Building Level", unlocked: false, icon: "🏛️" }
+                ]
+            },
+            soldiers: {
+                title: "Soldiers Upgrade Tree",
+                description: "Enhances the default effectiveness and level of all trained soldiers.",
+                upgrades: [
+                    { id: 1, name: "Basic Training", cost: 75, effect: "+1 Default Soldier Level", unlocked: true, icon: "🥉" },
+                    { id: 2, name: "Advanced Training", cost: 125, effect: "+1 Default Soldier Level", unlocked: false, icon: "🥈" },
+                    { id: 3, name: "Elite Training", cost: 175, effect: "+1 Default Soldier Level", unlocked: false, icon: "🥇" },
+                    { id: 4, name: "Special Forces", cost: 250, effect: "+1 Default Soldier Level", unlocked: false, icon: "🎖️" },
+                    { id: 5, name: "Legendary Warriors", cost: 350, effect: "+1 Default Soldier Level", unlocked: false, icon: "⭐" }
+                ]
+            },
+            walls: {
+                title: "Wall Upgrade Tree",
+                description: "Enhances the capacity, durability, and special abilities of defensive walls.",
+                upgrades: [
+                    { id: 1, name: "Extended Walls", cost: 80, effect: "Wall capacity +20", unlocked: false, icon: "🧱" },
+                    { id: 2, name: "Reinforced Walls", cost: 160, effect: "Capacity +20, +HP", unlocked: false, icon: "🛡️" },
+                    { id: 3, name: "Fortified Walls", cost: 240, effect: "Wall capacity +20", unlocked: false, icon: "⛩️" },
+                    { id: 4, name: "Electrified Walls", cost: 400, effect: "Electric damage to attackers", unlocked: false, icon: "⚡" }
+                ]
+            },
+            farm: {
+                title: "Farm Upgrade Tree",
+                description: "Improves crop yield, growth speed, and farming efficiency.",
+                upgrades: [
+                    { id: 1, name: "Better Harvest", cost: 60, effect: "+75% crop harvest", unlocked: false, icon: "🌾" },
+                    { id: 2, name: "Fast Growth", cost: 120, effect: "Crops grow 1 day faster", unlocked: false, icon: "⏰" },
+                    { id: 3, name: "Expanded Fields", cost: 180, effect: "+2 crop grid expansion", unlocked: false, icon: "🚜" },
+                    { id: 4, name: "Abundant Harvest", cost: 240, effect: "+100% crop harvest", unlocked: false, icon: "🌻" },
+                    { id: 5, name: "Super Growth", cost: 300, effect: "Crops grow 1 day faster", unlocked: false, icon: "💨" }
+                ]
+            },
+            laboratory: {
+                title: "Laboratory Upgrade Tree",
+                description: "Boosts research point generation and research completion speed.",
+                upgrades: [
+                    { id: 1, name: "Efficient Research", cost: 100, effect: "+50% RP generation", unlocked: false, icon: "🔬" },
+                    { id: 2, name: "Rapid Research", cost: 200, effect: "Research 1 day faster", unlocked: false, icon: "⚡" },
+                    { id: 3, name: "Advanced Research", cost: 300, effect: "+100% RP generation", unlocked: false, icon: "🧬" }
+                ]
+            },
+            expeditions: {
+                title: "Expedition Upgrade Tree",
+                description: "Improves expedition success rates, rewards, and completion time.",
+                upgrades: [
+                    { id: 1, name: "Safe Expeditions", cost: 120, effect: "+20% survival rate", unlocked: false, icon: "🛡️" },
+                    { id: 2, name: "Rich Rewards", cost: 180, effect: "+50% expedition rewards", unlocked: false, icon: "💰" },
+                    { id: 3, name: "Swift Expeditions", cost: 250, effect: "Expeditions 1 day faster", unlocked: false, icon: "💨" }
+                ]
+            },
+            npc: {
+                title: "NPC Buff Upgrade Tree",
+                description: "Amplifies the beneficial effects provided by recruited NPCs.",
+                upgrades: [
+                    { id: 1, name: "Enhanced NPCs", cost: 150, effect: "+50% NPC buff effects", unlocked: false, icon: "👤" },
+                    { id: 2, name: "Empowered NPCs", cost: 250, effect: "+75% NPC buff effects", unlocked: false, icon: "✨" },
+                    { id: 3, name: "Legendary NPCs", cost: 400, effect: "+100% NPC buff effects", unlocked: false, icon: "⭐" }
+                ]
+            },
+            revive: {
+                title: "Revive Upgrade Tree",
+                description: "The most expensive upgrade - provides multiple chances to recover from defeat.",
+                upgrades: [
+                    { id: 1, name: "Phoenix Rising", cost: 500, effect: "Revive ability (1 use per run)", unlocked: false, icon: "❤️" },
+                    { id: 2, name: "Double Phoenix", cost: 750, effect: "Revive ability (2 uses per run)", unlocked: false, icon: "💖" },
+                    { id: 3, name: "Eternal Phoenix", cost: 1000, effect: "Revive ability (3 uses per run)", unlocked: false, icon: "💝" }
+                ]
+            },
+            weapons: {
+                title: "Weapons Upgrade Tree",
+                description: "Enhances combat effectiveness through improved fire rate, reload speed, and damage.",
+                upgrades: [
+                    { id: 1, name: "Rapid Fire", cost: 100, effect: "Soldiers attack faster", unlocked: false, icon: "🔫" },
+                    { id: 2, name: "Quick Reload", cost: 175, effect: "-50% reload time", unlocked: false, icon: "🔄" },
+                    { id: 3, name: "High Damage", cost: 250, effect: "+50% soldier damage", unlocked: false, icon: "💥" }
+                ]
+            },
+            airstrike: {
+                title: "Airstrike Upgrade Tree",
+                description: "Improves aerial support through cost reduction, new weapons, and increased effectiveness.",
+                upgrades: [
+                    { id: 1, name: "Cheap Strikes", cost: 125, effect: "Airstrikes 50% cheaper", unlocked: false, icon: "💰" },
+                    { id: 2, name: "Triple Bomber", cost: 200, effect: "3-bomb launcher plane", unlocked: false, icon: "💣" },
+                    { id: 3, name: "Wide Bombardment", cost: 300, effect: "+50% airstrike radius", unlocked: false, icon: "💥" }
+                ]
+            },
+            reroll: {
+                title: "Card Reroll Upgrade Tree",
+                description: "Adds flexibility to building selection with reroll functionality.",
+                upgrades: [
+                    { id: 1, name: "Basic Reroll", cost: 75, effect: "Unlocks reroll function", unlocked: false, icon: "🔄" },
+                    { id: 2, name: "Extra Reroll", cost: 125, effect: "+1 reroll count", unlocked: false, icon: "🔄" },
+                    { id: 3, name: "More Rerolls", cost: 175, effect: "+1 reroll count", unlocked: false, icon: "🔄" },
+                    { id: 4, name: "Maximum Rerolls", cost: 250, effect: "+1 reroll count", unlocked: false, icon: "🔄" }
+                ]
+            }
+        };
+
+        // Initialize the interface
+        function init() {
+            updateRPDisplay();
+            switchCategory('buildings');
+            setupEventListeners();
+        }
+
+        // Setup event listeners
+        function setupEventListeners() {
+            // Category selection
+            document.querySelectorAll('.category-item').forEach(item => {
+                item.addEventListener('click', function() {
+                    const category = this.dataset.category;
+                    switchCategory(category);
+                });
+            });
+
+            // Keyboard shortcuts
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape') {
+                    closeModal();
+                }
+            });
+        }
+
+        // Switch between categories
+        function switchCategory(category) {
+            currentCategory = category;
+            selectedUpgrade = null;
+            
+            // Update active category item
+            document.querySelectorAll('.category-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            document.querySelector(`.category-item[data-category="${category}"]`).classList.add('active');
+            
+            // Update content
+            const data = upgradeData[category];
+            document.getElementById('categoryTitle').textContent = data.title;
+            document.getElementById('categoryDescription').textContent = data.description;
+            
+            // Update progress indicator
+            const unlockedCount = data.upgrades.filter(u => u.unlocked).length;
+            const totalCount = data.upgrades.length;
+            document.getElementById('progressIndicator').textContent = `${unlockedCount}/${totalCount} Unlocked`;
+            
+            // Render upgrade tree
+            renderUpgradeTree(data.upgrades);
+            
+            // Update unlock button
+            updateUnlockButton();
+        }
+
+        // Render the upgrade tree
+        function renderUpgradeTree(upgrades) {
+            const treeContainer = document.getElementById('upgradeTree');
+            treeContainer.innerHTML = '';
+            
+            const upgradePath = document.createElement('div');
+            upgradePath.className = 'upgrade-path';
+            
+            upgrades.forEach((upgrade, index) => {
+                // Create connection line (except for first upgrade)
+                if (index > 0) {
+                    const connectionLine = document.createElement('div');
+                    connectionLine.className = 'connection-line';
+                    connectionLine.style.top = `${(index - 1) * 140 + 80}px`;
+                    connectionLine.style.height = '60px';
+                    
+                    // Determine line state
+                    if (upgrades[index - 1].unlocked && upgrade.unlocked) {
+                        connectionLine.classList.add('unlocked');
+                    } else if (upgrades[index - 1].unlocked && !upgrade.unlocked) {
+                        connectionLine.classList.add('available');
+                    }
+                    
+                    upgradePath.appendChild(connectionLine);
+                }
+                
+                // Create upgrade node
+                const node = document.createElement('div');
+                node.className = 'upgrade-node';
+                node.dataset.upgradeId = upgrade.id;
+                
+                // Determine node state
+                if (upgrade.unlocked) {
+                    node.classList.add('unlocked');
+                } else if (index === 0 || upgrades[index - 1].unlocked) {
+                    node.classList.add('available');
+                } else {
+                    node.classList.add('locked');
+                }
+                
+                // Node content
+                node.innerHTML = `
+                    <div class="node-icon">${upgrade.icon}</div>
+                    <div class="node-level">Lv.${upgrade.id}</div>
+                    ${!upgrade.unlocked ? `<div class="node-cost">${upgrade.cost} RP</div>` : ''}
+                    ${node.classList.contains('locked') ? '<div class="lock-icon">🔒</div>' : ''}
+                `;
+                
+                // Add click event
+                if (!upgrade.unlocked && (index === 0 || upgrades[index - 1].unlocked)) {
+                    node.addEventListener('click', () => selectUpgrade(upgrade));
+                }
+                
+                // Add hover tooltip
+                node.addEventListener('mouseenter', (e) => showTooltip(e, upgrade));
+                node.addEventListener('mouseleave', hideTooltip);
+                
+                upgradePath.appendChild(node);
+            });
+            
+            treeContainer.appendChild(upgradePath);
+        }
+
+        // Select an upgrade
+        function selectUpgrade(upgrade) {
+            selectedUpgrade = upgrade;
+            
+            // Update visual selection
+            document.querySelectorAll('.upgrade-node').forEach(node => {
+                node.classList.remove('selected');
+            });
+            document.querySelector(`[data-upgrade-id="${upgrade.id}"]`).classList.add('selected');
+            
+            // Show upgrade details
+            showUpgradeDetails(upgrade);
+            
+            // Update unlock button
+            updateUnlockButton();
+        }
+
+        // Show upgrade details
+        function showUpgradeDetails(upgrade) {
+            // Remove existing details panel
+            const existingPanel = document.querySelector('.upgrade-details');
+            if (existingPanel) {
+                existingPanel.remove();
+            }
+            
+            const detailsPanel = document.createElement('div');
+            detailsPanel.className = 'upgrade-details';
+            detailsPanel.innerHTML = `
+                <div class="upgrade-name">${upgrade.name}</div>
+                <div class="upgrade-effect">${upgrade.effect}</div>
+            `;
+            
+            document.querySelector('.meta-upgrade-modal').appendChild(detailsPanel);
+        }
+
+        // Update unlock button
+        function updateUnlockButton() {
+            const button = document.getElementById('unlockButton');
+            
+            if (!selectedUpgrade) {
+                button.className = 'unlock-button no-selection';
+                button.textContent = 'SELECT UPGRADE';
+                return;
+            }
+            
+            if (currentRP >= selectedUpgrade.cost) {
+                button.className = 'unlock-button can-afford';
+                button.textContent = `UNLOCK (${selectedUpgrade.cost} RP)`;
+            } else {
+                button.className = 'unlock-button cannot-afford';
+                button.textContent = `INSUFFICIENT RP (${selectedUpgrade.cost} RP)`;
+            }
+        }
+
+        // Unlock selected upgrade
+        function unlockUpgrade() {
+            if (!selectedUpgrade || currentRP < selectedUpgrade.cost) {
+                return;
+            }
+            
+            // Deduct RP
+            currentRP -= selectedUpgrade.cost;
+            updateRPDisplay();
+            
+            // Mark upgrade as unlocked
+            selectedUpgrade.unlocked = true;
+            
+            // Play unlock animation
+            const nodeElement = document.querySelector(`[data-upgrade-id="${selectedUpgrade.id}"]`);
+            nodeElement.classList.add('unlock-animation');
+            
+            setTimeout(() => {
+                nodeElement.classList.remove('unlock-animation');
+                // Refresh the current category to update visuals
+                switchCategory(currentCategory);
+            }, 600);
+            
+            // Clear selection
+            selectedUpgrade = null;
+            
+            // Remove details panel
+            const detailsPanel = document.querySelector('.upgrade-details');
+            if (detailsPanel) {
+                detailsPanel.remove();
+            }
+        }
+
+        // Update RP display
+        function updateRPDisplay() {
+            document.getElementById('rpAmount').textContent = currentRP;
+        }
+
+        // Show tooltip
+        function showTooltip(event, upgrade) {
+            const tooltip = document.createElement('div');
+            tooltip.className = 'tooltip';
+            
+            // Determine status
+            let status = '';
+            let statusClass = '';
+            if (upgrade.unlocked) {
+                status = 'UNLOCKED';
+                statusClass = 'unlocked';
+            } else {
+                const currentCategoryData = upgradeData[currentCategory];
+                const upgradeIndex = currentCategoryData.upgrades.findIndex(u => u.id === upgrade.id);
+                const canUnlock = upgradeIndex === 0 || currentCategoryData.upgrades[upgradeIndex - 1].unlocked;
+                
+                if (canUnlock) {
+                    status = `COST: ${upgrade.cost} RP`;
+                    statusClass = 'available';
+                } else {
+                    status = 'LOCKED';
+                    statusClass = 'locked';
+                }
+            }
+            
+            tooltip.innerHTML = `
+                <div class="tooltip-icon">${upgrade.icon}</div>
+                <div class="tooltip-title">${upgrade.name}</div>
+                <div class="tooltip-effect">${upgrade.effect}</div>
+                <div class="tooltip-description">Level ${upgrade.id} upgrade for ${currentCategory}</div>
+                <div class="tooltip-status ${statusClass}">${status}</div>
+            `;
+            
+            document.querySelector('.meta-upgrade-modal').appendChild(tooltip);
+            
+            // Position tooltip relative to modal
+            const rect = event.target.getBoundingClientRect();
+            const modalRect = document.querySelector('.meta-upgrade-modal').getBoundingClientRect();
+            
+            // Position to the right of the node, but check if it would overflow
+            let leftPos = rect.right - modalRect.left + 15;
+            if (leftPos + 250 > modalRect.width) {
+                // Position to the left instead
+                leftPos = rect.left - modalRect.left - 265;
+            }
+            
+            tooltip.style.left = leftPos + 'px';
+            tooltip.style.top = (rect.top - modalRect.top - 20) + 'px';
+        }
+
+        // Hide tooltip
+        function hideTooltip() {
+            const tooltip = document.querySelector('.tooltip');
+            if (tooltip) {
+                tooltip.remove();
+            }
+        }
+
+        // Close modal
+        function closeModal() {
+            document.body.style.overflow = 'auto';
+            window.location.href = 'index.html'; // Return to main game
+        }
+
+        // Initialize when page loads
+        window.addEventListener('load', init);
+    </script>
+</body>
+</html> 

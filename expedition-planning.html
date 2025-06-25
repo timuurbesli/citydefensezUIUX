@@ -1,0 +1,1094 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>City Defense Z - Expedition Planning</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* Expedition Planning Specific Styles */
+        body {
+            background: linear-gradient(135deg, rgba(26, 26, 26, 0.95) 0%, rgba(20, 30, 40, 0.9) 100%), 
+                        url('bg-cdz.jpg') center center / cover no-repeat;
+            font-family: 'Rajdhani', sans-serif;
+            overflow: hidden;
+            height: 100vh;
+            color: #ffffff;
+        }
+
+        .expedition-container {
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            padding: 0;
+            overflow: hidden;
+        }
+
+        /* Header Section */
+        .expedition-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem 2rem;
+            background: linear-gradient(90deg, rgba(0,0,0,0.8) 0%, rgba(20,20,20,0.6) 100%);
+            border-bottom: 2px solid rgba(255, 140, 66, 0.3);
+            backdrop-filter: blur(10px);
+        }
+
+        .expedition-title {
+            font-family: 'Orbitron', monospace;
+            font-size: 3rem;
+            font-weight: 900;
+            letter-spacing: 4px;
+            color: #ffffff;
+            text-shadow: 0 0 20px rgba(255, 140, 66, 0.5);
+            margin: 0;
+        }
+
+        .resource-counters {
+            display: flex;
+            gap: 1.5rem;
+            align-items: center;
+        }
+
+        .resource-counter {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.8rem 1.2rem;
+            background: rgba(0, 0, 0, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+        }
+
+        .resource-counter:hover {
+            background: rgba(0, 0, 0, 0.8);
+            border-color: rgba(255, 140, 66, 0.5);
+        }
+
+        .resource-counter i {
+            font-size: 1.3rem;
+        }
+
+        .food-counter i { color: #FFD700; }
+        .ammo-counter i { color: #32CD32; }
+
+        /* Main Content Area */
+        .expedition-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            padding: 1.5rem;
+            position: relative;
+        }
+
+        /* Expedition Type Selection */
+        .expedition-types {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .expedition-type-card {
+            width: 260px;
+            height: 180px;
+            background: linear-gradient(145deg, rgba(45, 45, 45, 0.9), rgba(30, 30, 30, 0.9));
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .expedition-type-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, transparent 30%, rgba(255,255,255,0.02) 50%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .expedition-type-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(255, 140, 66, 0.5);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .expedition-type-card.selected {
+            border-color: #ff8c42;
+            box-shadow: 0 0 20px rgba(255, 140, 66, 0.4);
+            background: linear-gradient(145deg, rgba(255, 140, 66, 0.1), rgba(45, 45, 45, 0.9));
+        }
+
+        .expedition-type-card.locked {
+            opacity: 0.6;
+            cursor: not-allowed;
+            border-color: rgba(239, 68, 68, 0.5);
+        }
+
+        .expedition-type-card.locked:hover {
+            transform: none;
+            border-color: rgba(239, 68, 68, 0.5);
+        }
+
+        .expedition-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1rem;
+        }
+
+        .expedition-icon {
+            font-size: 2.5rem;
+            opacity: 0.8;
+        }
+
+        .risk-badge {
+            padding: 0.3rem 0.8rem;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+
+        .risk-low {
+            background: rgba(74, 222, 128, 0.2);
+            color: #4ade80;
+            border: 1px solid rgba(74, 222, 128, 0.3);
+        }
+
+        .risk-high {
+            background: rgba(245, 158, 11, 0.2);
+            color: #f59e0b;
+            border: 1px solid rgba(245, 158, 11, 0.3);
+        }
+
+        .risk-locked {
+            background: rgba(239, 68, 68, 0.2);
+            color: #ef4444;
+            border: 1px solid rgba(239, 68, 68, 0.3);
+        }
+
+        .expedition-title-text {
+            font-family: 'Orbitron', monospace;
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .expedition-location {
+            color: #d1d5db;
+            font-size: 1rem;
+            margin-bottom: 0.8rem;
+        }
+
+        .expedition-duration {
+            color: #ffffff;
+            font-weight: 600;
+        }
+
+        .expedition-status {
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-top: 0.5rem;
+        }
+
+        .status-unlocked { color: #4ade80; }
+        .status-locked { color: #ef4444; }
+
+        /* NPC Selection Area */
+        .npc-selection-area {
+            width: calc(100% - 340px);
+            margin-right: auto;
+        }
+
+        .npc-section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .npc-section-title {
+            font-family: 'Orbitron', monospace;
+            font-size: 1.8rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+        }
+
+        .selection-counter {
+            font-size: 1.2rem;
+            color: #ff8c42;
+            font-weight: 600;
+        }
+
+        .npc-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .npc-card {
+            background: linear-gradient(145deg, rgba(45, 45, 45, 0.9), rgba(30, 30, 30, 0.9));
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            gap: 0.8rem;
+        }
+
+        .npc-card:hover {
+            transform: translateY(-3px);
+            border-color: rgba(255, 255, 255, 0.3);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+        }
+
+        .npc-card.selected {
+            border-color: #4ade80;
+            box-shadow: 0 0 20px rgba(74, 222, 128, 0.3);
+            background: linear-gradient(145deg, rgba(74, 222, 128, 0.1), rgba(45, 45, 45, 0.9));
+        }
+
+        .npc-card.dimmed {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .npc-card.dimmed:hover {
+            transform: none;
+        }
+
+        .npc-portrait {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #666, #333);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            color: #fff;
+            flex-shrink: 0;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .npc-info {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .npc-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 0.5rem;
+        }
+
+        .npc-name {
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #ffffff;
+        }
+
+        .npc-role {
+            background: rgba(255, 140, 66, 0.2);
+            color: #ff8c42;
+            padding: 0.2rem 0.6rem;
+            border-radius: 8px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            border: 1px solid rgba(255, 140, 66, 0.3);
+        }
+
+        .npc-trait {
+            color: #4ade80;
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .npc-power {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .npc-power-label {
+            color: #d1d5db;
+            font-size: 0.9rem;
+        }
+
+        .npc-power-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #ffffff;
+        }
+
+        /* Expedition Summary Panel */
+        .expedition-summary {
+            width: 320px;
+            background: linear-gradient(145deg, rgba(45, 45, 45, 0.9), rgba(30, 30, 30, 0.9));
+            border: 2px solid rgba(255, 140, 66, 0.3);
+            border-radius: 12px;
+            padding: 1.2rem;
+            height: auto;
+            position: absolute;
+            top: 0;
+            right: 0;
+            z-index: 10;
+            flex-shrink: 0;
+        }
+
+        .summary-title {
+            font-family: 'Orbitron', monospace;
+            font-size: 1.3rem;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 1.2rem;
+            color: #ff8c42;
+            letter-spacing: 2px;
+        }
+
+        .summary-section {
+            margin-bottom: 1.2rem;
+        }
+        
+        .summary-section:last-of-type {
+            margin-bottom: 0.8rem;
+        }
+
+        .summary-section-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: #ffffff;
+        }
+
+        .risk-display {
+            background: rgba(245, 158, 11, 0.1);
+            border: 1px solid rgba(245, 158, 11, 0.3);
+            border-radius: 8px;
+            padding: 0.8rem;
+            text-align: center;
+            margin-bottom: 0.8rem;
+        }
+
+        .risk-level {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #f59e0b;
+            margin-bottom: 0.5rem;
+        }
+
+        .risk-context {
+            font-size: 0.9rem;
+            color: #d1d5db;
+        }
+
+        .rewards-display {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            padding: 0.8rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            margin-bottom: 0.8rem;
+        }
+
+        .reward-icon {
+            font-size: 2rem;
+            opacity: 0.8;
+            transition: all 0.3s ease;
+        }
+
+        .reward-icon:hover {
+            opacity: 1;
+            transform: scale(1.1);
+        }
+
+        .reward-tier {
+            text-align: center;
+            color: #f59e0b;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        /* Survival Chance Slider */
+        .survival-chance-container {
+            margin-bottom: 1rem;
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            border: 1px solid rgba(255, 140, 66, 0.2);
+        }
+
+        .survival-chance-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.8rem;
+        }
+
+        .survival-label {
+            font-weight: 700;
+            color: #ffffff;
+            font-size: 0.9rem;
+            letter-spacing: 1px;
+        }
+
+        .survival-percentage {
+            font-weight: 700;
+            font-size: 1.2rem;
+            color: #4ade80;
+        }
+
+        .survival-percentage.low {
+            color: #ef4444;
+        }
+
+        .survival-percentage.medium {
+            color: #f59e0b;
+        }
+
+        .survival-percentage.high {
+            color: #4ade80;
+        }
+
+        .survival-slider-container {
+            margin-bottom: 0.5rem;
+        }
+
+        .survival-slider-track {
+            width: 100%;
+            height: 12px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 6px;
+            overflow: hidden;
+            position: relative;
+            margin-bottom: 0.5rem;
+        }
+
+        .survival-slider-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #ef4444 0%, #f59e0b 50%, #4ade80 100%);
+            border-radius: 6px;
+            transition: width 0.3s ease;
+            position: relative;
+        }
+
+        .survival-slider-fill::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 2px;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.8);
+            box-shadow: 0 0 4px rgba(255, 255, 255, 0.5);
+        }
+
+        .power-info {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 0.85rem;
+            color: #d1d5db;
+        }
+
+        .current-power {
+            font-weight: 700;
+            color: #ff8c42;
+        }
+
+        .required-power {
+            color: #9ca3af;
+        }
+
+        .cost-display {
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+        }
+
+        .cost-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.8rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+        }
+
+        .cost-label {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 600;
+        }
+
+        .cost-value {
+            font-weight: 700;
+            color: #4ade80;
+        }
+
+        .insufficient {
+            color: #ef4444;
+        }
+
+        .send-expedition-btn {
+            width: 100%;
+            padding: 0.8rem;
+            background: linear-gradient(145deg, #4ade80, #22c55e);
+            border: none;
+            border-radius: 8px;
+            color: #000000;
+            font-family: 'Orbitron', monospace;
+            font-size: 1rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            margin-top: 0.8rem;
+        }
+
+        .send-expedition-btn:hover {
+            background: linear-gradient(145deg, #22c55e, #16a34a);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(34, 197, 94, 0.3);
+        }
+
+        .send-expedition-btn:disabled {
+            background: linear-gradient(145deg, #6b7280, #4b5563);
+            color: #9ca3af;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .send-expedition-btn:disabled:hover {
+            background: linear-gradient(145deg, #6b7280, #4b5563);
+            transform: none;
+        }
+
+        /* Back Button */
+        .back-button {
+            position: absolute;
+            top: 2rem;
+            left: 2rem;
+            background: rgba(0, 0, 0, 0.6);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #ffffff;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            z-index: 100;
+        }
+
+        .back-button:hover {
+            background: rgba(0, 0, 0, 0.8);
+            border-color: rgba(255, 140, 66, 0.5);
+            transform: scale(1.1);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1400px) {
+            .expedition-content {
+                padding: 1rem;
+                gap: 1rem;
+            }
+        }
+        
+        @media (max-width: 1200px) {
+            .expedition-summary {
+                position: relative;
+                width: 100%;
+                max-width: 600px;
+                margin: 0 auto 2rem auto;
+                top: auto;
+                right: auto;
+            }
+            
+            .npc-selection-area {
+                width: 100%;
+                margin-right: 0;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .expedition-types {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .npc-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .resource-counters {
+                flex-wrap: wrap;
+                gap: 1rem;
+            }
+            
+            .expedition-title {
+                font-size: 2rem;
+            }
+        }
+
+        /* Animations */
+        @keyframes glow {
+            0%, 100% { text-shadow: 0 0 20px rgba(255, 140, 66, 0.5); }
+            50% { text-shadow: 0 0 30px rgba(255, 140, 66, 0.8); }
+        }
+
+        .expedition-title {
+            animation: glow 3s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .npc-card.selected {
+            animation: pulse 2s ease-in-out infinite;
+        }
+    </style>
+</head>
+<body>
+    <div class="expedition-container">
+        <!-- Back Button -->
+        <button class="back-button" onclick="history.back()">
+            <i class="fas fa-arrow-left"></i>
+        </button>
+
+        <!-- Header -->
+        <header class="expedition-header">
+            <h1 class="expedition-title">EXPEDITION PLANNING</h1>
+            <div class="resource-counters">
+                <div class="resource-counter food-counter">
+                    <i class="fas fa-apple-alt"></i>
+                    <span>124</span>
+                </div>
+                <div class="resource-counter ammo-counter">
+                    <i class="fas fa-bomb"></i>
+                    <span>550</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="expedition-content">
+            <!-- Expedition Type Selection -->
+            <section class="expedition-types">
+                <div class="expedition-type-card" data-type="small">
+                    <div class="expedition-card-header">
+                        <i class="fas fa-home expedition-icon" style="color: #4ade80;"></i>
+                        <span class="risk-badge risk-low">LOW RISK</span>
+                    </div>
+                    <div>
+                        <h3 class="expedition-title-text">Small Expedition</h3>
+                        <p class="expedition-location">Desert Ruins</p>
+                        <p class="expedition-duration">Duration: 3 Days</p>
+                        <p class="expedition-status status-unlocked">Unlocked</p>
+                    </div>
+                </div>
+
+                <div class="expedition-type-card selected" data-type="medium">
+                    <div class="expedition-card-header">
+                        <i class="fas fa-city expedition-icon" style="color: #f59e0b;"></i>
+                        <span class="risk-badge risk-high">HIGH RISK</span>
+                    </div>
+                    <div>
+                        <h3 class="expedition-title-text">Medium Expedition</h3>
+                        <p class="expedition-location">Abandoned Suburbs</p>
+                        <p class="expedition-duration">Duration: 4 Days</p>
+                        <p class="expedition-status status-unlocked">Unlocked</p>
+                    </div>
+                </div>
+
+                <div class="expedition-type-card locked" data-type="large">
+                    <div class="expedition-card-header">
+                        <i class="fas fa-industry expedition-icon" style="color: #ef4444;"></i>
+                        <span class="risk-badge risk-locked">HIGH RISK</span>
+                    </div>
+                    <div>
+                        <h3 class="expedition-title-text">Large Expedition</h3>
+                        <p class="expedition-location">Military Lab Complex</p>
+                        <p class="expedition-duration">Duration: 5 Days</p>
+                        <p class="expedition-status status-locked">🔒 Locked</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Expedition Summary Panel (Top Right) -->
+            <aside class="expedition-summary">
+                <h2 class="summary-title">EXPEDITION SUMMARY</h2>
+
+                <!-- Risk & Reward Section -->
+                <div class="summary-section">
+                    <h3 class="summary-section-title">Risk & Reward</h3>
+                    
+                    <!-- Survival Chance Slider -->
+                    <div class="survival-chance-container">
+                        <div class="survival-chance-header">
+                            <span class="survival-label">SURVIVAL CHANCE</span>
+                            <span class="survival-percentage" id="survivalPercentage">0%</span>
+                        </div>
+                        <div class="survival-slider-container">
+                            <div class="survival-slider-track">
+                                <div class="survival-slider-fill" id="survivalSliderFill" style="width: 0%;"></div>
+                            </div>
+                            <div class="power-info">
+                                <span class="current-power" id="currentPower">0</span>
+                                <span class="required-power">/ <span id="requiredPower">100</span> Power</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="risk-display">
+                        <div class="risk-level" id="riskLevel">SELECT NPCS TO START</div>
+                        <div class="risk-context">Based on expedition type and team composition</div>
+                    </div>
+                    
+                    <h4 style="margin-bottom: 1rem; color: #d1d5db;">POTENTIAL REWARDS</h4>
+                    <div class="rewards-display">
+                        <i class="fas fa-flask reward-icon" style="color: #4169E1;" title="Research Points"></i>
+                        <i class="fas fa-apple-alt reward-icon" style="color: #FFD700;" title="Food"></i>
+                        <i class="fas fa-bomb reward-icon" style="color: #32CD32;" title="Ammunition"></i>
+                        <i class="fas fa-cog reward-icon" style="color: #FF8C42;" title="Resources"></i>
+                    </div>
+                    <div class="reward-tier">Expected Reward Tier: Moderate</div>
+                </div>
+
+                <!-- Resource Cost Section -->
+                <div class="summary-section">
+                    <h3 class="summary-section-title">Resource Cost</h3>
+                    <div class="cost-display">
+                        <div class="cost-item">
+                            <span class="cost-label">
+                                <i class="fas fa-apple-alt" style="color: #FFD700;"></i>
+                                Food
+                            </span>
+                            <span class="cost-value">0 units</span>
+                        </div>
+                        <div class="cost-item">
+                            <span class="cost-label">
+                                <i class="fas fa-bomb" style="color: #32CD32;"></i>
+                                Ammo
+                            </span>
+                            <span class="cost-value">0 rounds</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Send Expedition Button -->
+                <button class="send-expedition-btn" id="sendExpeditionBtn">
+                    SEND EXPEDITION
+                </button>
+            </aside>
+
+            <!-- NPC Selection -->
+            <section class="npc-selection-area">
+                <div class="npc-section-header">
+                    <h2 class="npc-section-title">SELECT EXPEDITION MEMBERS</h2>
+                    <span class="selection-counter">0 of 4 selected</span>
+                </div>
+
+                <div class="npc-grid">
+                    <!-- Marcus Reed - Available -->
+                    <div class="npc-card" data-npc="marcus" data-power="70">
+                        <div class="npc-portrait">
+                            <i class="fas fa-search"></i>
+                        </div>
+                        <div class="npc-info">
+                            <div class="npc-header">
+                                <h3 class="npc-name">Marcus Reed</h3>
+                                <span class="npc-role">Scout</span>
+                            </div>
+                            <p class="npc-trait">+ +20% Survival Chance</p>
+                            <div class="npc-power">
+                                <span class="npc-power-label">Expedition Power</span>
+                                <span class="npc-power-value">70</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Dr. Chen - Available -->
+                    <div class="npc-card" data-npc="chen" data-power="40">
+                        <div class="npc-portrait">
+                            <i class="fas fa-user-md"></i>
+                        </div>
+                        <div class="npc-info">
+                            <div class="npc-header">
+                                <h3 class="npc-name">Dr. Chen</h3>
+                                <span class="npc-role">Medic</span>
+                            </div>
+                            <p class="npc-trait">+ +25% Injury Recovery</p>
+                            <div class="npc-power">
+                                <span class="npc-power-label">Expedition Power</span>
+                                <span class="npc-power-value">40</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Sgt. Jackson - Available -->
+                    <div class="npc-card" data-npc="jackson" data-power="85">
+                        <div class="npc-portrait">
+                            <i class="fas fa-user-soldier"></i>
+                        </div>
+                        <div class="npc-info">
+                            <div class="npc-header">
+                                <h3 class="npc-name">Sgt. Jackson</h3>
+                                <span class="npc-role">Soldier</span>
+                            </div>
+                            <p class="npc-trait">+30% Combat Efficiency</p>
+                            <div class="npc-power">
+                                <span class="npc-power-label">Expedition Power</span>
+                                <span class="npc-power-value">85</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Maya Rodriguez - Available -->
+                    <div class="npc-card" data-npc="maya" data-power="60">
+                        <div class="npc-portrait">
+                            <i class="fas fa-hard-hat"></i>
+                        </div>
+                        <div class="npc-info">
+                            <div class="npc-header">
+                                <h3 class="npc-name">Maya Rodriguez</h3>
+                                <span class="npc-role">Engineer</span>
+                            </div>
+                            <p class="npc-trait">+ +25% Resource Scavenging</p>
+                            <div class="npc-power">
+                                <span class="npc-power-label">Expedition Power</span>
+                                <span class="npc-power-value">60</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script>
+        // Expedition Planning JavaScript
+        document.addEventListener('DOMContentLoaded', function() {
+            const expeditionCards = document.querySelectorAll('.expedition-type-card:not(.locked)');
+            const npcCards = document.querySelectorAll('.npc-card');
+            const sendBtn = document.getElementById('sendExpeditionBtn');
+            const selectionCounter = document.querySelector('.selection-counter');
+            const survivalPercentage = document.getElementById('survivalPercentage');
+            const survivalSliderFill = document.getElementById('survivalSliderFill');
+            const currentPowerElement = document.getElementById('currentPower');
+            const requiredPowerElement = document.getElementById('requiredPower');
+            const riskLevelElement = document.getElementById('riskLevel');
+            
+            let selectedExpedition = 'medium';
+            let selectedNPCs = [];
+            
+            // Resource icons (DRY principle)
+            const resourceIcons = {
+                food: 'fas fa-apple-alt',
+                ammo: 'fas fa-bomb',
+                research: 'fas fa-flask',
+                general: 'fas fa-cog'
+            };
+
+            // Expedition requirements (power needed for 100% success)
+            // Base costs are per NPC per day
+            const expeditionRequirements = {
+                small: { power: 100, foodPerNPCPerDay: 2, ammoPerNPC: 15, days: 3 },
+                medium: { power: 120, foodPerNPCPerDay: 2.25, ammoPerNPC: 25, days: 4 },
+                large: { power: 150, foodPerNPCPerDay: 2.5, ammoPerNPC: 37.5, days: 5 }
+            };
+
+            // Expedition type selection
+            expeditionCards.forEach(card => {
+                card.addEventListener('click', function() {
+                    if (this.classList.contains('locked')) return;
+                    
+                    expeditionCards.forEach(c => c.classList.remove('selected'));
+                    this.classList.add('selected');
+                    selectedExpedition = this.dataset.type;
+                    updateCosts();
+                    updateSurvivalChance();
+                });
+            });
+
+            // NPC selection
+            npcCards.forEach(card => {
+                card.addEventListener('click', function() {
+                    const npcId = this.dataset.npc;
+                    
+                    if (this.classList.contains('selected')) {
+                        // Deselect
+                        this.classList.remove('selected');
+                        selectedNPCs = selectedNPCs.filter(id => id !== npcId);
+                    } else {
+                        // Select (no limit)
+                        this.classList.add('selected');
+                        selectedNPCs.push(npcId);
+                    }
+                    
+                    updateSelectionUI();
+                    updateSendButton();
+                    updateSurvivalChance();
+                    updateCosts();
+                });
+            });
+
+            function updateSelectionUI() {
+                selectionCounter.textContent = `${selectedNPCs.length} of 4 selected`;
+                
+                // Remove dimmed state since there's no selection limit
+                npcCards.forEach(card => {
+                    card.classList.remove('dimmed');
+                });
+            }
+
+            function updateSendButton() {
+                if (selectedNPCs.length > 0) {
+                    sendBtn.disabled = false;
+                    sendBtn.textContent = 'SEND EXPEDITION';
+                } else {
+                    sendBtn.disabled = true;
+                    sendBtn.textContent = 'SELECT NPCS';
+                }
+            }
+
+            function updateCosts() {
+                const requirements = expeditionRequirements[selectedExpedition];
+                const npcCount = selectedNPCs.length;
+                
+                // Calculate total costs based on number of NPCs
+                const totalFood = Math.ceil(npcCount * requirements.foodPerNPCPerDay * requirements.days);
+                const totalAmmo = Math.ceil(npcCount * requirements.ammoPerNPC);
+                
+                // Update cost display with new icons
+                const foodCostElement = document.querySelector('.cost-display .cost-item:first-child .cost-value');
+                const ammoCostElement = document.querySelector('.cost-display .cost-item:last-child .cost-value');
+                const foodIconElement = document.querySelector('.cost-display .cost-item:first-child .cost-label i');
+                const ammoIconElement = document.querySelector('.cost-display .cost-item:last-child .cost-label i');
+                
+                foodCostElement.textContent = `${totalFood} units`;
+                ammoCostElement.textContent = `${totalAmmo} rounds`;
+                
+                // Update icons using DRY principle
+                foodIconElement.className = resourceIcons.food;
+                ammoIconElement.className = resourceIcons.ammo;
+                
+                // Update required power display
+                requiredPowerElement.textContent = requirements.power;
+            }
+
+            function updateSurvivalChance() {
+                const requirements = expeditionRequirements[selectedExpedition];
+                const requiredPower = requirements.power;
+                
+                // Calculate total expedition power of selected NPCs
+                let totalPower = 0;
+                selectedNPCs.forEach(npcId => {
+                    const npcCard = document.querySelector(`[data-npc="${npcId}"]`);
+                    if (npcCard) {
+                        totalPower += parseInt(npcCard.dataset.power);
+                    }
+                });
+
+                // Update current power display
+                currentPowerElement.textContent = totalPower;
+
+                // Calculate survival percentage (0-100%)
+                let survivalRate = Math.min(Math.round((totalPower / requiredPower) * 100), 100);
+                
+                // Update percentage display
+                survivalPercentage.textContent = `${survivalRate}%`;
+                
+                // Update slider fill
+                survivalSliderFill.style.width = `${survivalRate}%`;
+                
+                // Update percentage color based on rate
+                survivalPercentage.classList.remove('low', 'medium', 'high');
+                if (survivalRate < 40) {
+                    survivalPercentage.classList.add('low');
+                } else if (survivalRate < 80) {
+                    survivalPercentage.classList.add('medium');
+                } else {
+                    survivalPercentage.classList.add('high');
+                }
+
+                // Update risk level text
+                if (selectedNPCs.length === 0) {
+                    riskLevelElement.textContent = 'SELECT NPCS TO START';
+                } else if (survivalRate >= 90) {
+                    riskLevelElement.textContent = 'LOW RISK - HIGH SUCCESS';
+                } else if (survivalRate >= 60) {
+                    riskLevelElement.textContent = 'MEDIUM RISK - MODERATE SUCCESS';
+                } else {
+                    riskLevelElement.textContent = 'HIGH RISK - LOW SUCCESS';
+                }
+            }
+
+            // Send expedition button
+            sendBtn.addEventListener('click', function() {
+                if (selectedNPCs.length > 0) {
+                    const selectedNames = selectedNPCs.map(id => {
+                        const card = document.querySelector(`[data-npc="${id}"]`);
+                        return card.querySelector('.npc-name').textContent;
+                    });
+                    
+                    const survivalRate = survivalPercentage.textContent;
+                    const requirements = expeditionRequirements[selectedExpedition];
+                    const totalFood = Math.ceil(selectedNPCs.length * requirements.foodPerNPCPerDay * requirements.days);
+                    const totalAmmo = Math.ceil(selectedNPCs.length * requirements.ammoPerNPC);
+                    
+                    const confirmMessage = `Send ${selectedNames.join(', ')} on a ${selectedExpedition} expedition?\n\nSurvival Chance: ${survivalRate}\nCost: ${totalFood} food, ${totalAmmo} ammo\nNPCs will be unavailable during the mission.`;
+                    
+                    if (confirm(confirmMessage)) {
+                        alert('Expedition deployed successfully! NPCs are now on their mission.');
+                        // Here you would typically redirect or update the game state
+                    }
+                }
+            });
+
+            // Initialize UI state
+            updateSelectionUI();
+            updateSendButton();
+            updateCosts();
+            updateSurvivalChance();
+        });
+    </script>
+</body>
+</html> 
