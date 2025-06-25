@@ -228,16 +228,21 @@
             background: linear-gradient(145deg, rgba(20,25,35,0.95), rgba(10,15,20,0.95));
             border: 2px solid rgba(255, 215, 0, 0.3);
             border-radius: 10px;
-            overflow: visible;
+            overflow: hidden;
             transition: all 0.3s ease;
             backdrop-filter: blur(10px);
             box-shadow: 0 0 20px rgba(255, 215, 0, 0.2);
+            opacity: 0;
+            visibility: hidden;
         }
 
         .boosters-drawer.expanded {
             width: 400px;
             border-color: rgba(255, 215, 0, 0.6);
             box-shadow: 0 0 30px rgba(255, 215, 0, 0.4);
+            opacity: 1;
+            visibility: visible;
+            overflow: visible;
         }
 
         .drawer-header {
@@ -260,6 +265,14 @@
             flex-wrap: wrap;
             gap: 1rem;
             justify-content: flex-start;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease 0.1s, visibility 0.3s ease 0.1s;
+        }
+
+        .boosters-drawer.expanded .boosters-list {
+            opacity: 1;
+            visibility: visible;
         }
 
         .booster-item {
@@ -1906,6 +1919,7 @@
             const button = document.getElementById('boostersBtn');
             const drawer = document.getElementById('boostersDrawer');
             const expandIcon = document.getElementById('boostersExpandIcon');
+            const boostersList = document.getElementById('boostersList');
 
             boostersState.isDrawerOpen = !boostersState.isDrawerOpen;
 
@@ -1917,13 +1931,17 @@
                 // Wait for drawer animation to complete before populating
                 setTimeout(() => {
                     populateBoostersList();
-                }, 100);
+                }, 150);
             } else {
                 // Hide tooltip when closing drawer
                 if (globalBoosterTooltip) {
+                    globalBoosterTooltip.classList.remove('show');
                     globalBoosterTooltip.style.display = 'none';
-                    globalBoosterTooltip.style.opacity = '0';
-                    globalBoosterTooltip.style.visibility = 'hidden';
+                }
+                
+                // Clear booster items immediately to prevent display issues
+                if (boostersList) {
+                    boostersList.innerHTML = '';
                 }
                 
                 button.classList.remove('expanded');
