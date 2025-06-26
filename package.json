@@ -1,0 +1,26 @@
+{
+  "name": "city-defense-z-ui-ux",
+  "version": "1.0.0",
+  "description": "Interactive UI/UX mockup for City Defense Z tower defense game",
+  "main": "src/pages/index.html",
+  "scripts": {
+    "start": "echo 'Open src/pages/index.html in your browser'",
+    "dev": "echo 'Development server not configured. Open src/pages/index.html in your browser'",
+    "build": "echo 'Build process not configured'",
+    "test": "echo 'No tests configured'"
+  },
+  "keywords": [
+    "game",
+    "ui",
+    "ux",
+    "tower-defense",
+    "city-defense",
+    "html",
+    "css",
+    "javascript"
+  ],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {},
+  "dependencies": {}
+} 

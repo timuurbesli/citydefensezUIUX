@@ -116,12 +116,12 @@ class GameState {
 
 // Card Pool Data
 const cardPool = [
-    { src: 'Cards/Factory.png', alt: 'Factory', cost: 150, name: 'Factory' },
-    { src: 'Cards/House.png', alt: 'House', cost: 120, name: 'House' },
-    { src: 'Cards/Ammo.png', alt: 'Ammo Factory', cost: 400, name: 'Ammo Factory' },
-    { src: 'Cards/Labotatory.png', alt: 'Laboratory', cost: 300, name: 'Laboratory' },
-    { src: 'Cards/movecardd.png', alt: 'Move Card', cost: 50, name: 'Move Card' },
-    { src: 'Cards/directlevelupcard.png', alt: 'Direct Level Up', cost: 200, name: 'Direct Level Up' }
+    { src: '../assets/cards/Factory.png', alt: 'Factory', cost: 150, name: 'Factory' },
+    { src: '../assets/cards/House.png', alt: 'House', cost: 120, name: 'House' },
+    { src: '../assets/cards/Ammo.png', alt: 'Ammo Factory', cost: 400, name: 'Ammo Factory' },
+    { src: '../assets/cards/Labotatory.png', alt: 'Laboratory', cost: 300, name: 'Laboratory' },
+    { src: '../assets/cards/movecardd.png', alt: 'Move Card', cost: 50, name: 'Move Card' },
+    { src: '../assets/cards/directlevelupcard.png', alt: 'Direct Level Up', cost: 200, name: 'Direct Level Up' }
 ];
 
 // Initialize game state

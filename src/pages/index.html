@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>City Defense Z - Main Menu</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Roboto+Condensed:wght@300;400;700&display=swap" rel="stylesheet">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Roboto Condensed', sans-serif;
+            background: #000;
+            overflow: hidden;
+            cursor: none;
+        }
+
+        /* Custom Cursor */
+        .custom-cursor {
+            position: fixed;
+            width: 20px;
+            height: 20px;
+            border: 2px solid #00ffff;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 10000;
+            transition: all 0.1s ease;
+            mix-blend-mode: difference;
+        }
+
+        .custom-cursor.hover {
+            width: 40px;
+            height: 40px;
+            border-color: #ffdd00;
+            background: rgba(255, 221, 0, 0.1);
+        }
+
+        /* Background Video */
+        .video-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: -2;
+            object-fit: cover;
+        }
+
+        /* Video Overlay */
+        .video-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: linear-gradient(135deg, 
+                rgba(0,0,0,0.7) 0%, 
+                rgba(10,25,35,0.8) 50%, 
+                rgba(0,0,0,0.9) 100%);
+            z-index: -1;
+        }
+
+        /* Main Container */
+        .main-menu-container {
+            display: flex;
+            height: 100vh;
+            width: 100vw;
+            position: relative;
+        }
+
+        /* Left Panel */
+        .left-panel {
+            width: 400px;
+            height: 100vh;
+            background: linear-gradient(145deg, 
+                rgba(20,25,35,0.95) 0%, 
+                rgba(10,15,25,0.98) 50%, 
+                rgba(5,10,20,0.99) 100%);
+            backdrop-filter: blur(15px);
+            border-right: 3px solid rgba(0,255,255,0.3);
+            box-shadow: 0 0 50px rgba(0,255,255,0.2);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Animated Background Elements */
+        .left-panel::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: 
+                radial-gradient(circle at 30% 40%, rgba(0,255,255,0.1) 0%, transparent 50%),
+                radial-gradient(circle at 70% 60%, rgba(255,221,0,0.05) 0%, transparent 50%);
+            animation: backgroundFloat 20s ease-in-out infinite;
+            z-index: -1;
+        }
+
+        @keyframes backgroundFloat {
+            0%, 100% { transform: rotate(0deg) scale(1); }
+            50% { transform: rotate(180deg) scale(1.1); }
+        }
+
+        /* Logo Container */
+        .logo-container {
+            margin-bottom: 3rem;
+            text-align: center;
+            animation: logoGlow 3s ease-in-out infinite alternate;
+        }
+
+        .logo-image {
+            width: 200px;
+            height: auto;
+            filter: drop-shadow(0 0 30px rgba(0,255,255,0.6));
+            margin-bottom: 1rem;
+        }
+
+        .game-title {
+            font-family: 'Orbitron', monospace;
+            font-size: 2rem;
+            font-weight: 900;
+            color: #ffffff;
+            text-shadow: 0 0 20px rgba(0,255,255,0.8);
+            letter-spacing: 3px;
+            margin-bottom: 0.5rem;
+        }
+
+        .game-subtitle {
+            font-size: 1rem;
+            color: #00ffff;
+            font-weight: 300;
+            letter-spacing: 2px;
+            opacity: 0.8;
+        }
+
+        @keyframes logoGlow {
+            from { filter: drop-shadow(0 0 30px rgba(0,255,255,0.6)); }
+            to { filter: drop-shadow(0 0 50px rgba(0,255,255,0.9)); }
+        }
+
+        /* Menu Buttons */
+        .menu-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            width: 100%;
+            max-width: 300px;
+        }
+
+        .menu-button {
+            background: linear-gradient(145deg, 
+                rgba(0,255,255,0.1) 0%, 
+                rgba(0,200,200,0.05) 100%);
+            border: 2px solid rgba(0,255,255,0.3);
+            border-radius: 8px;
+            padding: 1rem 2rem;
+            color: #ffffff;
+            font-family: 'Orbitron', monospace;
+            font-size: 1.1rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+        }
+
+        .menu-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, 
+                transparent 0%, 
+                rgba(0,255,255,0.2) 50%, 
+                transparent 100%);
+            transition: left 0.5s ease;
+        }
+
+        .menu-button:hover {
+            border-color: rgba(0,255,255,0.8);
+            background: linear-gradient(145deg, 
+                rgba(0,255,255,0.2) 0%, 
+                rgba(0,200,200,0.1) 100%);
+            box-shadow: 0 0 30px rgba(0,255,255,0.4);
+            transform: translateY(-2px);
+        }
+
+        .menu-button:hover::before {
+            left: 100%;
+        }
+
+        .menu-button.primary {
+            background: linear-gradient(145deg, 
+                rgba(255,221,0,0.2) 0%, 
+                rgba(255,180,0,0.1) 100%);
+            border-color: rgba(255,221,0,0.5);
+            color: #ffdd00;
+        }
+
+        .menu-button.primary:hover {
+            border-color: rgba(255,221,0,0.9);
+            background: linear-gradient(145deg, 
+                rgba(255,221,0,0.3) 0%, 
+                rgba(255,180,0,0.2) 100%);
+            box-shadow: 0 0 40px rgba(255,221,0,0.6);
+        }
+
+        .menu-button i {
+            margin-right: 0.8rem;
+            font-size: 1.2rem;
+        }
+
+        /* Social Buttons */
+        .social-buttons {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .social-button {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(145deg, 
+                rgba(100,100,100,0.2) 0%, 
+                rgba(50,50,50,0.1) 100%);
+            border: 2px solid rgba(255,255,255,0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #ffffff;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .social-button:hover {
+            border-color: rgba(255,255,255,0.6);
+            background: linear-gradient(145deg, 
+                rgba(255,255,255,0.2) 0%, 
+                rgba(200,200,200,0.1) 100%);
+            box-shadow: 0 0 20px rgba(255,255,255,0.3);
+            transform: translateY(-2px);
+        }
+
+        .social-button.discord:hover {
+            border-color: #7289DA;
+            box-shadow: 0 0 20px rgba(114,137,218,0.5);
+        }
+
+        .social-button.steam:hover {
+            border-color: #00adee;
+            box-shadow: 0 0 20px rgba(0,173,238,0.5);
+        }
+
+        /* Right Content Area */
+        .right-content {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            padding: 2rem;
+        }
+
+        /* Animated Elements */
+        .floating-elements {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .floating-element {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: rgba(0,255,255,0.6);
+            border-radius: 50%;
+            animation: float 15s linear infinite;
+        }
+
+        .floating-element:nth-child(2n) {
+            background: rgba(255,221,0,0.4);
+            animation-duration: 20s;
+        }
+
+        .floating-element:nth-child(3n) {
+            width: 2px;
+            height: 2px;
+            animation-duration: 25s;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(100vh) translateX(0px);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100px) translateX(100px);
+                opacity: 0;
+            }
+        }
+
+        /* Version Info */
+        .version-info {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            color: rgba(255,255,255,0.4);
+            font-size: 0.8rem;
+            font-family: 'Orbitron', monospace;
+        }
+
+        /* Loading Animation */
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0,0,0,0.9);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.5s ease;
+        }
+
+        .loading-overlay.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .loading-content {
+            text-align: center;
+            color: #ffffff;
+        }
+
+        .loading-spinner {
+            width: 50px;
+            height: 50px;
+            border: 3px solid rgba(0,255,255,0.3);
+            border-top: 3px solid #00ffff;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1rem;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .loading-text {
+            font-family: 'Orbitron', monospace;
+            font-size: 1.2rem;
+            letter-spacing: 2px;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .left-panel {
+                width: 100vw;
+                height: 100vh;
+            }
+            
+            .right-content {
+                display: none;
+            }
+            
+            .game-title {
+                font-size: 1.5rem;
+            }
+            
+            .logo-image {
+                width: 150px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Custom Cursor -->
+    <div class="custom-cursor"></div>
+
+    <!-- Background Video -->
+    <video class="video-background" autoplay muted loop>
+        <source src="../assets/videos/mainmenuvideo.mp4" type="video/mp4">
+        <!-- Fallback for browsers that don't support video -->
+        <div style="background: linear-gradient(135deg, #1a1a2e, #16213e, #0f3460); width: 100vw; height: 100vh;"></div>
+    </video>
+    
+    <!-- Video Overlay -->
+    <div class="video-overlay"></div>
+
+    <!-- Main Menu Container -->
+    <div class="main-menu-container">
+        <!-- Left Panel -->
+        <div class="left-panel">
+            <!-- Logo Container -->
+            <div class="logo-container">
+                <img src="../assets/images/CDZLogoNew.png" alt="City Defense Z" class="logo-image">
+                <div class="game-title">CITY DEFENSE</div>
+                <div class="game-subtitle">SURVIVAL STRATEGY</div>
+            </div>
+
+            <!-- Menu Buttons -->
+            <div class="menu-buttons">
+                <button class="menu-button primary" onclick="startGame()">
+                    <i class="fas fa-play"></i>PLAY
+                </button>
+                <button class="menu-button" onclick="newGame()">
+                    <i class="fas fa-plus"></i>NEW GAME
+                </button>
+                <button class="menu-button" onclick="showLeaderboard()">
+                    <i class="fas fa-trophy"></i>LEADERBOARD
+                </button>
+                <button class="menu-button" onclick="showSettings()">
+                    <i class="fas fa-cog"></i>SETTINGS
+                </button>
+                <button class="menu-button" onclick="exitGame()">
+                    <i class="fas fa-power-off"></i>EXIT
+                </button>
+            </div>
+
+            <!-- Social Buttons -->
+            <div class="social-buttons">
+                <button class="social-button discord" onclick="openDiscord()" title="Join Discord">
+                    <i class="fab fa-discord"></i>
+                </button>
+                <button class="social-button steam" onclick="openReview()" title="Leave Review">
+                    <i class="fas fa-star"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Right Content Area -->
+        <div class="right-content">
+            <!-- Floating Animation Elements -->
+            <div class="floating-elements" id="floatingElements">
+                <!-- Floating particles will be generated here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Version Info -->
+    <div class="version-info">
+        v1.0.0 ALPHA | CITY DEFENSE Z
+    </div>
+
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="loading-content">
+            <div class="loading-spinner"></div>
+            <div class="loading-text">LOADING...</div>
+        </div>
+    </div>
+
+    <script>
+        // Custom cursor
+        const cursor = document.querySelector('.custom-cursor');
+        let mouseX = 0;
+        let mouseY = 0;
+
+        document.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+            cursor.style.left = mouseX + 'px';
+            cursor.style.top = mouseY + 'px';
+        });
+
+        // Cursor hover effects
+        document.querySelectorAll('button, .social-button').forEach(button => {
+            button.addEventListener('mouseenter', () => {
+                cursor.classList.add('hover');
+            });
+            
+            button.addEventListener('mouseleave', () => {
+                cursor.classList.remove('hover');
+            });
+        });
+
+        // Generate floating particles
+        function createFloatingElements() {
+            const container = document.getElementById('floatingElements');
+            
+            for (let i = 0; i < 50; i++) {
+                const element = document.createElement('div');
+                element.className = 'floating-element';
+                element.style.left = Math.random() * 100 + '%';
+                element.style.animationDelay = Math.random() * 15 + 's';
+                element.style.animationDuration = (15 + Math.random() * 10) + 's';
+                container.appendChild(element);
+            }
+        }
+
+        // Menu button functions
+        function startGame() {
+            showLoading();
+            setTimeout(() => {
+                window.location.href = 'save-selection.html?mode=continue';
+            }, 2000);
+        }
+
+        function newGame() {
+            showLoading();
+            setTimeout(() => {
+                // Clear any saved game data
+                localStorage.clear();
+                window.location.href = 'save-selection.html?mode=newgame';
+            }, 2000);
+        }
+
+        function showLeaderboard() {
+            showLoading();
+            setTimeout(() => {
+                window.location.href = 'leaderboard.html';
+            }, 2000);
+        }
+
+        function showSettings() {
+            alert('Settings panel will be implemented in the full version!');
+        }
+
+        function exitGame() {
+            if(confirm('Are you sure you want to exit City Defense Z?')) {
+                window.close();
+            }
+        }
+
+        function openDiscord() {
+            window.open('https://discord.gg/citydefenseZ', '_blank');
+        }
+
+        function openReview() {
+            window.open('https://store.steampowered.com/app/citydefenseZ', '_blank');
+        }
+
+        function showLoading() {
+            const overlay = document.getElementById('loadingOverlay');
+            overlay.classList.add('show');
+        }
+
+        // Sound effects (placeholder)
+        function playSound(soundName) {
+            // Sound effects would be implemented here
+            console.log('Playing sound:', soundName);
+        }
+
+        // Add sound effects to buttons
+        document.querySelectorAll('.menu-button').forEach(button => {
+            button.addEventListener('mouseenter', () => playSound('hover'));
+            button.addEventListener('click', () => playSound('click'));
+        });
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            createFloatingElements();
+            
+            // Animate logo on load
+            setTimeout(() => {
+                document.querySelector('.logo-container').style.animation = 'logoGlow 3s ease-in-out infinite alternate';
+            }, 500);
+        });
+
+        // Keyboard navigation
+        document.addEventListener('keydown', function(e) {
+            switch(e.key) {
+                case 'Enter':
+                    startGame();
+                    break;
+                case '1':
+                    startGame();
+                    break;
+                case '2':
+                    newGame();
+                    break;
+                case '3':
+                    showSettings();
+                    break;
+                case 'Escape':
+                    exitGame();
+                    break;
+            }
+        });
+
+        // Prevent right-click context menu
+        document.addEventListener('contextmenu', e => e.preventDefault());
+    </script>
+</body>
+</html> 
