@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>City Defense Z - Mission Zone Selection</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Roboto+Condensed:wght@300;400;700&display=swap" rel="stylesheet">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Roboto Condensed', sans-serif;
+            background: linear-gradient(135deg, #1a1a2e, #16213e, #0f3460);
+            color: #ffffff;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        /* Background Effects */
+        .background-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: 
+                radial-gradient(circle at 20% 30%, rgba(0,255,255,0.05) 0%, transparent 50%),
+                radial-gradient(circle at 80% 70%, rgba(255,140,66,0.05) 0%, transparent 50%);
+            z-index: -1;
+            animation: backgroundShift 15s ease-in-out infinite;
+        }
+
+        @keyframes backgroundShift {
+            0%, 100% { opacity: 0.8; }
+            50% { opacity: 1; }
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            padding: 2rem 0 1rem 0;
+            position: relative;
+        }
+
+        .main-title {
+            font-family: 'Orbitron', monospace;
+            font-size: 2.5rem;
+            font-weight: 900;
+            letter-spacing: 3px;
+            margin-bottom: 0.5rem;
+            text-shadow: 0 0 20px rgba(0,255,255,0.6);
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            color: #00aaff;
+            font-weight: 300;
+            letter-spacing: 2px;
+            opacity: 0.8;
+        }
+
+        /* Main Container */
+        .main-container {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+            padding: 2rem;
+            max-width: 1600px;
+            margin: 0 auto;
+            min-height: calc(100vh - 200px);
+        }
+
+        /* Zone Cards */
+        .zones-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.5rem;
+            align-content: start;
+        }
+
+        .zone-card {
+            background: linear-gradient(145deg, rgba(20,25,35,0.9), rgba(10,15,20,0.95));
+            border: 2px solid rgba(255,255,255,0.1);
+            border-radius: 15px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            height: 300px;
+            backdrop-filter: blur(10px);
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+
+        /* Map-specific backgrounds */
+        .zone-card[data-zone="nevada"] {
+            background-image: 
+                linear-gradient(145deg, rgba(20,25,35,0.85), rgba(10,15,20,0.9)),
+                url('MapImages/firstmap.png');
+        }
+
+        .zone-card[data-zone="urban"] {
+            background-image: 
+                linear-gradient(145deg, rgba(20,25,35,0.85), rgba(10,15,20,0.9)),
+                url('MapImages/secondmap.png');
+        }
+
+        .zone-card[data-zone="industrial"] {
+            background-image: 
+                linear-gradient(145deg, rgba(40,40,40,0.85), rgba(30,30,30,0.9)),
+                url('MapImages/thirdmap.png');
+        }
+
+        .zone-card[data-zone="laboratory"] {
+            background-image: 
+                linear-gradient(145deg, rgba(40,40,40,0.85), rgba(30,30,30,0.9)),
+                url('MapImages/lastmap.png');
+        }
+
+        .zone-card.available {
+            border-color: rgba(255,140,66,0.5);
+            box-shadow: 0 0 20px rgba(255,140,66,0.2);
+        }
+
+        .zone-card.available:hover {
+            border-color: rgba(255,140,66,0.8);
+            box-shadow: 0 0 30px rgba(255,140,66,0.4);
+            transform: translateY(-5px) scale(1.02);
+        }
+
+        .zone-card.ready {
+            border-color: rgba(0,255,255,0.5);
+            box-shadow: 0 0 20px rgba(0,255,255,0.2);
+        }
+
+        .zone-card.ready:hover {
+            border-color: rgba(0,255,255,0.8);
+            box-shadow: 0 0 30px rgba(0,255,255,0.4);
+            transform: translateY(-5px) scale(1.02);
+        }
+
+        .zone-card.locked {
+            border-color: rgba(100,100,100,0.3);
+            cursor: pointer;
+            opacity: 0.8;
+        }
+
+        .zone-card.locked:hover {
+            border-color: rgba(150,150,150,0.6);
+            transform: translateY(-2px) scale(1.01);
+        }
+
+        .zone-card.selected {
+            border-color: #00ff80;
+            box-shadow: 0 0 40px rgba(0,255,128,0.6);
+            transform: translateY(-5px) scale(1.02);
+        }
+
+        /* Card Components */
+        .card-header {
+            background: linear-gradient(135deg, rgba(0,0,0,0.8), rgba(0,0,0,0.6));
+            padding: 1rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        .zone-name {
+            font-family: 'Orbitron', monospace;
+            font-size: 1.1rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            margin-bottom: 0.5rem;
+        }
+
+        .zone-status {
+            font-size: 0.8rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .zone-status.critical { color: #ff8c42; }
+        .zone-status.ready { color: #00ffff; }
+        .zone-status.locked { color: #888888; }
+
+        .card-content {
+            padding: 1rem;
+            position: relative;
+            z-index: 2;
+            height: calc(100% - 80px);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .mission-info {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            height: 100%;
+            justify-content: center;
+        }
+
+        .mission-text {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: #ffffff;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .day-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .day-text {
+            font-size: 0.8rem;
+            color: #ffffff;
+            font-weight: 500;
+        }
+
+        .day-number {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #ff8c42;
+        }
+
+        .lab-status {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 0.5rem;
+        }
+
+        .mutants-text, .unstable-text {
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: #888888;
+            text-transform: uppercase;
+        }
+
+        /* Mission Brief */
+        .mission-brief {
+            background: linear-gradient(145deg, rgba(20,25,35,0.95), rgba(10,15,20,0.98));
+            border: 2px solid rgba(0,255,255,0.3);
+            border-radius: 15px;
+            padding: 0;
+            backdrop-filter: blur(15px);
+            box-shadow: 0 0 30px rgba(0,255,255,0.2);
+            height: fit-content;
+            max-height: 400px;
+            overflow-y: auto;
+            display: grid;
+            grid-template-columns: 1fr 400px;
+            gap: 0;
+        }
+
+        .brief-content-wrapper {
+            flex: 1;
+        }
+
+        .brief-header {
+            background: linear-gradient(135deg, rgba(0,255,255,0.2), rgba(0,200,200,0.1));
+            padding: 1.5rem;
+            border-bottom: 1px solid rgba(0,255,255,0.3);
+            border-radius: 15px 0 0 0;
+        }
+
+        .brief-title {
+            font-family: 'Orbitron', monospace;
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #00ffff;
+            margin-bottom: 0.5rem;
+        }
+
+        .brief-content {
+            padding: 1.5rem;
+        }
+
+        .brief-section {
+            margin-bottom: 1.5rem;
+        }
+
+        .brief-section h3 {
+            font-family: 'Orbitron', monospace;
+            font-size: 1rem;
+            font-weight: 700;
+            color: #00ffff;
+            margin-bottom: 0.8rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        /* Deployment */
+        .deployment-confirmation {
+            background: linear-gradient(145deg, rgba(255,140,66,0.2), rgba(255,100,0,0.1));
+            border-left: 2px solid rgba(255,140,66,0.5);
+            border-radius: 0 15px 15px 0;
+            padding: 2rem;
+            text-align: center;
+            backdrop-filter: blur(10px);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .confirm-button {
+            background: linear-gradient(135deg, #ff8c42, #ff6b1a);
+            border: none;
+            border-radius: 10px;
+            padding: 1rem 3rem;
+            font-family: 'Orbitron', monospace;
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #ffffff;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .confirm-button:hover {
+            background: linear-gradient(135deg, #ffaa44, #ff8822);
+            box-shadow: 0 0 30px rgba(255,140,66,0.6);
+            transform: translateY(-2px);
+        }
+
+        .confirm-button:disabled {
+            background: linear-gradient(135deg, #666666, #444444);
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+            opacity: 0.5;
+        }
+
+        .confirm-button:disabled:hover {
+            background: linear-gradient(135deg, #666666, #444444);
+            transform: none;
+            box-shadow: none;
+        }
+
+        /* Navigation */
+        .nav-buttons {
+            position: absolute;
+            top: 2rem;
+            left: 2rem;
+            z-index: 1000;
+        }
+
+        .nav-button {
+            background: rgba(20,25,35,0.9);
+            border: 2px solid rgba(255,255,255,0.3);
+            border-radius: 8px;
+            padding: 0.8rem 1.2rem;
+            color: #ffffff;
+            font-family: 'Orbitron', monospace;
+            font-size: 0.9rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            position: relative;
+            z-index: 1001;
+            pointer-events: all;
+        }
+
+        .nav-button:hover {
+            border-color: rgba(0,255,255,0.6);
+            background: rgba(0,255,255,0.1);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,255,255,0.3);
+        }
+
+        .nav-button:active {
+            transform: translateY(0px);
+            box-shadow: 0 2px 8px rgba(0,255,255,0.2);
+        }
+
+        .nav-button:focus {
+            outline: none;
+            border-color: rgba(0,255,255,0.8);
+        }
+
+        /* Lock Overlay */
+        .lock-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10;
+            border-radius: 15px;
+            backdrop-filter: blur(1px);
+        }
+
+        .lock-content {
+            text-align: center;
+            color: #aaaaaa;
+        }
+
+        .lock-content i {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div class="background-overlay"></div>
+
+    <div class="nav-buttons">
+        <a href="index.html" class="nav-button">
+            <i class="fas fa-arrow-left"></i>
+            BACK TO MENU
+        </a>
+    </div>
+
+    <div class="header">
+        <h1 class="main-title">SELECT MISSION ZONE</h1>
+        <p class="subtitle">WASTELAND DEPLOYMENT COORDINATES</p>
+    </div>
+
+    <div class="main-container">
+        <!-- Zone Cards Grid - All 4 maps horizontally -->
+        <div class="zones-grid">
+            <!-- Nevada Desert Outpost -->
+            <div class="zone-card available" data-zone="nevada" onclick="selectZone('nevada')">
+                <div class="card-header">
+                    <div class="zone-name">DESERT OUTPOST</div>
+                    <div class="zone-status critical">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        CRITICAL PRIORITY
+                    </div>
+                </div>
+                <div class="card-content">
+                    
+                </div>
+            </div>
+
+            <!-- Urban Suburban Stronghold -->
+            <div class="zone-card ready" data-zone="urban" onclick="selectZone('urban')">
+                <div class="card-header">
+                    <div class="zone-name">SUBURBAN STRONGHOLD</div>
+                    <div class="zone-status ready">
+                        <i class="fas fa-check-circle"></i>
+                        READY FOR DEPLOYMENT
+                    </div>
+                </div>
+                <div class="card-content">
+                    
+                </div>
+            </div>
+
+            <!-- Industrial Complex -->
+            <div class="zone-card locked" data-zone="industrial" onclick="selectZone('industrial')">
+                <div class="lock-overlay">
+                    <div class="lock-content">
+                        <i class="fas fa-lock"></i>
+                        <span>LOCKED - COMPLETE<br>PREVIOUS</span>
+                    </div>
+                </div>
+                <div class="card-header">
+                    <div class="zone-name">INDUSTRIAL COMPLEX</div>
+                    <div class="zone-status locked">
+                        <i class="fas fa-lock"></i>
+                        LOCKED - COMPLETE PREVIOUS
+                    </div>
+                </div>
+                <div class="card-content">
+                    
+                </div>
+            </div>
+
+            <!-- Laboratory Facility -->
+            <div class="zone-card locked" data-zone="laboratory" onclick="selectZone('laboratory')">
+                <div class="lock-overlay">
+                    <div class="lock-content">
+                        <i class="fas fa-lock"></i>
+                        <span>LOCKED - COMPLETE<br>PREVIOUS ZONES</span>
+                    </div>
+                </div>
+                <div class="card-header">
+                    <div class="zone-name">LABORATORY</div>
+                    <div class="zone-status locked">
+                        <i class="fas fa-lock"></i>
+                        LOCKED - COMPLETE PREVIOUS ZONES
+                    </div>
+                </div>
+                <div class="card-content">
+                   
+                </div>
+            </div>
+        </div>
+
+        <!-- Mission Brief Panel - Bottom Layout -->
+        <div class="mission-brief">
+            <div class="brief-content-wrapper">
+                <div class="brief-header">
+                    <h2 class="brief-title" id="briefTitle">MISSION BRIEF: REPAIR AIRCRAFT</h2>
+                </div>
+                <div class="brief-content" id="briefContent">
+                    <div class="brief-section">
+                        <h3><i class="fas fa-clock"></i> DURATION</h3>
+                        <p>50 Days</p>
+                    </div>
+                    <div class="brief-section">
+                        <h3><i class="fas fa-crosshairs"></i> OBJECTIVE</h3>
+                        <p>Repair aircraft for evacuation</p>
+                    </div>
+                    <div class="brief-section">
+                        <h3><i class="fas fa-quote-left"></i> COMMANDER HAYES</h3>
+                        <p style="font-style: italic; padding: 1rem; background: rgba(0,0,0,0.3); border-left: 3px solid #00ffff; margin: 0.5rem 0;">
+                            "We have to repair our planes to leave, but it will take 50 days. The aircraft sustained critical damage during the crash."
+                        </p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Deployment Confirmation -->
+            <div class="deployment-confirmation">
+                <h3><i class="fas fa-helicopter"></i> CONFIRM DEPLOYMENT</h3>
+                <p id="deploymentZone">DEPLOY TO: DESERT OUTPOST</p>
+                <button class="confirm-button" id="deployButton" onclick="confirmDeployment()">
+                    <i class="fas fa-rocket"></i> DEPLOY
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let selectedZone = 'nevada';
+
+        const zoneData = {
+            nevada: {
+                name: "DESERT OUTPOST",
+                objective: "Repair aircraft for evacuation",
+                duration: "50 Days",
+                quote: "We have to repair our planes to leave, but it will take 50 days. The aircraft sustained critical damage during the crash.",
+                commander: "COMMANDER HAYES"
+            },
+            urban: {
+                name: "SUBURBAN STRONGHOLD", 
+                objective: "Establish secure urban foothold",
+                duration: "75 Days",
+                quote: "The suburbs offer better resources but increased zombie density. We need to clear house by house.",
+                commander: "COMMANDER RODRIGUEZ"
+            },
+            industrial: {
+                name: "INDUSTRIAL COMPLEX",
+                objective: "Secure manufacturing capabilities",
+                duration: "90 Days",
+                quote: "This facility could provide the manufacturing base we need, but the industrial hazards make it extremely dangerous.",
+                commander: "COMMANDER CHEN"
+            },
+            laboratory: {
+                name: "LABORATORY FACILITY",
+                objective: "Develop zombie vaccine",
+                duration: "100 Days",
+                quote: "We finally found the vaccine against the zombies, but it will take 100 days to produce it. Can we survive that long?",
+                commander: "DR. MARTINEZ"
+            }
+        };
+
+        const lockedZones = ['industrial', 'laboratory'];
+
+        function selectZone(zoneName) {
+            // Remove previous selection
+            document.querySelectorAll('.zone-card').forEach(card => {
+                card.classList.remove('selected');
+            });
+
+            // Add selection to clicked card
+            document.querySelector(`[data-zone="${zoneName}"]`).classList.add('selected');
+            selectedZone = zoneName;
+
+            // Update mission brief
+            updateMissionBrief(zoneName);
+            updateDeploymentInfo(zoneName);
+
+            // Enable/disable deploy button based on zone availability
+            const deployButton = document.getElementById('deployButton');
+            if (lockedZones.includes(zoneName)) {
+                deployButton.disabled = true;
+                deployButton.innerHTML = '<i class="fas fa-lock"></i> LOCKED';
+            } else {
+                deployButton.disabled = false;
+                deployButton.innerHTML = '<i class="fas fa-rocket"></i> DEPLOY';
+            }
+        }
+
+        function updateMissionBrief(zoneName) {
+            const zone = zoneData[zoneName];
+            
+            document.getElementById('briefTitle').textContent = `MISSION BRIEF: ${zone.objective.toUpperCase()}`;
+
+            document.getElementById('briefContent').innerHTML = `
+                <div class="brief-section">
+                    <h3><i class="fas fa-clock"></i> DURATION</h3>
+                    <p>${zone.duration}</p>
+                </div>
+                <div class="brief-section">
+                    <h3><i class="fas fa-crosshairs"></i> OBJECTIVE</h3>
+                    <p>${zone.objective}</p>
+                </div>
+                <div class="brief-section">
+                    <h3><i class="fas fa-quote-left"></i> ${zone.commander}</h3>
+                    <p style="font-style: italic; padding: 1rem; background: rgba(0,0,0,0.3); border-left: 3px solid #00ffff; margin: 0.5rem 0;">
+                        "${zone.quote}"
+                    </p>
+                </div>
+            `;
+        }
+
+        function updateDeploymentInfo(zoneName) {
+            const zone = zoneData[zoneName];
+            document.getElementById('deploymentZone').textContent = `DEPLOY TO: ${zone.name}`;
+        }
+
+        function confirmDeployment() {
+            // Prevent deployment to locked zones
+            if (lockedZones.includes(selectedZone)) {
+                return;
+            }
+            window.location.href = `game.html?zone=${selectedZone}`;
+        }
+
+        // Initialize with Nevada selected
+        document.addEventListener('DOMContentLoaded', function() {
+            selectZone('nevada');
+        });
+    </script>
+</body>
+</html> 

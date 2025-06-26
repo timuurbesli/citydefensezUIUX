@@ -3,2350 +3,617 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>City Defense Z - UI/UX Mockup</title>
-    <link rel="stylesheet" href="style.css">
+    <title>City Defense Z - Main Menu</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Roboto+Condensed:wght@300;400;700&display=swap" rel="stylesheet">
     
     <style>
-        /* NPC Recruitment Button */
-        .npc-recruit-button {
-            position: absolute;
-            top: 10%;
-            left: 38%;
-            width: 80px;
-            height: 80px;
-            background: linear-gradient(145deg, rgba(0, 255, 255, 0.2), rgba(0, 200, 200, 0.1));
-            border: 3px solid #00ffff;
-            border-radius: 50%;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.3s ease;
-            backdrop-filter: blur(5px);
-            box-shadow: 0 0 20px rgba(0, 255, 255, 0.3);
-            z-index: 500;
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
 
-        .npc-recruit-button:hover {
-            transform: scale(1.1);
-            background: linear-gradient(145deg, rgba(0, 255, 255, 0.4), rgba(0, 200, 200, 0.2));
-            box-shadow: 0 0 30px rgba(0, 255, 255, 0.6);
-        }
-
-        .recruit-overlay {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            color: #00ffff;
-            font-weight: bold;
-            text-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
-        }
-
-        .recruit-overlay i {
-            font-size: 24px;
-            margin-bottom: 4px;
-        }
-
-        .recruit-overlay span {
-            font-size: 10px;
-            letter-spacing: 1px;
-        }
-
-        /* Expedition Planning Button */
-        .expedition-planning-button {
-            position: absolute;
-            top: 50%;
-            right: 5%;
-            transform: translateY(-50%);
-            width: 90px;
-            height: 90px;
-            background: linear-gradient(145deg, rgba(255, 140, 66, 0.8), rgba(255, 100, 0, 0.6));
-            border: 3px solid #ff8c42;
-            border-radius: 50%;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.3s ease;
-            backdrop-filter: blur(5px);
-            box-shadow: 0 0 25px rgba(255, 140, 66, 0.6), 
-                        inset 0 2px 10px rgba(255, 200, 100, 0.3);
-            z-index: 500;
-            animation: expeditionPulse 3s ease-in-out infinite;
-        }
-
-        .expedition-planning-button:hover {
-            transform: translateY(-50%) scale(1.15);
-            background: linear-gradient(145deg, rgba(255, 140, 66, 0.95), rgba(255, 100, 0, 0.8));
-            border-color: #ffaa44;
-            box-shadow: 0 0 40px rgba(255, 140, 66, 0.8), 
-                        0 0 60px rgba(255, 140, 66, 0.4),
-                        inset 0 2px 15px rgba(255, 200, 100, 0.5);
-            animation: none;
-        }
-
-        @keyframes expeditionPulse {
-            0%, 100% { 
-                box-shadow: 0 0 25px rgba(255, 140, 66, 0.6), 
-                            inset 0 2px 10px rgba(255, 200, 100, 0.3);
-            }
-            50% { 
-                box-shadow: 0 0 35px rgba(255, 140, 66, 0.8), 
-                            0 0 50px rgba(255, 140, 66, 0.3),
-                            inset 0 2px 15px rgba(255, 200, 100, 0.4);
-            }
-        }
-
-        .expedition-overlay {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            color: #ffffff;
-            font-weight: bold;
-            text-shadow: 0 0 12px rgba(255, 140, 66, 0.9), 
-                         0 0 20px rgba(255, 140, 66, 0.6),
-                         0 2px 4px rgba(0, 0, 0, 0.8);
-        }
-
-        .expedition-overlay i {
-            font-size: 32px;
-            margin-bottom: 4px;
-            color: #ffffff;
-            text-shadow: 0 0 15px rgba(255, 140, 66, 0.9), 
-                         0 0 25px rgba(255, 140, 66, 0.5),
-                         0 2px 6px rgba(0, 0, 0, 0.8);
-        }
-
-        .expedition-overlay span {
-            font-size: 11px;
-            letter-spacing: 1px;
-            color: #ffffff;
-            text-shadow: 0 0 10px rgba(255, 140, 66, 0.8), 
-                         0 2px 3px rgba(0, 0, 0, 0.8);
-        }
-
-        /* Boosters Button */
-        .boosters-button {
-            position: absolute;
-            top: 35%;
-            right: 5%;
-            transform: translateY(-50%);
-            width: 90px;
-            height: 90px;
-            background: linear-gradient(145deg, rgba(255, 215, 0, 0.8), rgba(255, 193, 7, 0.6));
-            border: 3px solid #ffd700;
-            border-radius: 50%;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.3s ease;
-            backdrop-filter: blur(5px);
-            box-shadow: 0 0 25px rgba(255, 215, 0, 0.6), 
-                        inset 0 2px 10px rgba(255, 255, 100, 0.3);
-            z-index: 500;
-            animation: boostersPulse 3s ease-in-out infinite;
-        }
-
-        .boosters-button:hover {
-            transform: translateY(-50%) scale(1.15);
-            background: linear-gradient(145deg, rgba(255, 215, 0, 0.95), rgba(255, 193, 7, 0.8));
-            border-color: #ffdd44;
-            box-shadow: 0 0 40px rgba(255, 215, 0, 0.8), 
-                        0 0 60px rgba(255, 215, 0, 0.4),
-                        inset 0 2px 15px rgba(255, 255, 100, 0.5);
-            animation: none;
-        }
-
-        @keyframes boostersPulse {
-            0%, 100% { 
-                box-shadow: 0 0 25px rgba(255, 215, 0, 0.6), 
-                            inset 0 2px 10px rgba(255, 255, 100, 0.3);
-            }
-            50% { 
-                box-shadow: 0 0 35px rgba(255, 215, 0, 0.8), 
-                            0 0 50px rgba(255, 215, 0, 0.3),
-                            inset 0 2px 15px rgba(255, 255, 100, 0.4);
-            }
-        }
-
-        .boosters-overlay {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            color: #ffffff;
-            font-weight: bold;
-            text-shadow: 0 0 12px rgba(255, 215, 0, 0.9), 
-                         0 0 20px rgba(255, 215, 0, 0.6),
-                         0 2px 4px rgba(0, 0, 0, 0.8);
-        }
-
-        .boosters-overlay i {
-            font-size: 32px;
-            margin-bottom: 4px;
-            color: #ffffff;
-            text-shadow: 0 0 15px rgba(255, 215, 0, 0.9), 
-                         0 0 25px rgba(255, 215, 0, 0.5),
-                         0 2px 6px rgba(0, 0, 0, 0.8);
-        }
-
-        .boosters-overlay span {
-            font-size: 11px;
-            letter-spacing: 1px;
-            color: #ffffff;
-            text-shadow: 0 0 10px rgba(255, 215, 0, 0.8), 
-                         0 2px 3px rgba(0, 0, 0, 0.8);
-        }
-
-        .boosters-button .expand-icon {
-            position: absolute;
-            top: 50%;
-            left: -15px;
-            transform: translateY(-50%);
-            font-size: 16px;
-            color: #ffd700;
-            text-shadow: 0 0 10px rgba(255, 215, 0, 0.8);
-            transition: all 0.3s ease;
-        }
-
-        .boosters-button.expanded .expand-icon {
-            transform: translateY(-50%) rotate(180deg);
-        }
-
-        /* Boosters Drawer */
-        .boosters-drawer {
-            position: absolute;
-            top: 0;
-            right: 110px;
-            width: 0;
-            height: auto;
-            background: linear-gradient(145deg, rgba(20,25,35,0.95), rgba(10,15,20,0.95));
-            border: 2px solid rgba(255, 215, 0, 0.3);
-            border-radius: 10px;
+        body {
+            font-family: 'Roboto Condensed', sans-serif;
+            background: #000;
             overflow: hidden;
-            transition: all 0.3s ease;
-            backdrop-filter: blur(10px);
-            box-shadow: 0 0 20px rgba(255, 215, 0, 0.2);
-            opacity: 0;
-            visibility: hidden;
+            cursor: none;
         }
 
-        .boosters-drawer.expanded {
-            width: 400px;
-            border-color: rgba(255, 215, 0, 0.6);
-            box-shadow: 0 0 30px rgba(255, 215, 0, 0.4);
-            opacity: 1;
-            visibility: visible;
-            overflow: visible;
-        }
-
-        .drawer-header {
-            padding: 1rem;
-            border-bottom: 1px solid rgba(255, 215, 0, 0.2);
-            text-align: center;
-        }
-
-        .drawer-title {
-            font-family: 'Orbitron', monospace;
-            font-size: 14px;
-            font-weight: 700;
-            color: #ffd700;
-            text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
-        }
-
-        .boosters-list {
-            padding: 1rem;
-            display: flex;
-            flex-wrap: wrap;
-            gap: 1rem;
-            justify-content: flex-start;
-            opacity: 0;
-            visibility: hidden;
-            transition: opacity 0.3s ease 0.1s, visibility 0.3s ease 0.1s;
-        }
-
-        .boosters-drawer.expanded .boosters-list {
-            opacity: 1;
-            visibility: visible;
-        }
-
-        .booster-item {
-            position: relative;
-            width: 60px;
-            height: 60px;
-            background: linear-gradient(145deg, rgba(255, 215, 0, 0.3), rgba(255, 193, 7, 0.2));
-            border: 2px solid rgba(255, 215, 0, 0.5);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            flex-shrink: 0;
-        }
-
-        .booster-item:hover {
-            background: linear-gradient(145deg, rgba(255, 215, 0, 0.5), rgba(255, 193, 7, 0.4));
-            border-color: rgba(255, 215, 0, 0.8);
-            transform: scale(1.1);
-            box-shadow: 0 0 20px rgba(255, 215, 0, 0.6);
-        }
-
-        .booster-item i {
-            font-size: 24px;
-            color: #ffd700;
-            text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
-        }
-
-        .booster-count-badge {
-            position: absolute;
-            top: -5px;
-            right: -5px;
+        /* Custom Cursor */
+        .custom-cursor {
+            position: fixed;
             width: 20px;
             height: 20px;
-            background: linear-gradient(145deg, rgba(255, 68, 68, 0.9), rgba(255, 0, 0, 0.7));
-            border: 2px solid #ff4444;
+            border: 2px solid #00ffff;
             border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-family: 'Orbitron', monospace;
-            font-size: 10px;
-            font-weight: 700;
-            color: #ffffff;
-            text-shadow: 0 0 5px rgba(0, 0, 0, 0.8);
+            pointer-events: none;
+            z-index: 10000;
+            transition: all 0.1s ease;
+            mix-blend-mode: difference;
         }
 
-        .booster-tooltip {
+        .custom-cursor.hover {
+            width: 40px;
+            height: 40px;
+            border-color: #ffdd00;
+            background: rgba(255, 221, 0, 0.1);
+        }
+
+        /* Background Video */
+        .video-background {
             position: fixed;
-            bottom: auto;
-            top: auto;
-            left: auto;
-            right: auto;
-            transform: none;
-            background: linear-gradient(145deg, rgba(20,25,35,0.98), rgba(10,15,20,0.98));
-            border: 2px solid rgba(255, 215, 0, 0.8);
-            border-radius: 8px;
-            padding: 0.75rem;
-            min-width: 200px;
-            max-width: 280px;
-            opacity: 0;
-            visibility: hidden;
-            transition: opacity 0.2s ease, visibility 0.2s ease;
-            z-index: 9999;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: -2;
+            object-fit: cover;
+        }
+
+        /* Video Overlay */
+        .video-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: linear-gradient(135deg, 
+                rgba(0,0,0,0.7) 0%, 
+                rgba(10,25,35,0.8) 50%, 
+                rgba(0,0,0,0.9) 100%);
+            z-index: -1;
+        }
+
+        /* Main Container */
+        .main-menu-container {
+            display: flex;
+            height: 100vh;
+            width: 100vw;
+            position: relative;
+        }
+
+        /* Left Panel */
+        .left-panel {
+            width: 400px;
+            height: 100vh;
+            background: linear-gradient(145deg, 
+                rgba(20,25,35,0.95) 0%, 
+                rgba(10,15,25,0.98) 50%, 
+                rgba(5,10,20,0.99) 100%);
             backdrop-filter: blur(15px);
-            box-shadow: 0 0 25px rgba(255, 215, 0, 0.5), 0 0 50px rgba(255, 215, 0, 0.2);
-            pointer-events: none;
-        }
-
-        .booster-item:hover .booster-tooltip {
-            opacity: 1;
-            visibility: visible;
-        }
-
-        .booster-tooltip-title {
-            font-family: 'Orbitron', monospace;
-            font-size: 13px;
-            font-weight: 700;
-            color: #ffd700;
-            margin-bottom: 0.4rem;
-            text-shadow: 0 0 8px rgba(255, 215, 0, 0.5);
-        }
-
-        .booster-tooltip-description {
-            font-size: 11px;
-            color: #ffffff;
-            line-height: 1.3;
-            margin-bottom: 0.4rem;
-        }
-
-        .booster-tooltip-type {
-            font-size: 10px;
-            color: #cccccc;
-            font-style: italic;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        /* Global Tooltip Specific Styles */
-        .booster-tooltip.global-tooltip {
-            position: fixed !important;
-            z-index: 10000 !important;
-            display: none;
-            opacity: 0;
-            visibility: hidden;
-            transition: opacity 0.2s ease, visibility 0.2s ease;
-            pointer-events: none;
-            white-space: nowrap;
-        }
-
-        .booster-tooltip.global-tooltip.show {
-            display: block !important;
-            opacity: 1 !important;
-            visibility: visible !important;
-        }
-
-        /* AOE Targeting Overlay */
-        .aoe-targeting-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            background: rgba(0, 0, 0, 0.3);
-            z-index: 1000;
-            cursor: crosshair;
-            display: none;
-        }
-
-        .aoe-circle {
-            position: absolute;
-            border: 3px solid #ffd700;
-            border-radius: 50%;
-            background: rgba(255, 215, 0, 0.2);
-            pointer-events: none;
-            box-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
-            animation: aoeGlow 1s ease-in-out infinite alternate;
-        }
-
-        @keyframes aoeGlow {
-            from { 
-                border-color: #ffd700;
-                box-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
-            }
-            to { 
-                border-color: #ffff00;
-                box-shadow: 0 0 30px rgba(255, 215, 0, 0.8);
-            }
-        }
-
-        /* Booster Confirmation Modal */
-        .booster-confirmation-modal {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            background: rgba(0, 0, 0, 0.7);
+            border-right: 3px solid rgba(0,255,255,0.3);
+            box-shadow: 0 0 50px rgba(0,255,255,0.2);
             display: flex;
+            flex-direction: column;
             align-items: center;
             justify-content: center;
-            z-index: 1100;
-            backdrop-filter: blur(5px);
-        }
-
-        .confirmation-box {
-            background: linear-gradient(145deg, rgba(20,25,35,0.95), rgba(10,15,20,0.95));
-            border: 2px solid rgba(255, 215, 0, 0.6);
-            border-radius: 15px;
             padding: 2rem;
-            max-width: 400px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Animated Background Elements */
+        .left-panel::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: 
+                radial-gradient(circle at 30% 40%, rgba(0,255,255,0.1) 0%, transparent 50%),
+                radial-gradient(circle at 70% 60%, rgba(255,221,0,0.05) 0%, transparent 50%);
+            animation: backgroundFloat 20s ease-in-out infinite;
+            z-index: -1;
+        }
+
+        @keyframes backgroundFloat {
+            0%, 100% { transform: rotate(0deg) scale(1); }
+            50% { transform: rotate(180deg) scale(1.1); }
+        }
+
+        /* Logo Container */
+        .logo-container {
+            margin-bottom: 3rem;
             text-align: center;
-            backdrop-filter: blur(10px);
-            box-shadow: 0 0 30px rgba(255, 215, 0, 0.3);
+            animation: logoGlow 3s ease-in-out infinite alternate;
         }
 
-        .confirmation-icon {
-            font-size: 48px;
-            color: #ffd700;
+        .logo-image {
+            width: 200px;
+            height: auto;
+            filter: drop-shadow(0 0 30px rgba(0,255,255,0.6));
             margin-bottom: 1rem;
-            text-shadow: 0 0 20px rgba(255, 215, 0, 0.6);
         }
 
-        .confirmation-title {
+        .game-title {
             font-family: 'Orbitron', monospace;
-            font-size: 18px;
-            font-weight: 700;
+            font-size: 2rem;
+            font-weight: 900;
             color: #ffffff;
-            margin-bottom: 1rem;
-            text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+            text-shadow: 0 0 20px rgba(0,255,255,0.8);
+            letter-spacing: 3px;
+            margin-bottom: 0.5rem;
         }
 
-        .confirmation-message {
-            font-size: 14px;
-            color: #cccccc;
-            margin-bottom: 2rem;
-            line-height: 1.4;
+        .game-subtitle {
+            font-size: 1rem;
+            color: #00ffff;
+            font-weight: 300;
+            letter-spacing: 2px;
+            opacity: 0.8;
         }
 
-        .confirmation-buttons {
+        @keyframes logoGlow {
+            from { filter: drop-shadow(0 0 30px rgba(0,255,255,0.6)); }
+            to { filter: drop-shadow(0 0 50px rgba(0,255,255,0.9)); }
+        }
+
+        /* Menu Buttons */
+        .menu-buttons {
             display: flex;
+            flex-direction: column;
             gap: 1rem;
-            justify-content: center;
+            width: 100%;
+            max-width: 300px;
         }
 
-        .confirmation-btn {
-            padding: 0.75rem 1.5rem;
-            border: 2px solid;
+        .menu-button {
+            background: linear-gradient(145deg, 
+                rgba(0,255,255,0.1) 0%, 
+                rgba(0,200,200,0.05) 100%);
+            border: 2px solid rgba(0,255,255,0.3);
             border-radius: 8px;
+            padding: 1rem 2rem;
+            color: #ffffff;
             font-family: 'Orbitron', monospace;
+            font-size: 1.1rem;
             font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
             cursor: pointer;
             transition: all 0.3s ease;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .confirmation-btn.yes {
-            background: linear-gradient(145deg, rgba(0, 255, 128, 0.2), rgba(0, 200, 100, 0.1));
-            border-color: #00ff80;
-            color: #ffffff;
-        }
-
-        .confirmation-btn.yes:hover {
-            background: linear-gradient(145deg, rgba(0, 255, 128, 0.4), rgba(0, 200, 100, 0.2));
-            box-shadow: 0 0 20px rgba(0, 255, 128, 0.3);
-            transform: translateY(-2px);
-        }
-
-        .confirmation-btn.no {
-            background: linear-gradient(145deg, rgba(255, 68, 68, 0.2), rgba(255, 0, 0, 0.1));
-            border-color: #ff4444;
-            color: #ffffff;
-        }
-
-        .confirmation-btn.no:hover {
-            background: linear-gradient(145deg, rgba(255, 68, 68, 0.4), rgba(255, 0, 0, 0.2));
-            box-shadow: 0 0 20px rgba(255, 68, 68, 0.3);
-            transform: translateY(-2px);
-        }
-
-        /* Notification System */
-        .notification {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            background: linear-gradient(145deg, rgba(20,25,35,0.95), rgba(10,15,20,0.95));
-            border: 2px solid;
-            border-radius: 10px;
-            padding: 1rem 1.5rem;
-            min-width: 300px;
-            z-index: 1200;
+            position: relative;
+            overflow: hidden;
             backdrop-filter: blur(10px);
-            transform: translateX(100%);
+        }
+
+        .menu-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, 
+                transparent 0%, 
+                rgba(0,255,255,0.2) 50%, 
+                transparent 100%);
+            transition: left 0.5s ease;
+        }
+
+        .menu-button:hover {
+            border-color: rgba(0,255,255,0.8);
+            background: linear-gradient(145deg, 
+                rgba(0,255,255,0.2) 0%, 
+                rgba(0,200,200,0.1) 100%);
+            box-shadow: 0 0 30px rgba(0,255,255,0.4);
+            transform: translateY(-2px);
+        }
+
+        .menu-button:hover::before {
+            left: 100%;
+        }
+
+        .menu-button.primary {
+            background: linear-gradient(145deg, 
+                rgba(255,221,0,0.2) 0%, 
+                rgba(255,180,0,0.1) 100%);
+            border-color: rgba(255,221,0,0.5);
+            color: #ffdd00;
+        }
+
+        .menu-button.primary:hover {
+            border-color: rgba(255,221,0,0.9);
+            background: linear-gradient(145deg, 
+                rgba(255,221,0,0.3) 0%, 
+                rgba(255,180,0,0.2) 100%);
+            box-shadow: 0 0 40px rgba(255,221,0,0.6);
+        }
+
+        .menu-button i {
+            margin-right: 0.8rem;
+            font-size: 1.2rem;
+        }
+
+        /* Social Buttons */
+        .social-buttons {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .social-button {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(145deg, 
+                rgba(100,100,100,0.2) 0%, 
+                rgba(50,50,50,0.1) 100%);
+            border: 2px solid rgba(255,255,255,0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #ffffff;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .social-button:hover {
+            border-color: rgba(255,255,255,0.6);
+            background: linear-gradient(145deg, 
+                rgba(255,255,255,0.2) 0%, 
+                rgba(200,200,200,0.1) 100%);
+            box-shadow: 0 0 20px rgba(255,255,255,0.3);
+            transform: translateY(-2px);
+        }
+
+        .social-button.discord:hover {
+            border-color: #7289DA;
+            box-shadow: 0 0 20px rgba(114,137,218,0.5);
+        }
+
+        .social-button.steam:hover {
+            border-color: #00adee;
+            box-shadow: 0 0 20px rgba(0,173,238,0.5);
+        }
+
+        /* Right Content Area */
+        .right-content {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            padding: 2rem;
+        }
+
+        /* Animated Elements */
+        .floating-elements {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .floating-element {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: rgba(0,255,255,0.6);
+            border-radius: 50%;
+            animation: float 15s linear infinite;
+        }
+
+        .floating-element:nth-child(2n) {
+            background: rgba(255,221,0,0.4);
+            animation-duration: 20s;
+        }
+
+        .floating-element:nth-child(3n) {
+            width: 2px;
+            height: 2px;
+            animation-duration: 25s;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(100vh) translateX(0px);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100px) translateX(100px);
+                opacity: 0;
+            }
+        }
+
+        /* Version Info */
+        .version-info {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            color: rgba(255,255,255,0.4);
+            font-size: 0.8rem;
+            font-family: 'Orbitron', monospace;
+        }
+
+        /* Loading Animation */
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0,0,0,0.9);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            opacity: 0;
+            visibility: hidden;
             transition: all 0.5s ease;
         }
 
-        .notification.show {
-            transform: translateX(0);
-        }
-
-        .notification.success {
-            border-color: #00ff80;
-            box-shadow: 0 0 20px rgba(0, 255, 128, 0.3);
-        }
-
-        .notification.warning {
-            border-color: #ffd700;
-            box-shadow: 0 0 20px rgba(255, 215, 0, 0.3);
-        }
-
-        .notification-content {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-        }
-
-        .notification-icon {
-            font-size: 24px;
-        }
-
-        .notification.success .notification-icon {
-            color: #00ff80;
-        }
-
-        .notification.warning .notification-icon {
-            color: #ffd700;
-        }
-
-        .notification-text {
-            flex: 1;
-        }
-
-        .notification-title {
-            font-family: 'Orbitron', monospace;
-            font-size: 14px;
-            font-weight: 700;
-            color: #ffffff;
-            margin-bottom: 0.2rem;
-        }
-
-        .notification-message {
-            font-size: 12px;
-            color: #cccccc;
-        }
-
-
-
-        /* Effects Panel Simple Styles */
-        .effects-panel-simple {
-            position: absolute;
-            left: 20px;
-            top: 50%;
-            transform: translateY(-50%);
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-            z-index: 100;
-        }
-
-        .effect-icon-simple {
-            width: 32px;
-            height: 32px;
-            border-radius: 6px;
-            border: 2px solid;
-            background: rgba(0,0,0,0.7);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            position: relative;
-            backdrop-filter: blur(3px);
-        }
-
-        .effect-icon-simple.buff {
-            border-color: #00ff80;
-            box-shadow: 0 0 8px rgba(0,255,128,0.4);
-        }
-
-        .effect-icon-simple.debuff {
-            border-color: #ff4444;
-            box-shadow: 0 0 8px rgba(255,68,68,0.4);
-        }
-
-        .effect-icon-simple:hover {
-            transform: scale(1.1);
-        }
-
-        .effect-icon-simple.buff:hover {
-            box-shadow: 0 0 15px rgba(0,255,128,0.7);
-        }
-
-        .effect-icon-simple.debuff:hover {
-            box-shadow: 0 0 15px rgba(255,68,68,0.7);
-        }
-
-        .effect-icon-simple i {
-            font-size: 16px;
-        }
-
-        .effect-icon-simple.buff i {
-            color: #00ff80;
-        }
-
-        .effect-icon-simple.debuff i {
-            color: #ff4444;
-        }
-
-        .effect-tooltip-simple {
-            position: absolute;
-            left: 40px;
-            top: 50%;
-            transform: translateY(-50%);
-            background: linear-gradient(145deg, rgba(20,25,35,0.95), rgba(10,15,20,0.95));
-            border: 2px solid;
-            border-radius: 8px;
-            padding: 0.75rem;
-            min-width: 180px;
-            max-width: 250px;
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.3s ease;
-            z-index: 200;
-            backdrop-filter: blur(10px);
-            pointer-events: none;
-        }
-
-        .effect-icon-simple:hover .effect-tooltip-simple {
+        .loading-overlay.show {
             opacity: 1;
             visibility: visible;
-            transform: translateY(-50%) translateX(5px);
         }
 
-        .effect-icon-simple.buff .effect-tooltip-simple {
-            border-color: #00ff80;
-            box-shadow: 0 0 15px rgba(0,255,128,0.3);
-        }
-
-        .effect-icon-simple.debuff .effect-tooltip-simple {
-            border-color: #ff4444;
-            box-shadow: 0 0 15px rgba(255,68,68,0.3);
-        }
-
-        .tooltip-title-simple {
-            font-family: 'Orbitron', monospace;
-            font-size: 12px;
-            font-weight: 700;
-            margin-bottom: 0.4rem;
-        }
-
-        .effect-icon-simple.buff .tooltip-title-simple {
-            color: #00ff80;
-        }
-
-        .effect-icon-simple.debuff .tooltip-title-simple {
-            color: #ff4444;
-        }
-
-        .tooltip-description-simple {
-            font-size: 11px;
-            color: #ffffff;
-            margin-bottom: 0.4rem;
-            line-height: 1.3;
-        }
-
-        .tooltip-source-simple {
-            font-size: 10px;
-            color: #aaaaaa;
-            font-style: italic;
-            margin-bottom: 0.4rem;
-        }
-
-        .tooltip-value-simple {
-            font-family: 'Orbitron', monospace;
-            font-size: 11px;
-            font-weight: 700;
+        .loading-content {
             text-align: center;
-            padding: 0.2rem;
-            border-radius: 3px;
-            background: rgba(0,0,0,0.3);
+            color: #ffffff;
         }
 
-        .effect-icon-simple.buff .tooltip-value-simple {
-            color: #00ff80;
-            border: 1px solid rgba(0,255,128,0.3);
-        }
-
-        .effect-icon-simple.debuff .tooltip-value-simple {
-            color: #ff4444;
-            border: 1px solid rgba(255,68,68,0.3);
-        }
-
-        /* Expedition Planning Modal Styles */
-        .expedition-planning-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            background: linear-gradient(135deg, rgba(0,15,25,0.75), rgba(5,20,15,0.75));
-            backdrop-filter: blur(5px);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 1000;
-            animation: fadeIn 0.8s ease-out;
-        }
-
-        .expedition-iframe-container {
-            position: relative;
-            width: 95vw;
-            height: 90vh;
-            border-radius: 15px;
-            overflow: hidden;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.5);
-        }
-
-        .expedition-iframe-container iframe {
-            width: 100%;
-            height: 100%;
-            border: none;
-            border-radius: 15px;
-        }
-
-
-
-        /* NPC Selection Modal Styles */
-        .npc-selection-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            background: linear-gradient(135deg, rgba(0,15,25,0.75), rgba(5,20,15,0.75));
-            backdrop-filter: blur(5px);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 1000;
-            animation: fadeIn 0.8s ease-out;
-        }
-
-        .selection-iframe-container {
-            position: relative;
-            width: 95vw;
-            height: 90vh;
-            border-radius: 15px;
-            overflow: hidden;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.5);
-        }
-
-        .selection-iframe-container iframe {
-            width: 100%;
-            height: 100%;
-            border: none;
-            border-radius: 15px;
-        }
-
-        .close-modal-btn {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            width: 40px;
-            height: 40px;
-            background: rgba(255,255,255,0.1);
-            border: 2px solid rgba(255,255,255,0.3);
+        .loading-spinner {
+            width: 50px;
+            height: 50px;
+            border: 3px solid rgba(0,255,255,0.3);
+            border-top: 3px solid #00ffff;
             border-radius: 50%;
-            color: white;
-            font-size: 20px;
-            font-weight: bold;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.3s ease;
-            z-index: 1001;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1rem;
         }
 
-        .close-modal-btn:hover {
-            background: rgba(255,255,255,0.2);
-            border-color: rgba(255,255,255,0.5);
-            transform: scale(1.1);
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
 
-        .background-effects {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            opacity: 0.1;
-            background: 
-                radial-gradient(circle at 20% 30%, rgba(0,150,255,0.1) 0%, transparent 50%),
-                radial-gradient(circle at 80% 70%, rgba(255,100,0,0.1) 0%, transparent 50%),
-                linear-gradient(45deg, transparent 48%, rgba(0,255,150,0.02) 49%, rgba(0,255,150,0.02) 51%, transparent 52%);
-            animation: staticNoise 2s infinite;
-        }
-
-        .selection-container {
-            position: relative;
-            width: 90%;
-            max-width: 1400px;
-            height: 80vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            animation: slideIn 1s ease-out 0.3s both;
-        }
-
-        .selection-header {
-            text-align: center;
-            margin-bottom: 3rem;
-            color: #ffffff;
-        }
-
-        .main-title {
+        .loading-text {
             font-family: 'Orbitron', monospace;
-            font-size: 2.5rem;
-            font-weight: 900;
-            letter-spacing: 3px;
-            margin-bottom: 1rem;
-            text-shadow: 0 0 20px rgba(0,255,150,0.5);
-            animation: glow 2s ease-in-out infinite alternate;
-        }
-
-        .context-info {
             font-size: 1.2rem;
-            color: #00ff96;
-            font-weight: 400;
-            letter-spacing: 1px;
-            opacity: 0.8;
-        }
-
-        .cards-container {
-            display: flex;
-            gap: 150px;
-            justify-content: center;
-            align-items: stretch;
-            flex: 1;
-        }
-
-        .npc-card {
-            width: 600px;
-            height: 700px;
-            background: linear-gradient(145deg, rgba(20,25,35,0.9), rgba(10,15,20,0.9));
-            border-radius: 15px;
-            border: 2px solid rgba(255,255,255,0.1);
-            position: relative;
-            overflow: hidden;
-            transition: all 0.3s ease;
-            cursor: pointer;
-            animation: cardFlicker 1.5s ease-out;
-        }
-
-        .npc-card:hover {
-            transform: translateY(-10px);
-            border-color: var(--faction-color);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.5), 0 0 30px var(--faction-glow);
-        }
-
-        .npc-card.research {
-            --faction-color: #0080ff;
-            --faction-glow: rgba(0,128,255,0.3);
-        }
-
-        .npc-card.military {
-            --faction-color: #00ff80;
-            --faction-glow: rgba(0,255,128,0.3);
-        }
-
-        .card-header {
-            background: var(--faction-color);
-            color: white;
-            padding: 1rem;
-            text-align: center;
-            font-family: 'Orbitron', monospace;
-            font-weight: 700;
-            position: relative;
-        }
-
-        .division-name {
-            font-size: 1.1rem;
             letter-spacing: 2px;
-            margin-bottom: 0.5rem;
-        }
-
-        .role-title {
-            font-size: 0.9rem;
-            opacity: 0.9;
-            letter-spacing: 1px;
-        }
-
-        .faction-icon {
-            position: absolute;
-            right: 1rem;
-            top: 50%;
-            transform: translateY(-50%);
-            font-size: 1.5rem;
-        }
-
-        .portrait-section {
-            height: 300px;
-            background: linear-gradient(135deg, rgba(50,60,80,0.3), rgba(30,40,50,0.3));
-            position: relative;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            overflow: hidden;
-        }
-
-        .character-portrait {
-            width: 280px;
-            height: 280px;
-            background: var(--faction-color);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 4rem;
-            color: white;
-            font-weight: bold;
-            overflow: hidden;
-            border: 4px solid var(--faction-color);
-            box-shadow: 0 0 20px var(--faction-glow);
-        }
-
-        .character-portrait img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            display: block;
-        }
-
-        .character-portrait .fallback-text {
-            position: absolute;
-            display: none;
-        }
-
-        .character-info {
-            padding: 1.5rem;
-            color: white;
-        }
-
-        .character-name {
-            font-family: 'Orbitron', monospace;
-            font-size: 1.8rem;
-            font-weight: 700;
-            margin-bottom: 0.5rem;
-            color: var(--faction-color);
-        }
-
-        .character-role {
-            font-size: 1.1rem;
-            opacity: 0.8;
-            margin-bottom: 1.5rem;
-        }
-
-        .character-quote {
-            font-style: italic;
-            font-size: 1rem;
-            line-height: 1.4;
-            margin-bottom: 2rem;
-            padding: 1rem;
-            background: rgba(0,0,0,0.3);
-            border-left: 3px solid var(--faction-color);
-            border-radius: 0 5px 5px 0;
-            position: relative;
-        }
-
-        .character-quote::before {
-            content: '"';
-            font-size: 2rem;
-            position: absolute;
-            left: 0.5rem;
-            top: 0.2rem;
-            color: var(--faction-color);
-        }
-
-        .benefits-section {
-            margin-bottom: 2rem;
-        }
-
-        .benefits-title {
-            font-family: 'Orbitron', monospace;
-            font-size: 1rem;
-            font-weight: 700;
-            letter-spacing: 1px;
-            margin-bottom: 1rem;
-            color: #ffffff;
-        }
-
-        .benefit-item {
-            display: flex;
-            align-items: center;
-            margin-bottom: 0.8rem;
-            font-size: 1rem;
-        }
-
-        .benefit-icon {
-            color: #00ff96;
-            margin-right: 0.8rem;
-            font-weight: bold;
-        }
-
-        .select-button {
-            width: 100%;
-            padding: 1rem;
-            background: linear-gradient(135deg, var(--faction-color), rgba(255,255,255,0.1));
-            border: none;
-            border-radius: 8px;
-            color: white;
-            font-family: 'Orbitron', monospace;
-            font-size: 1.1rem;
-            font-weight: 700;
-            letter-spacing: 1px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            text-transform: uppercase;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .select-button:hover {
-            background: linear-gradient(135deg, rgba(255,255,255,0.2), var(--faction-color));
-            transform: translateY(-2px);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
-        }
-
-        .cancel-button {
-            position: absolute;
-            bottom: 2rem;
-            left: 50%;
-            transform: translateX(-50%);
-            background: rgba(255,255,255,0.1);
-            border: 1px solid rgba(255,255,255,0.3);
-            color: rgba(255,255,255,0.7);
-            padding: 0.8rem 2rem;
-            border-radius: 25px;
-            font-family: 'Roboto Condensed', sans-serif;
-            font-size: 0.9rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .cancel-button:hover {
-            background: rgba(255,255,255,0.2);
-            color: white;
-        }
-
-        /* Animations */
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-
-        @keyframes slideIn {
-            from { 
-                opacity: 0; 
-                transform: translateY(50px);
-            }
-            to { 
-                opacity: 1; 
-                transform: translateY(0);
-            }
-        }
-
-        @keyframes cardFlicker {
-            0% { opacity: 0; transform: translateX(-20px); }
-            10% { opacity: 0.3; }
-            20% { opacity: 0.1; }
-            30% { opacity: 0.8; }
-            40% { opacity: 0.3; }
-            50% { opacity: 1; transform: translateX(0); }
-            100% { opacity: 1; transform: translateX(0); }
-        }
-
-        @keyframes glow {
-            from { text-shadow: 0 0 20px rgba(0,255,150,0.5); }
-            to { text-shadow: 0 0 30px rgba(0,255,150,0.8), 0 0 40px rgba(0,255,150,0.3); }
-        }
-
-        @keyframes staticNoise {
-            0%, 100% { opacity: 0.1; }
-            50% { opacity: 0.05; }
         }
 
         /* Responsive Design */
-        @media (max-width: 1200px) {
-            .cards-container {
-                gap: 100px;
+        @media (max-width: 768px) {
+            .left-panel {
+                width: 100vw;
+                height: 100vh;
             }
             
-            .npc-card {
-                width: 500px;
-                height: 650px;
-            }
-        }
-
-        @media (max-width: 900px) {
-            .cards-container {
-                flex-direction: column;
-                gap: 2rem;
-                align-items: center;
+            .right-content {
+                display: none;
             }
             
-            .npc-card {
-                width: 400px;
-                height: 600px;
+            .game-title {
+                font-size: 1.5rem;
             }
             
-            .main-title {
-                font-size: 2rem;
+            .logo-image {
+                width: 150px;
             }
         }
     </style>
 </head>
 <body>
-    <!-- Main Game Container -->
-    <div class="game-container">
-        
-        <!-- Clickable Home Building Area -->
-        <div class="home-building-clickable" id="home-building" title="Base Management">
-            <div class="home-building-overlay">
-                <i class="fas fa-tools"></i>
-                <span>UPGRADES</span>
-            </div>
-        </div>
-        
-        <!-- Clickable Soldier Group NPC Area -->
-        <div class="soldier-npc-clickable" id="soldier-npc" title="Soldier Management">
-            <div class="npc-overlay">
-                <i class="fas fa-user-shield"></i>
-                <span>Talk</span>
-            </div>
-        </div>
-        
-        <!-- Clickable Farmer Group NPC Area -->
-        <div class="farmer-npc-clickable" id="farmer-npc" title="Farmer Management">
-            <div class="npc-overlay">
-                <i class="fas fa-seedling"></i>
-                <span>Talk</span>
-            </div>
-        </div>
-        
-        <!-- NPC Recruitment Plus Button -->
-        <div class="npc-recruit-button" id="npc-recruit-btn" title="Recruit Specialist">
-            <div class="recruit-overlay">
-                <i class="fas fa-plus"></i>
-                <span>RECRUIT</span>
-            </div>
-        </div>
-        
-        <!-- Top HUD Panel -->
-        <div class="top-hud">
-            <!-- Resource & Defense Management Panel (Top-Left) -->
-            <div class="resource-panel">
-                <div class="resources-section">
-                    <div class="resource-item" id="resource-display">
-                        <i class="fas fa-cog resource-icon"></i>
-                        <span class="resource-value">245</span>
-                    </div>
-                    <div class="resource-item" id="ammunition-display">
-                        <i class="fas fa-bomb resource-icon"></i>
-                        <span class="resource-value">78</span>
-                    </div>
-                    <div class="resource-item" id="food-display">
-                        <i class="fas fa-apple-alt resource-icon"></i>
-                        <span class="resource-value">52</span>
-                    </div>
-                    <div class="resource-item" id="research-display">
-                        <i class="fas fa-flask resource-icon"></i>
-                        <span class="resource-value">19</span>
-                    </div>
-                    <div class="resource-item population-item" id="population-display">
-                        <i class="fas fa-users resource-icon"></i>
-                        <span class="resource-value">45/60</span>
-                        <i class="fas fa-chevron-right expand-icon"></i>
-                        
-                        <!-- Defense Unit Drawer -->
-                        <div class="defense-drawer" id="defense-drawer">
-                    <div class="drawer-content">
-                        <div class="drawer-item">
-                            <i class="fas fa-user-shield drawer-icon"></i>
-                            <div class="drawer-info">
-                                <span class="drawer-count">25</span>
-                                <span class="drawer-name">Soldiers</span>
-                            </div>
-                            <div class="drawer-pop-cost">
-                                <i class="fas fa-users pop-icon"></i>
-                                <span class="pop-count">25</span>
-                            </div>
-                        </div>
-                        <div class="drawer-item">
-                            <i class="fas fa-gun drawer-icon"></i>
-                            <div class="drawer-info">
-                                <span class="drawer-count">8</span>
-                                <span class="drawer-name">Machine Gun</span>
-                            </div>
-                            <div class="drawer-pop-cost">
-                                <i class="fas fa-users pop-icon"></i>
-                                <span class="pop-count">8</span>
-                            </div>
-                        </div>
-                        <div class="drawer-item">
-                            <i class="fas fa-rocket drawer-icon"></i>
-                            <div class="drawer-info">
-                                <span class="drawer-count">5</span>
-                                <span class="drawer-name">Rockets</span>
-                            </div>
-                            <div class="drawer-pop-cost">
-                                <i class="fas fa-users pop-icon"></i>
-                                <span class="pop-count">5</span>
-                            </div>
-                        </div>
-                        <div class="drawer-item">
-                            <i class="fas fa-mortar-pestle drawer-icon"></i>
-                            <div class="drawer-info">
-                                <span class="drawer-count">2</span>
-                                <span class="drawer-name">Mortars</span>
-                            </div>
-                            <div class="drawer-pop-cost">
-                                <i class="fas fa-users pop-icon"></i>
-                                <span class="pop-count">2</span>
-                            </div>
-                        </div>
-                        <div class="drawer-item">
-                            <i class="fas fa-circle-dot drawer-icon"></i>
-                            <div class="drawer-info">
-                                <span class="drawer-count">12</span>
-                                <span class="drawer-name">Mines</span>
-                            </div>
-                            <div class="drawer-pop-cost">
-                                <i class="fas fa-users pop-icon zero-cost"></i>
-                                <span class="pop-count zero-cost">0</span>
-                            </div>
-                        </div>
-                        <div class="drawer-item">
-                            <i class="fas fa-cubes drawer-icon"></i>
-                            <div class="drawer-info">
-                                <span class="drawer-count">18</span>
-                                <span class="drawer-name">Walls</span>
-                            </div>
-                            <div class="drawer-pop-cost">
-                                <i class="fas fa-users pop-icon zero-cost"></i>
-                                <span class="pop-count zero-cost">0</span>
-                            </div>
-                        </div>
-                        <div class="drawer-item">
-                            <i class="fas fa-chess-rook drawer-icon"></i>
-                            <div class="drawer-info">
-                                <span class="drawer-count">4</span>
-                                <span class="drawer-name">Outposts</span>
-                            </div>
-                            <div class="drawer-pop-cost">
-                                <i class="fas fa-users pop-icon"></i>
-                                <span class="pop-count">4</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                    </div>
-                </div>
-                
+    <!-- Custom Cursor -->
+    <div class="custom-cursor"></div>
 
-            </div>
-
-            <!-- Effects Panel -->
-            <div class="effects-panel-simple" id="effectsPanel">
-                <!-- Effects will be populated here -->
-            </div>
-            
-            <!-- Unified Command Panel (TOP-CENTER) -->
-            <div class="unified-command-panel">
-                <!-- Base Health Section -->
-                <div class="command-section health-section">
-                    <i class="fas fa-heart section-icon"></i>
-                    <div class="health-info">
-                        <div class="health-bar">
-                            <div class="health-fill" style="width: 78%"></div>
-                        </div>
-                        <span class="health-text">78%</span>
-                    </div>
-                </div>
-                
-                <!-- Day Progress Section -->
-                <div class="command-section day-section">
-                    <div class="day-icon">
-                        <i class="fas fa-sun" id="day-night-icon"></i>
-                    </div>
-                    <div class="day-counter">DAY 5</div>
-                    <div class="progress-border" id="progress-border">
-                        <div class="progress-fill" id="progress-fill"></div>
-                    </div>
-                </div>
-                
-                <!-- End Day Section -->
-                <div class="command-section end-day-section">
-                    <button class="end-day-btn" id="end-day-btn">
-                        END DAY
-                    </button>
-                </div>
-            </div>
-            
-            <!-- Game Controls & Management (Top-Right) -->
-            <div class="game-controls">
-                <div class="control-buttons">
-                    <div class="speed-controls">
-                        <button class="control-btn" id="pause-btn">
-                            <i class="fas fa-pause"></i>
-                        </button>
-                        <button class="control-btn active" id="play-btn">
-                            <i class="fas fa-play"></i>
-                        </button>
-                        <button class="control-btn" id="speed-2x-btn">
-                            <i class="fas fa-forward"></i>
-                            <span>2x</span>
-                        </button>
-                        <button class="control-btn" id="speed-3x-btn">
-                            <i class="fas fa-fast-forward"></i>
-                            <span>3x</span>
-                        </button>
-                    </div>
-                    
-                    <button class="settings-btn">
-                        <i class="fas fa-cog"></i>
-                    </button>
-                </div>
-            </div>
-        </div>
-        
-        <!-- Bottom HUD Panel -->
-        <div class="bottom-hud">
-            <!-- Building Cards Panel -->
-            <div class="building-cards-container">
-                <div class="cards-header">
-                    <div class="refresh-section">
-                        <button class="refresh-cards-btn" id="refresh-cards-btn">
-                            <i class="fas fa-sync-alt"></i>
-                        </button>
-                        <div class="refresh-count" id="refresh-count">5/5</div>
-                    </div>
-                </div>
-                <div class="building-cards">
-                    <img src="Cards/Factory.png" alt="Factory" class="building-card-img affordable" data-cost="150">
-                    <img src="Cards/House.png" alt="Barracks" class="building-card-img affordable" data-cost="120">
-                    <img src="Cards/Ammo.png" alt="Ammo Factory" class="building-card-img unaffordable" data-cost="400">
-                </div>
-            </div>
-        </div>
-        
-        <!-- Breaking News Ticker (Fixed at bottom) -->
-        <div class="breaking-news-bottom">
-            <div class="news-label">BREAKING NEWS</div>
-            <div class="news-ticker-bottom">
-                <span class="news-text-bottom">Infection has spread to every city in USA • Military forces retreating to safe zones • Emergency broadcasts report 89% population loss • Government declares martial law in remaining territories • Survivors advised to fortify positions immediately</span>
-            </div>
-        </div>
-        
-        <!-- Defense Units Section (Bottom-Left) -->
-        <div class="defense-units-section">
-            <h3>Defense Units</h3>
-            
-            <div class="unit-row">
-                <div class="unit-item">
-                    <div class="unit-info">
-                        <i class="fas fa-user-shield unit-icon"></i>
-                        <span class="unit-name">Soldiers</span>
-                    </div>
-                    <div class="unit-controls">
-                        <button class="unit-button" data-unit="soldier">
-                            <span>25</span>
-                        </button>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="unit-row">
-                <div class="unit-item">
-                    <div class="unit-info">
-                        <i class="fas fa-gun unit-icon"></i>
-                        <span class="unit-name">Machine Gun</span>
-                    </div>
-                    <div class="unit-controls">
-                        <button class="plus-button" data-cost="10" data-unit="mg">
-                            <i class="fas fa-plus"></i>
-                        </button>
-                        <button class="unit-button" data-unit="mg">
-                            <span>8</span>
-                        </button>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="unit-row">
-                <div class="unit-item">
-                    <div class="unit-info">
-                        <i class="fas fa-rocket unit-icon"></i>
-                        <span class="unit-name">Rockets</span>
-                    </div>
-                    <div class="unit-controls">
-                        <button class="plus-button" data-cost="25" data-unit="rocket">
-                            <i class="fas fa-plus"></i>
-                        </button>
-                        <button class="unit-button" data-unit="rocket">
-                            <span>5</span>
-                        </button>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="unit-row">
-                <div class="unit-item">
-                    <div class="unit-info">
-                        <i class="fas fa-mortar-pestle unit-icon"></i>
-                        <span class="unit-name">Mortars</span>
-                    </div>
-                    <div class="unit-controls">
-                        <button class="plus-button" data-cost="30" data-unit="mortar">
-                            <i class="fas fa-plus"></i>
-                        </button>
-                        <button class="unit-button" data-unit="mortar">
-                            <span>2</span>
-                        </button>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="unit-row">
-                <div class="unit-item">
-                    <div class="unit-info">
-                        <i class="fas fa-circle-dot unit-icon"></i>
-                        <span class="unit-name">Mines</span>
-                    </div>
-                    <div class="unit-controls">
-                        <button class="plus-button" data-cost="15" data-unit="mine">
-                            <i class="fas fa-plus"></i>
-                        </button>
-                        <button class="unit-button" data-unit="mine">
-                            <span>12</span>
-                        </button>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="unit-row">
-                <div class="unit-item">
-                    <div class="unit-info">
-                        <i class="fas fa-cubes unit-icon"></i>
-                        <span class="unit-name">Walls</span>
-                    </div>
-                    <div class="unit-controls">
-                        <button class="plus-button" data-cost="8" data-unit="wall">
-                            <i class="fas fa-plus"></i>
-                        </button>
-                        <button class="unit-button" data-unit="wall">
-                            <span>18</span>
-                        </button>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="unit-row">
-                <div class="unit-item">
-                    <div class="unit-info">
-                        <i class="fas fa-chess-rook unit-icon"></i>
-                        <span class="unit-name">Outposts</span>
-                    </div>
-                    <div class="unit-controls">
-                        <button class="plus-button" data-cost="40" data-unit="outpost">
-                            <i class="fas fa-plus"></i>
-                        </button>
-                        <button class="unit-button" data-unit="outpost">
-                            <span>4</span>
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
-        
-        <!-- NPC Dialogue Popup -->
-        <div class="npc-dialogue-popup" id="npcDialogue">
-            <!-- Character Portrait Panel -->
-            <div class="character-panel">
-                <div class="character-portrait">
-                    <div class="character-avatar farmer-avatar" id="characterAvatar">👨‍🌾</div>
-                </div>
-                <div class="character-info">
-                    <div class="character-name" id="characterName">Jake Morrison</div>
-                    <div class="character-title" id="characterTitle">Crop Specialist</div>
-                </div>
-                <div class="audio-indicator">
-                    <div class="audio-bar"></div>
-                    <div class="audio-bar"></div>
-                    <div class="audio-bar"></div>
-                    <div class="audio-bar"></div>
-                    <div class="audio-bar"></div>
-                    <div class="audio-bar"></div>
-                    <div class="audio-bar"></div>
-                    <div class="audio-bar"></div>
-                </div>
-            </div>
-
-            <!-- Transmission Panel -->
-            <div class="transmission-panel">
-                <div class="transmission-header">
-                    <div class="transmission-title">TRANSMISSION</div>
-                    <div class="signal-controls">
-                        <div class="signal-strength">
-                            <div class="signal-bar"></div>
-                            <div class="signal-bar"></div>
-                            <div class="signal-bar"></div>
-                        </div>
-                        <div class="audio-controls">
-                            <div class="control-btn-audio">🔊</div>
-                            <div class="control-btn-audio">⏸</div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="dialogue-content">
-                    <div class="dialogue-text" id="dialogueText">
-                        "Harvest is coming in strong this season, should keep the city fed for months."
-                    </div>
-                    
-                    <div class="waveform-display">
-                        <div class="wave-bar"></div>
-                        <div class="wave-bar"></div>
-                        <div class="wave-bar"></div>
-                        <div class="wave-bar"></div>
-                        <div class="wave-bar"></div>
-                        <div class="wave-bar"></div>
-                        <div class="wave-bar"></div>
-                        <div class="wave-bar"></div>
-                        <div class="wave-bar"></div>
-                        <div class="wave-bar"></div>
-                        <div class="wave-bar"></div>
-                        <div class="wave-bar"></div>
-                        <div class="wave-bar"></div>
-                        <div class="wave-bar"></div>
-                        <div class="wave-bar"></div>
-                        <div class="wave-bar"></div>
-                        <div class="wave-bar"></div>
-                        <div class="wave-bar"></div>
-                        <div class="wave-bar"></div>
-                        <div class="wave-bar"></div>
-                    </div>
-                </div>
-
-                <div class="timestamp" id="timestamp">REC 07:23 :14</div>
-            </div>
-        </div>
-        
-        <!-- Tooltip -->
-        <div class="tooltip" id="tooltip"></div>
-    </div>
+    <!-- Background Video -->
+    <video class="video-background" autoplay muted loop>
+        <source src="mainmenuvideo.mp4" type="video/mp4">
+        <!-- Fallback for browsers that don't support video -->
+        <div style="background: linear-gradient(135deg, #1a1a2e, #16213e, #0f3460); width: 100vw; height: 100vh;"></div>
+    </video>
     
-    <!-- Boosters Button -->
-    <div class="boosters-button" id="boostersBtn" onclick="toggleBoostersDrawer()">
-        <div class="boosters-overlay">
-            <i class="fas fa-bolt"></i>
-            <span>BOOSTERS</span>
+    <!-- Video Overlay -->
+    <div class="video-overlay"></div>
+
+    <!-- Main Menu Container -->
+    <div class="main-menu-container">
+        <!-- Left Panel -->
+        <div class="left-panel">
+            <!-- Logo Container -->
+            <div class="logo-container">
+                <img src="CDZLogoNew.png" alt="City Defense Z" class="logo-image">
+                <div class="game-title">CITY DEFENSE</div>
+                <div class="game-subtitle">SURVIVAL STRATEGY</div>
+            </div>
+
+            <!-- Menu Buttons -->
+            <div class="menu-buttons">
+                <button class="menu-button primary" onclick="startGame()">
+                    <i class="fas fa-play"></i>PLAY
+                </button>
+                <button class="menu-button" onclick="newGame()">
+                    <i class="fas fa-plus"></i>NEW GAME
+                </button>
+                <button class="menu-button" onclick="showLeaderboard()">
+                    <i class="fas fa-trophy"></i>LEADERBOARD
+                </button>
+                <button class="menu-button" onclick="showSettings()">
+                    <i class="fas fa-cog"></i>SETTINGS
+                </button>
+                <button class="menu-button" onclick="exitGame()">
+                    <i class="fas fa-power-off"></i>EXIT
+                </button>
+            </div>
+
+            <!-- Social Buttons -->
+            <div class="social-buttons">
+                <button class="social-button discord" onclick="openDiscord()" title="Join Discord">
+                    <i class="fab fa-discord"></i>
+                </button>
+                <button class="social-button steam" onclick="openReview()" title="Leave Review">
+                    <i class="fas fa-star"></i>
+                </button>
+            </div>
         </div>
-        <i class="fas fa-chevron-left expand-icon" id="boostersExpandIcon"></i>
-        
-        <!-- Boosters Drawer -->
-        <div class="boosters-drawer" id="boostersDrawer">
-            <div class="drawer-content">
-                
-                <div class="boosters-list" id="boostersList">
-                    <!-- Boosters will be populated here -->
-                </div>
+
+        <!-- Right Content Area -->
+        <div class="right-content">
+            <!-- Floating Animation Elements -->
+            <div class="floating-elements" id="floatingElements">
+                <!-- Floating particles will be generated here -->
             </div>
         </div>
     </div>
 
-    <!-- Expedition Planning Button -->
-    <div class="expedition-planning-button" id="expeditionPlanningBtn" onclick="showExpeditionPlanningModal()">
-        <div class="expedition-overlay">
-            <i class="fas fa-map-marked-alt"></i>
-            <span>EXPEDITIONS</span>
+    <!-- Version Info -->
+    <div class="version-info">
+        v1.0.0 ALPHA | CITY DEFENSE Z
+    </div>
+
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="loading-content">
+            <div class="loading-spinner"></div>
+            <div class="loading-text">LOADING...</div>
         </div>
     </div>
 
-
-    
-    <!-- Expedition Planning Modal (IFrame Popup) -->
-    <div class="expedition-planning-overlay" id="expeditionPlanningModal" style="display: none;">
-        <div class="expedition-iframe-container">
-            <iframe id="expeditionPlanningFrame" src="expedition-planning.html" frameborder="0"></iframe>
-            <button class="close-modal-btn" onclick="closeExpeditionPlanningModal()">✕</button>
-        </div>
-    </div>
-    
-    <!-- NPC Selection Modal (IFrame Popup) -->
-    <div class="npc-selection-overlay" id="npcSelectionModal" style="display: none;">
-        <div class="selection-iframe-container">
-            <iframe id="npcSelectionFrame" src="npcselection.html" frameborder="0"></iframe>
-            <button class="close-modal-btn" onclick="closeNPCSelectionModal()">✕</button>
-        </div>
-    </div>
-
-    <!-- AOE Targeting Overlay -->
-    <div class="aoe-targeting-overlay" id="aoeTargetingOverlay">
-        <div class="aoe-circle" id="aoeCircle"></div>
-    </div>
-
-    <!-- Booster Confirmation Modal -->
-    <div class="booster-confirmation-modal" id="boosterConfirmationModal" style="display: none;">
-        <div class="confirmation-box">
-            <div class="confirmation-icon" id="confirmationIcon">⚡</div>
-            <div class="confirmation-title" id="confirmationTitle">Use Booster?</div>
-            <div class="confirmation-message" id="confirmationMessage">Are you sure you want to use this booster?</div>
-            <div class="confirmation-buttons">
-                <button class="confirmation-btn yes" onclick="confirmBoosterUse()">Yes</button>
-                <button class="confirmation-btn no" onclick="cancelBoosterUse()">No</button>
-            </div>
-        </div>
-    </div>
-
-
-    
-    <script src="script.js"></script>
-    
     <script>
-        // Expedition Planning Modal Functions
-        function showExpeditionPlanningModal() {
-            const modal = document.getElementById('expeditionPlanningModal');
-            modal.style.display = 'flex';
-            modal.style.animation = 'fadeIn 0.8s ease-out';
-            console.log('Expedition Planning Modal opened');
-        }
+        // Custom cursor
+        const cursor = document.querySelector('.custom-cursor');
+        let mouseX = 0;
+        let mouseY = 0;
 
-        function closeExpeditionPlanningModal() {
-            const modal = document.getElementById('expeditionPlanningModal');
-            modal.style.animation = 'fadeOut 0.5s ease-out forwards';
-            
-            setTimeout(() => {
-                modal.style.display = 'none';
-            }, 500);
-            console.log('Expedition Planning Modal closed');
-        }
+        document.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+            cursor.style.left = mouseX + 'px';
+            cursor.style.top = mouseY + 'px';
+        });
 
-        // NPC Selection Modal Functions
-        function showNPCSelectionModal() {
-            const modal = document.getElementById('npcSelectionModal');
-            modal.style.display = 'flex';
-            modal.style.animation = 'fadeIn 0.8s ease-out';
-            console.log('NPC Selection Modal opened');
-        }
-
-        function closeNPCSelectionModal() {
-            const modal = document.getElementById('npcSelectionModal');
-            modal.style.animation = 'fadeOut 0.5s ease-out forwards';
-            
-            setTimeout(() => {
-                modal.style.display = 'none';
-            }, 500);
-            console.log('NPC Selection Modal closed');
-        }
-
-        // Effects System for HUD
-        let hudGameState = {
-            npcs: {
-                soldier: false,
-                medic: false,
-                engineer: false,
-                scout: false
-            },
-            resources: {
-                food: 52, // Match the HUD display
-                population: 45, // Match the HUD display
-                dailyFoodRequirement: 2
-            },
-            effects: {
-                buffs: [],
-                debuffs: []
-            }
-        };
-
-        // Effect definitions for HUD
-        const hudEffectDefinitions = {
-            soldier_leadership: {
-                id: "soldier_leadership",
-                name: "Soldier's Leadership",
-                type: "buff",
-                source: "Sgt. Jackson",
-                icon: "fas fa-chevron-up",
-                description: "All soldiers deal increased damage",
-                value: "+20% Damage",
-                category: "combat"
-            },
-            medical_support: {
-                id: "medical_support",
-                name: "Medical Support",
-                type: "buff",
-                source: "Dr. Chen",
-                icon: "fas fa-plus-circle",
-                description: "Enhanced healing rate for all units",
-                value: "+30% Healing",
-                category: "support"
-            },
-            engineering_expertise: {
-                id: "engineering_expertise",
-                name: "Engineering Expertise",
-                type: "buff",
-                source: "Maya Rodriguez",
-                icon: "fas fa-cog",
-                description: "Faster building construction speed",
-                value: "+25% Build Speed",
-                category: "construction"
-            },
-            scout_intel: {
-                id: "scout_intel",
-                name: "Scout's Intelligence",
-                type: "buff",
-                source: "Marcus Reed",
-                icon: "fas fa-eye",
-                description: "Improved resource gathering efficiency",
-                value: "+15% Resources",
-                category: "economy"
-            },
-            hunger_debuff: {
-                id: "hunger_debuff",
-                name: "Hunger",
-                type: "debuff",
-                source: "Food Shortage",
-                icon: "fas fa-skull",
-                description: "Soldiers weakened by lack of food",
-                value: "-50% Damage & HP",
-                category: "survival",
-                severity: "critical"
-            }
-        };
-
-        function updateHUDEffectsDisplay() {
-            const effectsPanel = document.getElementById('effectsPanel');
-
-            // Clear existing effects
-            effectsPanel.innerHTML = '';
-
-            // Combine all effects (buffs and debuffs)
-            const allEffects = [
-                ...hudGameState.effects.buffs.map(id => hudEffectDefinitions[id]),
-                ...hudGameState.effects.debuffs.map(id => hudEffectDefinitions[id])
-            ].filter(effect => effect); // Remove any undefined effects
-
-            // Display all effects vertically
-            allEffects.forEach(effect => {
-                effectsPanel.appendChild(createSimpleEffectIcon(effect));
+        // Cursor hover effects
+        document.querySelectorAll('button, .social-button').forEach(button => {
+            button.addEventListener('mouseenter', () => {
+                cursor.classList.add('hover');
             });
-        }
-
-        function createSimpleEffectIcon(effect) {
-            const icon = document.createElement('div');
-            icon.className = `effect-icon-simple ${effect.type}`;
             
-            icon.innerHTML = `
-                <i class="${effect.icon}"></i>
-                <div class="effect-tooltip-simple">
-                    <div class="tooltip-title-simple">${effect.name}</div>
-                    <div class="tooltip-description-simple">${effect.description}</div>
-                    <div class="tooltip-source-simple">Source: ${effect.source}</div>
-                    <div class="tooltip-value-simple">${effect.value}</div>
-                </div>
-            `;
+            button.addEventListener('mouseleave', () => {
+                cursor.classList.remove('hover');
+            });
+        });
 
-            return icon;
-        }
-
-        function checkHUDHungerDebuff() {
-            const requiredFood = hudGameState.resources.population * hudGameState.resources.dailyFoodRequirement;
-            const hasHungerDebuff = hudGameState.effects.debuffs.includes('hunger_debuff');
-
-            if (hudGameState.resources.food < requiredFood) {
-                // Apply hunger debuff
-                if (!hasHungerDebuff) {
-                    hudGameState.effects.debuffs.push('hunger_debuff');
-                }
-            } else {
-                // Remove hunger debuff
-                if (hasHungerDebuff) {
-                    hudGameState.effects.debuffs = hudGameState.effects.debuffs.filter(id => id !== 'hunger_debuff');
-                }
-            }
-
-            updateHUDEffectsDisplay();
-        }
-
-        // Demo functions to test the system (remove in production)
-        function toggleHUDNPCBuff(npcType) {
-            const npcEffectMap = {
-                soldier: 'soldier_leadership',
-                medic: 'medical_support',
-                engineer: 'engineering_expertise',
-                scout: 'scout_intel'
-            };
-
-            const effectId = npcEffectMap[npcType];
-            if (!effectId) return;
-
-            hudGameState.npcs[npcType] = !hudGameState.npcs[npcType];
-
-            if (hudGameState.npcs[npcType]) {
-                // Add buff
-                if (!hudGameState.effects.buffs.includes(effectId)) {
-                    hudGameState.effects.buffs.push(effectId);
-                }
-            } else {
-                // Remove buff
-                hudGameState.effects.buffs = hudGameState.effects.buffs.filter(id => id !== effectId);
-            }
-
-            updateHUDEffectsDisplay();
-        }
-
-        // Initialize HUD effects system
-        function initializeHUDEffects() {
-            checkHUDHungerDebuff();
-            updateHUDEffectsDisplay();
+        // Generate floating particles
+        function createFloatingElements() {
+            const container = document.getElementById('floatingElements');
             
-            // Demo: Add some initial effects for testing
+            for (let i = 0; i < 50; i++) {
+                const element = document.createElement('div');
+                element.className = 'floating-element';
+                element.style.left = Math.random() * 100 + '%';
+                element.style.animationDelay = Math.random() * 15 + 's';
+                element.style.animationDuration = (15 + Math.random() * 10) + 's';
+                container.appendChild(element);
+            }
+        }
+
+        // Menu button functions
+        function startGame() {
+            showLoading();
             setTimeout(() => {
-                toggleHUDNPCBuff('soldier');
-                toggleHUDNPCBuff('medic');
+                window.location.href = 'save-selection.html?mode=continue';
             }, 2000);
         }
 
-        // Boosters System
-        let boostersState = {
-            isDrawerOpen: false,
-            currentBooster: null,
-            isTargeting: false,
-            boosters: [
-                {
-                    id: 'repair_blast',
-                    name: 'Repair Blast',
-                    description: 'Instantly repairs all buildings in target area',
-                    icon: 'fas fa-tools',
-                    type: 'aoe',
-                    aoeRadius: 100,
-                    count: 3
-                },
-                {
-                    id: 'damage_boost',
-                    name: 'Damage Amplifier',
-                    description: 'Increases all unit damage in target area for 30 seconds',
-                    icon: 'fas fa-crosshairs',
-                    type: 'aoe',
-                    aoeRadius: 80,
-                    count: 2
-                },
-                {
-                    id: 'resource_collector',
-                    name: 'Resource Collector',
-                    description: 'Next 6 resource collections are doubled',
-                    icon: 'fas fa-gem',
-                    type: 'passive',
-                    count: 4
-                },
-                {
-                    id: 'speed_boost',
-                    name: 'Speed Boost',
-                    description: 'All units move 50% faster for 60 seconds',
-                    icon: 'fas fa-tachometer-alt',
-                    type: 'passive',
-                    count: 2
-                },
-                {
-                    id: 'shield_dome',
-                    name: 'Shield Dome',
-                    description: 'Creates protective shield over target area',
-                    icon: 'fas fa-shield-alt',
-                    type: 'aoe',
-                    aoeRadius: 120,
-                    count: 1
-                }
-            ]
-        };
-
-        function toggleBoostersDrawer() {
-            const button = document.getElementById('boostersBtn');
-            const drawer = document.getElementById('boostersDrawer');
-            const expandIcon = document.getElementById('boostersExpandIcon');
-            const boostersList = document.getElementById('boostersList');
-
-            boostersState.isDrawerOpen = !boostersState.isDrawerOpen;
-
-            if (boostersState.isDrawerOpen) {
-                button.classList.add('expanded');
-                drawer.classList.add('expanded');
-                expandIcon.style.transform = 'translateY(-50%) rotate(180deg)';
-                
-                // Wait for drawer animation to complete before populating
-                setTimeout(() => {
-                    populateBoostersList();
-                }, 150);
-            } else {
-                // Hide tooltip when closing drawer
-                if (globalBoosterTooltip) {
-                    globalBoosterTooltip.classList.remove('show');
-                    globalBoosterTooltip.style.display = 'none';
-                }
-                
-                // Clear booster items immediately to prevent display issues
-                if (boostersList) {
-                    boostersList.innerHTML = '';
-                }
-                
-                button.classList.remove('expanded');
-                drawer.classList.remove('expanded');
-                expandIcon.style.transform = 'translateY(-50%) rotate(0deg)';
-            }
-        }
-
-        function populateBoostersList() {
-            const boostersList = document.getElementById('boostersList');
-
-            // Clear existing items
-            boostersList.innerHTML = '';
-
-            // Populate boosters
-            boostersState.boosters.forEach(booster => {
-                if (booster.count > 0) {
-                    const boosterItem = createBoosterItem(booster);
-                    boostersList.appendChild(boosterItem);
-                }
-            });
-        }
-
-        // Global tooltip element
-        let globalBoosterTooltip = null;
-
-        function createGlobalBoosterTooltip() {
-            if (!globalBoosterTooltip) {
-                globalBoosterTooltip = document.createElement('div');
-                globalBoosterTooltip.className = 'booster-tooltip global-tooltip';
-                globalBoosterTooltip.style.display = 'none';
-                document.body.appendChild(globalBoosterTooltip);
-            }
-            return globalBoosterTooltip;
-        }
-
-        function createBoosterItem(booster) {
-            const item = document.createElement('div');
-            item.className = 'booster-item';
-            item.onclick = () => selectBooster(booster);
-
-            const typeText = booster.type === 'aoe' ? 'AOE Targetable' : 'Passive Booster';
-
-            item.innerHTML = `
-                <i class="${booster.icon}"></i>
-                <div class="booster-count-badge">${booster.count}</div>
-            `;
-
-            // Add mouse event listeners for global tooltip
-            item.addEventListener('mouseenter', function(e) {
-                const tooltip = createGlobalBoosterTooltip();
-                const rect = this.getBoundingClientRect();
-                
-                console.log('Booster hover detected:', booster.name, 'Rect:', rect);
-                
-                // Update tooltip content
-                tooltip.innerHTML = `
-                    <div class="booster-tooltip-title">${booster.name}</div>
-                    <div class="booster-tooltip-description">${booster.description}</div>
-                    <div class="booster-tooltip-type">${typeText}</div>
-                `;
-                
-                // Calculate optimal position for tooltip
-                let left = rect.left - 220; // Default to left side
-                let top = rect.top - 10;
-                
-                // If tooltip would go off left edge, position it to the right
-                if (left < 10) {
-                    left = rect.right + 15;
-                }
-                
-                // If tooltip would go off top edge, position it below
-                if (top < 10) {
-                    top = rect.bottom + 10;
-                }
-                
-                // If tooltip would go off bottom edge, position it above
-                if (top + 150 > window.innerHeight) {
-                    top = rect.top - 160;
-                }
-                
-                tooltip.style.left = left + 'px';
-                tooltip.style.top = top + 'px';
-                tooltip.classList.add('show');
-                
-                console.log('Tooltip positioned at:', left, top, 'Element:', tooltip);
-            });
-
-            item.addEventListener('mouseleave', function(e) {
-                if (globalBoosterTooltip) {
-                    globalBoosterTooltip.classList.remove('show');
-                }
-            });
-
-            return item;
-        }
-
-        function selectBooster(booster) {
-            boostersState.currentBooster = booster;
-
-            if (booster.type === 'aoe') {
-                // Start AOE targeting
-                startAOETargeting(booster);
-            } else if (booster.type === 'passive') {
-                // Show confirmation modal
-                showBoosterConfirmation(booster);
-            }
-
-            // Close drawer
-            toggleBoostersDrawer();
-        }
-
-        function startAOETargeting(booster) {
-            boostersState.isTargeting = true;
-            const overlay = document.getElementById('aoeTargetingOverlay');
-            const circle = document.getElementById('aoeCircle');
-
-            // Setup AOE circle
-            const radius = booster.aoeRadius;
-            circle.style.width = radius * 2 + 'px';
-            circle.style.height = radius * 2 + 'px';
-
-            // Show overlay
-            overlay.style.display = 'block';
-
-            // Add mouse move listener
-            overlay.addEventListener('mousemove', updateAOEPosition);
-            overlay.addEventListener('click', executeAOEBooster);
-
-            // Add escape key listener
-            document.addEventListener('keydown', cancelAOETargeting);
-        }
-
-        function updateAOEPosition(event) {
-            const circle = document.getElementById('aoeCircle');
-            const radius = parseInt(circle.style.width) / 2;
-            
-            circle.style.left = (event.clientX - radius) + 'px';
-            circle.style.top = (event.clientY - radius) + 'px';
-        }
-
-        function executeAOEBooster(event) {
-            if (!boostersState.isTargeting) return;
-
-            const booster = boostersState.currentBooster;
-            
-            // Use the booster
-            useBooster(booster);
-            
-            // Show effect at click position
-            showAOEEffect(event.clientX, event.clientY, booster);
-            
-            // Clean up
-            endAOETargeting();
-            
-            // Show notification
-            showNotification('success', 'Booster Used!', `${booster.name} activated at target location!`);
-        }
-
-        function cancelAOETargeting(event) {
-            if (event.key === 'Escape' && boostersState.isTargeting) {
-                endAOETargeting();
-            }
-        }
-
-        function endAOETargeting() {
-            boostersState.isTargeting = false;
-            const overlay = document.getElementById('aoeTargetingOverlay');
-            
-            overlay.style.display = 'none';
-            overlay.removeEventListener('mousemove', updateAOEPosition);
-            overlay.removeEventListener('click', executeAOEBooster);
-            document.removeEventListener('keydown', cancelAOETargeting);
-            
-            boostersState.currentBooster = null;
-        }
-
-        function showAOEEffect(x, y, booster) {
-            // Create visual effect at target location
-            const effect = document.createElement('div');
-            effect.style.position = 'fixed';
-            effect.style.left = (x - booster.aoeRadius) + 'px';
-            effect.style.top = (y - booster.aoeRadius) + 'px';
-            effect.style.width = (booster.aoeRadius * 2) + 'px';
-            effect.style.height = (booster.aoeRadius * 2) + 'px';
-            effect.style.border = '3px solid #00ff80';
-            effect.style.borderRadius = '50%';
-            effect.style.background = 'rgba(0, 255, 128, 0.3)';
-            effect.style.boxShadow = '0 0 30px rgba(0, 255, 128, 0.6)';
-            effect.style.animation = 'aoeBlast 1s ease-out forwards';
-            effect.style.pointerEvents = 'none';
-            effect.style.zIndex = '1500';
-
-            document.body.appendChild(effect);
-
-            // Add blast animation
-            const style = document.createElement('style');
-            style.textContent = `
-                @keyframes aoeBlast {
-                    0% { transform: scale(0); opacity: 1; }
-                    50% { transform: scale(1); opacity: 0.8; }
-                    100% { transform: scale(1.2); opacity: 0; }
-                }
-            `;
-            document.head.appendChild(style);
-
-            // Remove effect after animation
+        function newGame() {
+            showLoading();
             setTimeout(() => {
-                document.body.removeChild(effect);
-                document.head.removeChild(style);
-            }, 1000);
+                // Clear any saved game data
+                localStorage.clear();
+                window.location.href = 'save-selection.html?mode=newgame';
+            }, 2000);
         }
 
-        function showBoosterConfirmation(booster) {
-            const modal = document.getElementById('boosterConfirmationModal');
-            const icon = document.getElementById('confirmationIcon');
-            const title = document.getElementById('confirmationTitle');
-            const message = document.getElementById('confirmationMessage');
-
-            icon.innerHTML = `<i class="${booster.icon}"></i>`;
-            title.textContent = `Use ${booster.name}?`;
-            message.textContent = `${booster.description}\n\nThis will consume 1 ${booster.name}. Continue?`;
-
-            modal.style.display = 'flex';
-        }
-
-        function confirmBoosterUse() {
-            const booster = boostersState.currentBooster;
-            
-            // Use the booster
-            useBooster(booster);
-            
-            // Add to active effects if it's a passive booster
-            if (booster.type === 'passive') {
-                addPassiveBoosterEffect(booster);
-            }
-            
-            // Close modal
-            cancelBoosterUse();
-            
-            // Show notification
-            showNotification('success', 'Booster Activated!', `${booster.name} is now active!`);
-        }
-
-        function cancelBoosterUse() {
-            const modal = document.getElementById('boosterConfirmationModal');
-            modal.style.display = 'none';
-            boostersState.currentBooster = null;
-        }
-
-        function useBooster(booster) {
-            // Decrease count
-            const boosterIndex = boostersState.boosters.findIndex(b => b.id === booster.id);
-            if (boosterIndex !== -1) {
-                boostersState.boosters[boosterIndex].count--;
-            }
-            
-            // Update drawer if open
-            if (boostersState.isDrawerOpen) {
-                populateBoostersList();
-            }
-        }
-
-        function addPassiveBoosterEffect(booster) {
-            // Add booster effect to the effects system
-            const effectId = booster.id + '_effect';
-            
-            // Create effect definition
-            hudEffectDefinitions[effectId] = {
-                id: effectId,
-                name: booster.name,
-                type: 'buff',
-                source: 'Booster',
-                icon: booster.icon,
-                description: booster.description,
-                value: 'Active',
-                category: 'booster'
-            };
-            
-            // Add to active effects
-            if (!hudGameState.effects.buffs.includes(effectId)) {
-                hudGameState.effects.buffs.push(effectId);
-            }
-            
-            // Update effects display
-            updateHUDEffectsDisplay();
-        }
-
-        function showNotification(type, title, message) {
-            // Remove existing notifications
-            const existingNotifications = document.querySelectorAll('.notification');
-            existingNotifications.forEach(notification => notification.remove());
-
-            // Create new notification
-            const notification = document.createElement('div');
-            notification.className = `notification ${type}`;
-            
-            notification.innerHTML = `
-                <div class="notification-content">
-                    <div class="notification-icon">
-                        <i class="fas ${type === 'success' ? 'fa-check-circle' : 'fa-exclamation-triangle'}"></i>
-                    </div>
-                    <div class="notification-text">
-                        <div class="notification-title">${title}</div>
-                        <div class="notification-message">${message}</div>
-                    </div>
-                </div>
-            `;
-
-            document.body.appendChild(notification);
-
-            // Show notification
-            setTimeout(() => notification.classList.add('show'), 100);
-
-            // Auto-hide after 4 seconds
+        function showLeaderboard() {
+            showLoading();
             setTimeout(() => {
-                notification.classList.remove('show');
-                setTimeout(() => notification.remove(), 500);
-            }, 4000);
+                window.location.href = 'leaderboard.html';
+            }, 2000);
         }
 
-        function selectSpecialist(specialistId) {
-            console.log('Selected specialist:', specialistId);
-            alert(`You have selected ${specialistId.replace('-', ' ').toUpperCase()}!\n\nSpecialist will be added to your base.`);
-            closeNPCSelectionModal();
+        function showSettings() {
+            alert('Settings panel will be implemented in the full version!');
         }
 
-        // Add event listeners for buttons
-        document.addEventListener('DOMContentLoaded', function() {
-            const recruitButton = document.getElementById('npc-recruit-btn');
-            if (recruitButton) {
-                recruitButton.addEventListener('click', showNPCSelectionModal);
+        function exitGame() {
+            if(confirm('Are you sure you want to exit City Defense Z?')) {
+                window.close();
             }
-            
-            const expeditionButton = document.getElementById('expeditionPlanningBtn');
-            if (expeditionButton) {
-                expeditionButton.addEventListener('click', showExpeditionPlanningModal);
-            }
+        }
 
-            // Listen for messages from the iframe
-            window.addEventListener('message', function(event) {
-                if (event.data.type === 'specialist-selected') {
-                    selectSpecialist(event.data.specialist);
-                } else if (event.data.type === 'modal-close') {
-                    closeNPCSelectionModal();
-                }
-            });
+        function openDiscord() {
+            window.open('https://discord.gg/citydefenseZ', '_blank');
+        }
 
-            // Add hover sound effects for NPC cards
-            document.querySelectorAll('.npc-card').forEach(card => {
-                card.addEventListener('mouseenter', function() {
-                    console.log('Playing hover sound for:', this.dataset.specialist);
-                });
-            });
+        function openReview() {
+            window.open('https://store.steampowered.com/app/citydefenseZ', '_blank');
+        }
 
-            // Keyboard controls for modals
-            document.addEventListener('keydown', function(e) {
-                const npcModal = document.getElementById('npcSelectionModal');
-                const expeditionModal = document.getElementById('expeditionPlanningModal');
-                
-                if (npcModal.style.display === 'flex') {
-                    if (e.key === 'Escape') {
-                        closeNPCSelectionModal();
-                    } else if (e.key === '1') {
-                        selectSpecialist('sarah-chen');
-                    } else if (e.key === '2') {
-                        selectSpecialist('marcus-daniels');
-                    }
-                }
-                
-                if (expeditionModal.style.display === 'flex') {
-                    if (e.key === 'Escape') {
-                        closeExpeditionPlanningModal();
-                    }
-                }
+        function showLoading() {
+            const overlay = document.getElementById('loadingOverlay');
+            overlay.classList.add('show');
+        }
 
-                // Demo keyboard controls for effects (remove in production)
-                if (e.key === 'b' && e.ctrlKey) {
-                    toggleHUDNPCBuff('soldier');
-                } else if (e.key === 'm' && e.ctrlKey) {
-                    toggleHUDNPCBuff('medic');
-                } else if (e.key === 'e' && e.ctrlKey) {
-                    toggleHUDNPCBuff('engineer');
-                } else if (e.key === 's' && e.ctrlKey) {
-                    toggleHUDNPCBuff('scout');
-                } else if (e.key === 'h' && e.ctrlKey) {
-                    // Toggle hunger simulation
-                    hudGameState.resources.food = hudGameState.resources.food < 90 ? 120 : 30;
-                    checkHUDHungerDebuff();
-                }
-            });
+        // Sound effects (placeholder)
+        function playSound(soundName) {
+            // Sound effects would be implemented here
+            console.log('Playing sound:', soundName);
+        }
 
-            // Add fadeOut animation dynamically
-            const style = document.createElement('style');
-            style.textContent = `
-                @keyframes fadeOut {
-                    from { opacity: 1; }
-                    to { opacity: 0; }
-                }
-            `;
-            document.head.appendChild(style);
-
-            // Initialize HUD effects system
-            initializeHUDEffects();
+        // Add sound effects to buttons
+        document.querySelectorAll('.menu-button').forEach(button => {
+            button.addEventListener('mouseenter', () => playSound('hover'));
+            button.addEventListener('click', () => playSound('click'));
         });
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            createFloatingElements();
+            
+            // Animate logo on load
+            setTimeout(() => {
+                document.querySelector('.logo-container').style.animation = 'logoGlow 3s ease-in-out infinite alternate';
+            }, 500);
+        });
+
+        // Keyboard navigation
+        document.addEventListener('keydown', function(e) {
+            switch(e.key) {
+                case 'Enter':
+                    startGame();
+                    break;
+                case '1':
+                    startGame();
+                    break;
+                case '2':
+                    newGame();
+                    break;
+                case '3':
+                    showSettings();
+                    break;
+                case 'Escape':
+                    exitGame();
+                    break;
+            }
+        });
+
+        // Prevent right-click context menu
+        document.addEventListener('contextmenu', e => e.preventDefault());
     </script>
 </body>
 </html> 

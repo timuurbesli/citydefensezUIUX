@@ -1,0 +1,1053 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>City Defense Z - Global Leaderboards</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Roboto+Condensed:wght@300;400;700&display=swap" rel="stylesheet">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Roboto Condensed', sans-serif;
+            background: linear-gradient(135deg, #1a1a2e, #16213e, #0f3460);
+            color: #ffffff;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        /* Background Effects */
+        .background-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: 
+                radial-gradient(circle at 20% 30%, rgba(0,255,255,0.05) 0%, transparent 50%),
+                radial-gradient(circle at 80% 70%, rgba(255,140,66,0.05) 0%, transparent 50%);
+            z-index: -1;
+            animation: backgroundShift 15s ease-in-out infinite;
+        }
+
+        @keyframes backgroundShift {
+            0%, 100% { opacity: 0.8; }
+            50% { opacity: 1; }
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            padding: 2rem 0 1rem 0;
+            position: relative;
+        }
+
+        .main-title {
+            font-family: 'Orbitron', monospace;
+            font-size: 2.5rem;
+            font-weight: 900;
+            letter-spacing: 3px;
+            margin-bottom: 0.5rem;
+            text-shadow: 0 0 20px rgba(0,255,255,0.6);
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            color: #00aaff;
+            font-weight: 300;
+            letter-spacing: 2px;
+            opacity: 0.8;
+        }
+
+        /* Navigation */
+        .nav-buttons {
+            position: absolute;
+            top: 2rem;
+            left: 2rem;
+            z-index: 1000;
+        }
+
+        .nav-button {
+            background: rgba(20,25,35,0.9);
+            border: 2px solid rgba(255,255,255,0.3);
+            border-radius: 8px;
+            padding: 0.8rem 1.2rem;
+            color: #ffffff;
+            font-family: 'Orbitron', monospace;
+            font-size: 0.9rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            position: relative;
+            z-index: 1001;
+            pointer-events: all;
+        }
+
+        .nav-button:hover {
+            border-color: rgba(0,255,255,0.6);
+            background: rgba(0,255,255,0.1);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,255,255,0.3);
+        }
+
+        .nav-button:active {
+            transform: translateY(0px);
+            box-shadow: 0 2px 8px rgba(0,255,255,0.2);
+        }
+
+        .nav-button:focus {
+            outline: none;
+            border-color: rgba(0,255,255,0.8);
+        }
+
+        /* Main Container */
+        .main-container {
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 2rem;
+            display: grid;
+            grid-template-columns: 1fr 400px;
+            gap: 2rem;
+            min-height: calc(100vh - 200px);
+        }
+
+        /* Left Panel - Leaderboards */
+        .leaderboards-panel {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        /* Tab Navigation */
+        .tab-navigation {
+            display: flex;
+            gap: 0.5rem;
+            background: rgba(20,25,35,0.9);
+            border-radius: 12px;
+            padding: 0.5rem;
+            backdrop-filter: blur(15px);
+            border: 2px solid rgba(255,255,255,0.1);
+        }
+
+        .tab-button {
+            flex: 1;
+            background: transparent;
+            border: none;
+            padding: 1rem;
+            color: #ffffff;
+            font-family: 'Orbitron', monospace;
+            font-size: 0.9rem;
+            font-weight: 700;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .tab-button.active {
+            background: linear-gradient(135deg, rgba(0,255,255,0.3), rgba(0,200,200,0.2));
+            border: 1px solid rgba(0,255,255,0.5);
+            color: #00ffff;
+            box-shadow: 0 0 20px rgba(0,255,255,0.3);
+        }
+
+        .tab-button:hover:not(.active) {
+            background: rgba(255,255,255,0.1);
+            color: #00ffff;
+        }
+
+        /* Leaderboard Container */
+        .leaderboard-container {
+            background: linear-gradient(145deg, rgba(20,25,35,0.95), rgba(10,15,20,0.98));
+            border: 2px solid rgba(0,255,255,0.3);
+            border-radius: 15px;
+            backdrop-filter: blur(15px);
+            box-shadow: 0 0 30px rgba(0,255,255,0.2);
+            overflow: hidden;
+        }
+
+        .leaderboard-header {
+            background: linear-gradient(135deg, rgba(0,255,255,0.2), rgba(0,200,200,0.1));
+            padding: 1.5rem;
+            border-bottom: 1px solid rgba(0,255,255,0.3);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .leaderboard-title {
+            font-family: 'Orbitron', monospace;
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #00ffff;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .steam-integration {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: #00ff80;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        /* Leaderboard Table */
+        .leaderboard-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .leaderboard-table th {
+            background: rgba(0,0,0,0.5);
+            padding: 1rem;
+            text-align: left;
+            font-family: 'Orbitron', monospace;
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: #00ffff;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border-bottom: 1px solid rgba(0,255,255,0.3);
+        }
+
+        .leaderboard-table td {
+            padding: 1rem;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            font-size: 0.95rem;
+        }
+
+        .leaderboard-table tr:hover {
+            background: rgba(0,255,255,0.05);
+        }
+
+        /* Rank Styling */
+        .rank {
+            font-family: 'Orbitron', monospace;
+            font-weight: 700;
+            font-size: 1.1rem;
+            width: 60px;
+            text-align: center;
+        }
+
+        .rank.gold { color: #ffd700; text-shadow: 0 0 10px rgba(255,215,0,0.5); }
+        .rank.silver { color: #c0c0c0; text-shadow: 0 0 10px rgba(192,192,192,0.5); }
+        .rank.bronze { color: #cd7f32; text-shadow: 0 0 10px rgba(205,127,50,0.5); }
+
+        /* Player Info */
+        .player-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .player-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #333, #555);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            color: #fff;
+            border: 2px solid rgba(0,255,255,0.3);
+        }
+
+        .player-name {
+            font-weight: 700;
+            color: #ffffff;
+        }
+
+        .player-country {
+            font-size: 0.8rem;
+            color: #888;
+        }
+
+        /* Stats */
+        .survival-days {
+            font-family: 'Orbitron', monospace;
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: #ff8c42;
+        }
+
+        .achievement-count {
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+            font-size: 0.9rem;
+            color: #00ff80;
+        }
+
+        /* Right Panel - Statistics & Achievements */
+        .stats-panel {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        /* Current Tournament */
+        .tournament-card {
+            background: linear-gradient(145deg, rgba(255,140,66,0.2), rgba(255,100,0,0.1));
+            border: 2px solid rgba(255,140,66,0.5);
+            border-radius: 15px;
+            overflow: hidden;
+            backdrop-filter: blur(15px);
+            box-shadow: 0 0 30px rgba(255,140,66,0.2);
+        }
+
+        .tournament-header {
+            background: linear-gradient(135deg, rgba(255,140,66,0.3), rgba(255,100,0,0.2));
+            padding: 1.5rem;
+            text-align: center;
+        }
+
+        .tournament-title {
+            font-family: 'Orbitron', monospace;
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #ff8c42;
+            margin-bottom: 0.5rem;
+        }
+
+        .tournament-status {
+            color: #ffffff;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .tournament-content {
+            padding: 1.5rem;
+        }
+
+        .tournament-info {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+        }
+
+        .tournament-stat {
+            text-align: center;
+        }
+
+        .tournament-stat-value {
+            font-family: 'Orbitron', monospace;
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #ff8c42;
+        }
+
+        .tournament-stat-label {
+            font-size: 0.8rem;
+            color: #aaa;
+            text-transform: uppercase;
+        }
+
+        .join-tournament-btn {
+            width: 100%;
+            background: linear-gradient(135deg, #ff8c42, #ff6b1a);
+            border: none;
+            border-radius: 10px;
+            padding: 1rem;
+            font-family: 'Orbitron', monospace;
+            font-size: 1rem;
+            font-weight: 700;
+            color: #ffffff;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .join-tournament-btn:hover {
+            background: linear-gradient(135deg, #ffaa44, #ff8822);
+            box-shadow: 0 0 30px rgba(255,140,66,0.6);
+            transform: translateY(-2px);
+        }
+
+        /* Personal Stats */
+        .personal-stats {
+            background: linear-gradient(145deg, rgba(20,25,35,0.95), rgba(10,15,20,0.98));
+            border: 2px solid rgba(0,255,255,0.3);
+            border-radius: 15px;
+            backdrop-filter: blur(15px);
+            box-shadow: 0 0 30px rgba(0,255,255,0.2);
+            overflow: hidden;
+        }
+
+        .stats-header {
+            background: linear-gradient(135deg, rgba(0,255,255,0.2), rgba(0,200,200,0.1));
+            padding: 1.5rem;
+            border-bottom: 1px solid rgba(0,255,255,0.3);
+        }
+
+        .stats-title {
+            font-family: 'Orbitron', monospace;
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #00ffff;
+        }
+
+        .stats-content {
+            padding: 1.5rem;
+        }
+
+        .stat-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.8rem 0;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .stat-item:last-child {
+            border-bottom: none;
+        }
+
+        .stat-label {
+            color: #aaa;
+            font-size: 0.9rem;
+        }
+
+        .stat-value {
+            font-family: 'Orbitron', monospace;
+            font-weight: 700;
+            color: #00ffff;
+        }
+
+        /* Achievements */
+        .achievements-section {
+            background: linear-gradient(145deg, rgba(20,25,35,0.95), rgba(10,15,20,0.98));
+            border: 2px solid rgba(0,255,255,0.3);
+            border-radius: 15px;
+            backdrop-filter: blur(15px);
+            box-shadow: 0 0 30px rgba(0,255,255,0.2);
+            overflow: hidden;
+        }
+
+        .achievements-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            padding: 1.5rem;
+        }
+
+        .achievement-badge {
+            background: rgba(0,0,0,0.3);
+            border: 2px solid rgba(255,255,255,0.2);
+            border-radius: 10px;
+            padding: 1rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .achievement-badge.earned {
+            border-color: rgba(255,215,0,0.6);
+            background: rgba(255,215,0,0.1);
+        }
+
+        .achievement-badge:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+
+        .achievement-icon {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+            color: #ffd700;
+        }
+
+        .achievement-name {
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: #fff;
+            text-transform: uppercase;
+        }
+
+        /* Hidden Tab Content */
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* Loading Animation */
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0,0,0,0.9);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.5s ease;
+        }
+
+        .loading-overlay.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .loading-content {
+            text-align: center;
+            color: #ffffff;
+        }
+
+        .loading-spinner {
+            width: 50px;
+            height: 50px;
+            border: 3px solid rgba(0,255,255,0.3);
+            border-top: 3px solid #00ffff;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1rem;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .loading-text {
+            font-family: 'Orbitron', monospace;
+            font-size: 1.2rem;
+            letter-spacing: 2px;
+        }
+
+        /* Responsive */
+        @media (max-width: 1200px) {
+            .main-container {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+            
+            .achievements-grid {
+                grid-template-columns: repeat(4, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .main-container {
+                padding: 1rem;
+            }
+            
+            .tab-navigation {
+                flex-direction: column;
+            }
+            
+            .achievements-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="background-overlay"></div>
+
+    <div class="nav-buttons">
+        <button class="nav-button" onclick="backToMenu()">
+            <i class="fas fa-arrow-left"></i>
+            BACK TO MENU
+        </button>
+    </div>
+
+    <div class="header">
+        <h1 class="main-title">GLOBAL LEADERBOARDS</h1>
+        <p class="subtitle">WASTELAND SURVIVAL RANKINGS</p>
+    </div>
+
+    <div class="main-container">
+        <!-- Left Panel - Leaderboards -->
+        <div class="leaderboards-panel">
+            <!-- Tab Navigation -->
+            <div class="tab-navigation">
+                <button class="tab-button active" onclick="switchTab('global')">
+                    <i class="fas fa-globe"></i>
+                    GLOBAL
+                </button>
+                <button class="tab-button" onclick="switchTab('nevada')">
+                    <i class="fas fa-mountain"></i>
+                    DESERT
+                </button>
+                <button class="tab-button" onclick="switchTab('urban')">
+                    <i class="fas fa-city"></i>
+                    URBAN
+                </button>
+                <button class="tab-button" onclick="switchTab('industrial')">
+                    <i class="fas fa-industry"></i>
+                    INDUSTRIAL
+                </button>
+                <button class="tab-button" onclick="switchTab('laboratory')">
+                    <i class="fas fa-flask"></i>
+                    LABORATORY
+                </button>
+            </div>
+
+            <!-- Global Leaderboard -->
+            <div class="tab-content active" id="global-tab">
+                <div class="leaderboard-container">
+                    <div class="leaderboard-header">
+                        <h2 class="leaderboard-title">
+                            <i class="fas fa-trophy"></i>
+                            GLOBAL SURVIVAL CHAMPIONS
+                        </h2>
+                        <div class="steam-integration">
+                            <i class="fab fa-steam"></i>
+                            STEAM INTEGRATED
+                        </div>
+                    </div>
+                    <table class="leaderboard-table">
+                        <thead>
+                            <tr>
+                                <th>RANK</th>
+                                <th>SURVIVOR</th>
+                                <th>BEST SURVIVAL</th>
+                                <th>ACHIEVEMENTS</th>
+                                <th>TOTAL SCORE</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><span class="rank gold">1st</span></td>
+                                <td>
+                                    <div class="player-info">
+                                        <div class="player-avatar">ZK</div>
+                                        <div>
+                                            <div class="player-name">ZombieKiller_Pro</div>
+                                            <div class="player-country">🇺🇸 USA</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td><span class="survival-days">147 DAYS</span></td>
+                                <td><span class="achievement-count"><i class="fas fa-medal"></i> 28</span></td>
+                                <td><span class="survival-days">15,420</span></td>
+                            </tr>
+                            <tr>
+                                <td><span class="rank silver">2nd</span></td>
+                                <td>
+                                    <div class="player-info">
+                                        <div class="player-avatar">SW</div>
+                                        <div>
+                                            <div class="player-name">SurvivalWolf</div>
+                                            <div class="player-country">🇩🇪 Germany</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td><span class="survival-days">134 DAYS</span></td>
+                                <td><span class="achievement-count"><i class="fas fa-medal"></i> 25</span></td>
+                                <td><span class="survival-days">14,105</span></td>
+                            </tr>
+                            <tr>
+                                <td><span class="rank bronze">3rd</span></td>
+                                <td>
+                                    <div class="player-info">
+                                        <div class="player-avatar">WH</div>
+                                        <div>
+                                            <div class="player-name">WastelandHero</div>
+                                            <div class="player-country">🇯🇵 Japan</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td><span class="survival-days">129 DAYS</span></td>
+                                <td><span class="achievement-count"><i class="fas fa-medal"></i> 23</span></td>
+                                <td><span class="survival-days">13,680</span></td>
+                            </tr>
+                            <tr>
+                                <td><span class="rank">4th</span></td>
+                                <td>
+                                    <div class="player-info">
+                                        <div class="player-avatar">AS</div>
+                                        <div>
+                                            <div class="player-name">ApexSurvivor</div>
+                                            <div class="player-country">🇬🇧 UK</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td><span class="survival-days">122 DAYS</span></td>
+                                <td><span class="achievement-count"><i class="fas fa-medal"></i> 21</span></td>
+                                <td><span class="survival-days">12,890</span></td>
+                            </tr>
+                            <tr>
+                                <td><span class="rank">5th</span></td>
+                                <td>
+                                    <div class="player-info">
+                                        <div class="player-avatar">TD</div>
+                                        <div>
+                                            <div class="player-name">TowerDefender</div>
+                                            <div class="player-country">🇨🇦 Canada</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td><span class="survival-days">118 DAYS</span></td>
+                                <td><span class="achievement-count"><i class="fas fa-medal"></i> 19</span></td>
+                                <td><span class="survival-days">12,340</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Map-specific Leaderboards -->
+            <div class="tab-content" id="nevada-tab">
+                <div class="leaderboard-container">
+                    <div class="leaderboard-header">
+                        <h2 class="leaderboard-title">
+                            <i class="fas fa-mountain"></i>
+                            DESERT OUTPOST CHAMPIONS
+                        </h2>
+                        <div class="steam-integration">
+                            <i class="fab fa-steam"></i>
+                            STEAM INTEGRATED
+                        </div>
+                    </div>
+                    <table class="leaderboard-table">
+                        <thead>
+                            <tr>
+                                <th>RANK</th>
+                                <th>SURVIVOR</th>
+                                <th>DAYS SURVIVED</th>
+                                <th>AIRCRAFT REPAIRS</th>
+                                <th>SCORE</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><span class="rank gold">1st</span></td>
+                                <td>
+                                    <div class="player-info">
+                                        <div class="player-avatar">DR</div>
+                                        <div>
+                                            <div class="player-name">DesertRanger</div>
+                                            <div class="player-country">🇺🇸 USA</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td><span class="survival-days">87 DAYS</span></td>
+                                <td><span class="achievement-count"><i class="fas fa-plane"></i> COMPLETED</span></td>
+                                <td><span class="survival-days">8,700</span></td>
+                            </tr>
+                            <tr>
+                                <td><span class="rank silver">2nd</span></td>
+                                <td>
+                                    <div class="player-info">
+                                        <div class="player-avatar">SM</div>
+                                        <div>
+                                            <div class="player-name">SandMaster</div>
+                                            <div class="player-country">🇦🇺 Australia</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td><span class="survival-days">74 DAYS</span></td>
+                                <td><span class="achievement-count"><i class="fas fa-plane"></i> COMPLETED</span></td>
+                                <td><span class="survival-days">7,400</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="tab-content" id="urban-tab">
+                <div class="leaderboard-container">
+                    <div class="leaderboard-header">
+                        <h2 class="leaderboard-title">
+                            <i class="fas fa-city"></i>
+                            SUBURBAN STRONGHOLD CHAMPIONS
+                        </h2>
+                        <div class="steam-integration">
+                            <i class="fab fa-steam"></i>
+                            STEAM INTEGRATED
+                        </div>
+                    </div>
+                    <table class="leaderboard-table">
+                        <thead>
+                            <tr>
+                                <th>RANK</th>
+                                <th>SURVIVOR</th>
+                                <th>DAYS SURVIVED</th>
+                                <th>URBAN CONTROL</th>
+                                <th>SCORE</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><span class="rank gold">1st</span></td>
+                                <td>
+                                    <div class="player-info">
+                                        <div class="player-avatar">UC</div>
+                                        <div>
+                                            <div class="player-name">UrbanCommander</div>
+                                            <div class="player-country">🇬🇧 UK</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td><span class="survival-days">102 DAYS</span></td>
+                                <td><span class="achievement-count"><i class="fas fa-building"></i> 95%</span></td>
+                                <td><span class="survival-days">10,200</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="tab-content" id="industrial-tab">
+                <div class="leaderboard-container">
+                    <div class="leaderboard-header">
+                        <h2 class="leaderboard-title">
+                            <i class="fas fa-industry"></i>
+                            INDUSTRIAL COMPLEX CHAMPIONS
+                        </h2>
+                        <div class="steam-integration">
+                            <i class="fab fa-steam"></i>
+                            STEAM INTEGRATED
+                        </div>
+                    </div>
+                    <table class="leaderboard-table">
+                        <thead>
+                            <tr>
+                                <th>RANK</th>
+                                <th>SURVIVOR</th>
+                                <th>DAYS SURVIVED</th>
+                                <th>MANUFACTURING</th>
+                                <th>SCORE</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><span class="rank gold">1st</span></td>
+                                <td>
+                                    <div class="player-info">
+                                        <div class="player-avatar">IF</div>
+                                        <div>
+                                            <div class="player-name">IndustrialForce</div>
+                                            <div class="player-country">🇩🇪 Germany</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td><span class="survival-days">115 DAYS</span></td>
+                                <td><span class="achievement-count"><i class="fas fa-cog"></i> SECURED</span></td>
+                                <td><span class="survival-days">11,500</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="tab-content" id="laboratory-tab">
+                <div class="leaderboard-container">
+                    <div class="leaderboard-header">
+                        <h2 class="leaderboard-title">
+                            <i class="fas fa-flask"></i>
+                            LABORATORY FACILITY CHAMPIONS
+                        </h2>
+                        <div class="steam-integration">
+                            <i class="fab fa-steam"></i>
+                            STEAM INTEGRATED
+                        </div>
+                    </div>
+                    <table class="leaderboard-table">
+                        <thead>
+                            <tr>
+                                <th>RANK</th>
+                                <th>SURVIVOR</th>
+                                <th>DAYS SURVIVED</th>
+                                <th>VACCINE PROGRESS</th>
+                                <th>SCORE</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><span class="rank gold">1st</span></td>
+                                <td>
+                                    <div class="player-info">
+                                        <div class="player-avatar">VS</div>
+                                        <div>
+                                            <div class="player-name">VaccineScientist</div>
+                                            <div class="player-country">🇯🇵 Japan</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td><span class="survival-days">147 DAYS</span></td>
+                                <td><span class="achievement-count"><i class="fas fa-vial"></i> COMPLETED</span></td>
+                                <td><span class="survival-days">14,700</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Panel - Statistics & Achievements -->
+        <div class="stats-panel">
+            <!-- Current Tournament -->
+            <div class="tournament-card">
+                <div class="tournament-header">
+                    <h3 class="tournament-title">
+                        <i class="fas fa-trophy"></i>
+                        WINTER SURVIVAL CHAMPIONSHIP
+                    </h3>
+                    <div class="tournament-status">ACTIVE • ENDS IN 14 DAYS</div>
+                </div>
+                <div class="tournament-content">
+                    <div class="tournament-info">
+                        <div class="tournament-stat">
+                            <div class="tournament-stat-value">1,247</div>
+                            <div class="tournament-stat-label">PARTICIPANTS</div>
+                        </div>
+                        <div class="tournament-stat">
+                            <div class="tournament-stat-value">$500</div>
+                            <div class="tournament-stat-label">PRIZE POOL</div>
+                        </div>
+                        <div class="tournament-stat">
+                            <div class="tournament-stat-value">TOP 10</div>
+                            <div class="tournament-stat-label">REWARDS</div>
+                        </div>
+                    </div>
+                    <button class="join-tournament-btn">
+                        <i class="fas fa-sword"></i>
+                        JOIN TOURNAMENT
+                    </button>
+                </div>
+            </div>
+
+            <!-- Personal Stats -->
+            <div class="personal-stats">
+                <div class="stats-header">
+                    <h3 class="stats-title">
+                        <i class="fas fa-user"></i>
+                        YOUR SURVIVAL RECORD
+                    </h3>
+                </div>
+                <div class="stats-content">
+                    <div class="stat-item">
+                        <span class="stat-label">Global Rank</span>
+                        <span class="stat-value">#42</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Best Survival</span>
+                        <span class="stat-value">89 Days</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Total Playtime</span>
+                        <span class="stat-value">127 Hours</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Zombies Eliminated</span>
+                        <span class="stat-value">15,432</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Maps Completed</span>
+                        <span class="stat-value">2/4</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Achievement Progress</span>
+                        <span class="stat-value">18/35</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Achievements -->
+            <div class="achievements-section">
+                <div class="stats-header">
+                    <h3 class="stats-title">
+                        <i class="fas fa-medal"></i>
+                        RECENT ACHIEVEMENTS
+                    </h3>
+                </div>
+                <div class="achievements-grid">
+                    <div class="achievement-badge earned">
+                        <div class="achievement-icon">🏆</div>
+                        <div class="achievement-name">FIRST BLOOD</div>
+                    </div>
+                    <div class="achievement-badge earned">
+                        <div class="achievement-icon">🛡️</div>
+                        <div class="achievement-name">DEFENDER</div>
+                    </div>
+                    <div class="achievement-badge earned">
+                        <div class="achievement-icon">⚡</div>
+                        <div class="achievement-name">SPEED RUN</div>
+                    </div>
+                    <div class="achievement-badge">
+                        <div class="achievement-icon">🎯</div>
+                        <div class="achievement-name">MARKSMAN</div>
+                    </div>
+                    <div class="achievement-badge">
+                        <div class="achievement-icon">🔧</div>
+                        <div class="achievement-name">ENGINEER</div>
+                    </div>
+                    <div class="achievement-badge">
+                        <div class="achievement-icon">👑</div>
+                        <div class="achievement-name">CHAMPION</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="loading-content">
+            <div class="loading-spinner"></div>
+            <div class="loading-text">LOADING...</div>
+        </div>
+    </div>
+
+    <script>
+        function switchTab(tabName) {
+            // Remove active class from all tabs and buttons
+            document.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+            
+            // Add active class to clicked button and corresponding content
+            event.target.classList.add('active');
+            document.getElementById(tabName + '-tab').classList.add('active');
+        }
+
+        function backToMenu() {
+            console.log('Back to menu clicked!'); // Debug log
+            showLoading();
+            setTimeout(() => {
+                window.location.href = 'index.html';
+            }, 2000);
+        }
+
+        function showLoading() {
+            const overlay = document.getElementById('loadingOverlay');
+            overlay.classList.add('show');
+        }
+
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('Leaderboard page loaded');
+        });
+    </script>
+</body>
+</html> 
