@@ -234,7 +234,9 @@
         }
 
         .hover-sound-controls,
-        .place-sound-controls {
+        .place-sound-controls,
+        .first-pop-controls,
+        .second-pop-controls {
             display: flex;
             align-items: center;
             gap: 8px;
@@ -483,9 +485,35 @@
                     </div>
                 </div>
                 
+                <!-- First Pop Sound Selector -->
+                <div class="sound-selector">
+                    <label style="color: #ff6b6b; font-size: 14px; margin-bottom: 8px; display: block;">First Pop Sound:</label>
+                    <div class="first-pop-controls">
+                        <button class="arrow-button" onclick="previousFirstPopSound()">◀</button>
+                        <select class="sound-dropdown" id="firstPopSoundSelect" onchange="selectFirstPopSound()">
+                            <!-- Options populated dynamically -->
+                        </select>
+                        <button class="arrow-button" onclick="nextFirstPopSound()">▶</button>
+                    </div>
+                </div>
+                
+                <!-- Second Pop Sound Selector -->
+                <div class="sound-selector">
+                    <label style="color: #ff9500; font-size: 14px; margin-bottom: 8px; display: block;">Second Pop Sound:</label>
+                    <div class="second-pop-controls">
+                        <button class="arrow-button" onclick="previousSecondPopSound()">◀</button>
+                        <select class="sound-dropdown" id="secondPopSoundSelect" onchange="selectSecondPopSound()">
+                            <!-- Options populated dynamically -->
+                        </select>
+                        <button class="arrow-button" onclick="nextSecondPopSound()">▶</button>
+                    </div>
+                </div>
+                
                 <button class="sound-test-button" onclick="testSelectedHoverSound()">Test Selected Hover Sound</button>
                 <button class="sound-test-button" onclick="testPlaceSound()">Test Selected Place Sound</button>
                 <button class="sound-test-button" onclick="testMergeSound()">Test Merge Sound</button>
+                <button class="sound-test-button" onclick="testFirstPopSound()">Test First Pop Sound</button>
+                <button class="sound-test-button" onclick="testSecondPopSound()">Test Second Pop Sound</button>
             </div>
         </div>
     </div>
@@ -551,8 +579,26 @@
             '11L-cushioned_dirt_thud-1751461465021.mp3'       // cush dirt 3
         ];
 
+        // All merge pop sounds in one pool
+        const mergePopSounds = [
+            'SFX_Pop_Designed_Collect_Vacuum_1.wav',
+            'SFX_Pop_Designed_Collect_Vacuum_2.wav',
+            'SFX_Pop_Bottle_Tiny_1.wav',
+            'SFX_Pop_Bottle_Tiny_2.wav'
+        ];
+
+        // Friendly names for the sounds
+        const mergePopSoundNames = [
+            'Vacuum Pop 1',
+            'Vacuum Pop 2', 
+            'Bottle Pop 1',
+            'Bottle Pop 2'
+        ];
+
         let selectedHoverSoundIndex = 5; // Default to Hover Sound 6
         let selectedPlaceSoundIndex = 0; // Default to first place sound
+        let selectedFirstPopSoundIndex = 0; // Default to first sound for first pop
+        let selectedSecondPopSoundIndex = 1; // Default to second sound for second pop
         let currentHoverSound = null; // Track currently playing sound
         let shuffleModeEnabled = false; // Shuffle mode toggle
         let lastPlayedPlaceSoundIndex = -1; // Track last played sound to avoid repeats
@@ -601,16 +647,27 @@
             sound.play().catch(e => console.log('Could not play merge sound:', e));
         }
 
+        function playFirstPopSound() {
+            const soundFile = mergePopSounds[selectedFirstPopSoundIndex];
+            const sound = new Audio(`../../sounds/mergepop/${soundFile}`);
+            sound.volume = 0.5;
+            sound.play().catch(e => console.log('Could not play first pop sound:', e));
+        }
+
+        function playSecondPopSound() {
+            const soundFile = mergePopSounds[selectedSecondPopSoundIndex];
+            const sound = new Audio(`../../sounds/mergepop/${soundFile}`);
+            sound.volume = 0.5;
+            sound.play().catch(e => console.log('Could not play second pop sound:', e));
+        }
+
+        // Legacy functions for backward compatibility (now use new system)
         function playVacuumSound1() {
-            const vacuumSound1 = new Audio('../../sounds/mergepop/SFX_Pop_Designed_Collect_Vacuum_1.wav');
-            vacuumSound1.volume = 0.5;
-            vacuumSound1.play().catch(e => console.log('Could not play vacuum sound 1:', e));
+            playFirstPopSound();
         }
 
         function playVacuumSound2() {
-            const vacuumSound2 = new Audio('../../sounds/mergepop/SFX_Pop_Designed_Collect_Vacuum_2.wav');
-            vacuumSound2.volume = 0.5;
-            vacuumSound2.play().catch(e => console.log('Could not play vacuum sound 2:', e));
+            playSecondPopSound();
         }
 
         // Sound test functions
@@ -624,6 +681,14 @@
 
         function testMergeSound() {
             playMergeSound();
+        }
+
+        function testFirstPopSound() {
+            playFirstPopSound();
+        }
+
+        function testSecondPopSound() {
+            playSecondPopSound();
         }
 
         // Hover sound selection functions
@@ -696,6 +761,74 @@
             } else {
                 shuffleButton.classList.remove('active');
                 shuffleText.textContent = 'Shuffle: OFF';
+            }
+        }
+
+        // First pop sound selection functions
+        function previousFirstPopSound() {
+            selectedFirstPopSoundIndex = (selectedFirstPopSoundIndex - 1 + mergePopSounds.length) % mergePopSounds.length;
+            updateFirstPopSoundDisplay();
+            playFirstPopSound(); // Play the newly selected sound
+        }
+
+        function nextFirstPopSound() {
+            selectedFirstPopSoundIndex = (selectedFirstPopSoundIndex + 1) % mergePopSounds.length;
+            updateFirstPopSoundDisplay();
+            playFirstPopSound(); // Play the newly selected sound
+        }
+
+        function selectFirstPopSound() {
+            const dropdown = document.getElementById('firstPopSoundSelect');
+            selectedFirstPopSoundIndex = parseInt(dropdown.value);
+            playFirstPopSound(); // Play the newly selected sound
+        }
+
+        function updateFirstPopSoundDisplay() {
+            const dropdown = document.getElementById('firstPopSoundSelect');
+            if (dropdown) {
+                // Clear and repopulate options
+                dropdown.innerHTML = '';
+                mergePopSoundNames.forEach((name, index) => {
+                    const option = document.createElement('option');
+                    option.value = index;
+                    option.textContent = name;
+                    dropdown.appendChild(option);
+                });
+                dropdown.value = selectedFirstPopSoundIndex;
+            }
+        }
+
+        // Second pop sound selection functions
+        function previousSecondPopSound() {
+            selectedSecondPopSoundIndex = (selectedSecondPopSoundIndex - 1 + mergePopSounds.length) % mergePopSounds.length;
+            updateSecondPopSoundDisplay();
+            playSecondPopSound(); // Play the newly selected sound
+        }
+
+        function nextSecondPopSound() {
+            selectedSecondPopSoundIndex = (selectedSecondPopSoundIndex + 1) % mergePopSounds.length;
+            updateSecondPopSoundDisplay();
+            playSecondPopSound(); // Play the newly selected sound
+        }
+
+        function selectSecondPopSound() {
+            const dropdown = document.getElementById('secondPopSoundSelect');
+            selectedSecondPopSoundIndex = parseInt(dropdown.value);
+            playSecondPopSound(); // Play the newly selected sound
+        }
+
+        function updateSecondPopSoundDisplay() {
+            const dropdown = document.getElementById('secondPopSoundSelect');
+            if (dropdown) {
+                // Clear and repopulate options
+                dropdown.innerHTML = '';
+                mergePopSoundNames.forEach((name, index) => {
+                    const option = document.createElement('option');
+                    option.value = index;
+                    option.textContent = name;
+                    dropdown.appendChild(option);
+                });
+                dropdown.value = selectedSecondPopSoundIndex;
             }
         }
 
@@ -1115,6 +1248,8 @@
             // Initialize sound dropdown displays
             updateHoverSoundDisplay();
             updatePlaceSoundDisplay();
+            updateFirstPopSoundDisplay();
+            updateSecondPopSoundDisplay();
             updateShuffleDisplay();
             
             console.log('Grid test initialized!');
