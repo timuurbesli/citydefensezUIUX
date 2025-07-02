@@ -1,0 +1,814 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>City Defense Z - Grid Test</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Courier New', monospace;
+            background: linear-gradient(135deg, #1a1a2e, #16213e, #0f3460);
+            color: white;
+            min-height: 100vh;
+            padding: 20px;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 400px;
+            gap: 30px;
+            height: calc(100vh - 40px);
+        }
+
+        .game-area {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .grid-container {
+            background: rgba(0, 0, 0, 0.3);
+            border: 2px solid #4a9eff;
+            border-radius: 10px;
+            padding: 20px;
+            backdrop-filter: blur(10px);
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            grid-template-rows: repeat(5, 1fr);
+            gap: 2px;
+            width: 400px;
+            height: 400px;
+            margin: 0 auto;
+        }
+
+        .grid-cell {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+            position: relative;
+            cursor: pointer;
+        }
+
+        .grid-cell:hover {
+            background: rgba(74, 158, 255, 0.3);
+            border-color: #4a9eff;
+            transform: scale(1.05);
+        }
+
+        .grid-cell.snap-target {
+            background: rgba(255, 215, 0, 0.4);
+            border-color: #ffd700;
+            box-shadow: 0 0 10px rgba(255, 215, 0, 0.6);
+            transform: scale(1.1);
+        }
+
+        .building {
+            width: 90%;
+            height: 90%;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 12px;
+            position: relative;
+            cursor: pointer;
+        }
+
+        .building.factory {
+            background: linear-gradient(145deg, #ffd700, #ffb347);
+            color: #333;
+        }
+
+        .building.house {
+            background: linear-gradient(145deg, #808080, #a0a0a0);
+            color: white;
+        }
+
+        .building.ammunition {
+            background: linear-gradient(145deg, #32cd32, #228b22);
+            color: white;
+        }
+
+        .building.laboratory {
+            background: linear-gradient(145deg, #4169e1, #1e90ff);
+            color: white;
+        }
+
+        .building.barracks {
+            background: linear-gradient(145deg, #ffa500, #ff8c00);
+            color: white;
+        }
+
+        .building-level {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background: #ff4444;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+            font-weight: bold;
+            color: white;
+        }
+
+        .dragging-building {
+            position: fixed;
+            pointer-events: none;
+            z-index: 1000;
+            opacity: 0.8;
+            transform: scale(1.2);
+        }
+
+        .control-panel {
+            background: rgba(0, 0, 0, 0.3);
+            border: 2px solid #4a9eff;
+            border-radius: 10px;
+            padding: 20px;
+            backdrop-filter: blur(10px);
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .building-cards {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .building-card {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            padding: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .building-card:hover {
+            background: rgba(255, 255, 255, 0.2);
+            border-color: #4a9eff;
+            transform: translateY(-2px);
+        }
+
+        .building-card.selected {
+            border-color: #ffd700;
+            background: rgba(255, 215, 0, 0.2);
+        }
+
+        .card-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        .card-info {
+            flex: 1;
+        }
+
+        .card-name {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .card-level {
+            font-size: 12px;
+            opacity: 0.8;
+        }
+
+        .sound-controls {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+            padding-top: 20px;
+        }
+
+        .sound-test-button {
+            background: rgba(74, 158, 255, 0.3);
+            border: 1px solid #4a9eff;
+            color: white;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .sound-test-button:hover {
+            background: rgba(74, 158, 255, 0.5);
+            transform: translateY(-1px);
+        }
+
+        .sound-selector {
+            margin-bottom: 15px;
+        }
+
+        .hover-sound-controls,
+        .place-sound-controls {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .arrow-button {
+            background: rgba(255, 215, 0, 0.3);
+            border: 1px solid #ffd700;
+            color: #ffd700;
+            width: 32px;
+            height: 32px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .arrow-button:hover {
+            background: rgba(255, 215, 0, 0.5);
+            transform: scale(1.1);
+        }
+
+        .sound-dropdown {
+            flex: 1;
+            background: rgba(0, 0, 0, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: white;
+            padding: 8px 12px;
+            border-radius: 4px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .sound-dropdown:hover {
+            border-color: #4a9eff;
+            background: rgba(0, 0, 0, 0.8);
+        }
+
+        .sound-dropdown:focus {
+            outline: none;
+            border-color: #ffd700;
+            box-shadow: 0 0 5px rgba(255, 215, 0, 0.3);
+        }
+
+        .merge-indicator {
+            position: absolute;
+            top: -10px;
+            left: -10px;
+            right: -10px;
+            bottom: -10px;
+            border: 3px solid #ff6b6b;
+            border-radius: 8px;
+            animation: mergeGlow 1s ease-in-out infinite;
+            pointer-events: none;
+        }
+
+        @keyframes mergeGlow {
+            0%, 100% {
+                border-color: #ff6b6b;
+                box-shadow: 0 0 10px #ff6b6b;
+            }
+            50% {
+                border-color: #ff9999;
+                box-shadow: 0 0 20px #ff6b6b;
+            }
+        }
+
+        .info-panel {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
+            padding: 15px;
+            font-size: 14px;
+        }
+
+        .info-title {
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #ffd700;
+        }
+
+        .info-text {
+            line-height: 1.4;
+            margin-bottom: 8px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="game-area">
+            <div class="grid-container">
+                <h2 style="text-align: center; margin-bottom: 20px; color: #4a9eff;">5x5 Building Grid</h2>
+                <div class="grid" id="gameGrid">
+                    <!-- Grid cells will be generated by JavaScript -->
+                </div>
+            </div>
+            
+            <div class="info-panel">
+                <div class="info-title">How to Play:</div>
+                <div class="info-text">1. Select a building type from the right panel</div>
+                <div class="info-text">2. Click on grid cells to place buildings</div>
+                <div class="info-text">3. Place 3 adjacent buildings of same type and level to merge</div>
+                <div class="info-text">4. Test hover sounds using the sound test buttons</div>
+            </div>
+        </div>
+
+        <div class="control-panel">
+            <h3 style="color: #4a9eff; margin-bottom: 10px;">Building Cards</h3>
+            <div class="building-cards" id="buildingCards">
+                <!-- Building cards will be generated by JavaScript -->
+            </div>
+
+            <div class="sound-controls">
+                <h4 style="color: #ffd700; margin-bottom: 10px;">Sound Tests</h4>
+                
+                <!-- Hover Sound Selector -->
+                <div class="sound-selector">
+                    <label style="color: #4a9eff; font-size: 14px; margin-bottom: 8px; display: block;">Hover Sound:</label>
+                    <div class="hover-sound-controls">
+                        <button class="arrow-button" onclick="previousHoverSound()">◀</button>
+                        <select class="sound-dropdown" id="hoverSoundSelect" onchange="selectHoverSound()">
+                            <option value="0">Hover Sound 1</option>
+                            <option value="1">Hover Sound 2</option>
+                            <option value="2">Hover Sound 3</option>
+                            <option value="3">Hover Sound 4</option>
+                            <option value="4">Hover Sound 5</option>
+                            <option value="5">Hover Sound 6</option>
+                        </select>
+                        <button class="arrow-button" onclick="nextHoverSound()">▶</button>
+                    </div>
+                </div>
+                
+                <!-- Place Sound Selector -->
+                <div class="sound-selector">
+                    <label style="color: #32cd32; font-size: 14px; margin-bottom: 8px; display: block;">Place Sound:</label>
+                    <div class="place-sound-controls">
+                        <button class="arrow-button" onclick="previousPlaceSound()">◀</button>
+                        <select class="sound-dropdown" id="placeSoundSelect" onchange="selectPlaceSound()">
+                            <option value="0">Muffled Dirt Hit 1</option>
+                            <option value="1">Muffled Dirt Hit 2</option>
+                            <option value="2">Muffled Dirt Hit 3</option>
+                            <option value="3">Muffled Dirt Hit 4</option>
+                            <option value="4">Light Ground Thump</option>
+                            <option value="5">Cushioned Dirt Thud 1</option>
+                            <option value="6">Cushioned Dirt Thud 2</option>
+                            <option value="7">Cushioned Dirt Thud 3</option>
+                            <option value="8">Cushioned Dirt Thud 4</option>
+                            <option value="9">Quiet Earth Thump 1</option>
+                            <option value="10">Quiet Earth Thump 2</option>
+                            <option value="11">Quiet Earth Thump 3</option>
+                            <option value="12">Quiet Earth Thump 4</option>
+                            <option value="13">Quiet Earth Thump 5</option>
+                            <option value="14">Soft Soil Thud 1</option>
+                            <option value="15">Soft Soil Thud 2</option>
+                            <option value="16">Soft Soil Thud 3</option>
+                            <option value="17">Gentle Dirt Thump 1</option>
+                            <option value="18">Gentle Dirt Thump 2</option>
+                            <option value="19">Gentle Dirt Thump 3</option>
+                            <option value="20">Gentle Dirt Thump 4</option>
+                            <option value="21">Gentle Dirt Thump 5</option>
+                            <option value="22">Gentle Dirt Thump 6</option>
+                            <option value="23">Gentle Dirt Thump 7</option>
+                            <option value="24">Soft Dirt Thump 1</option>
+                            <option value="25">Soft Dirt Thump 2</option>
+                        </select>
+                        <button class="arrow-button" onclick="nextPlaceSound()">▶</button>
+                    </div>
+                </div>
+                
+                <button class="sound-test-button" onclick="testSelectedHoverSound()">Test Selected Hover Sound</button>
+                <button class="sound-test-button" onclick="testPlaceSound()">Test Selected Place Sound</button>
+                <button class="sound-test-button" onclick="testMergeSound()">Test Merge Sound</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Game state
+        let selectedBuildingType = null;
+        let grid = [];
+        let draggedBuilding = null;
+        
+        // Building types configuration
+        const buildingTypes = {
+            factory: {
+                name: 'Factory',
+                color: '#ffd700',
+                icon: 'F',
+                description: 'Produces resources'
+            },
+            house: {
+                name: 'House',
+                color: '#808080',
+                icon: 'H',
+                description: 'Increases population'
+            },
+            ammunition: {
+                name: 'Ammunition',
+                color: '#32cd32',
+                icon: 'A',
+                description: 'Produces ammunition'
+            },
+            laboratory: {
+                name: 'Laboratory',
+                color: '#4169e1',
+                icon: 'L',
+                description: 'Produces research points'
+            },
+            barracks: {
+                name: 'Barracks',
+                color: '#ffa500',
+                icon: 'B',
+                description: 'Trains soldiers'
+            }
+        };
+
+        // Sound system
+        const hoverSounds = [
+            'BuildingMoveGridHover (1).mp3',
+            'BuildingMoveGridHover (2).mp3',
+            'BuildingMoveGridHover (3).mp3',
+            'BuildingMoveGridHover (4).mp3',
+            'BuildingMoveGridHover (5).mp3',
+            'BuildingMoveGridHover (6).mp3'
+        ];
+
+        const placeSounds = [
+            '11L-muffled_dirt_hit-1751461641229.mp3',
+            '11L-muffled_dirt_hit-1751461578547.mp3',
+            '11L-muffled_dirt_hit-1751461573708.mp3',
+            '11L-muffled_dirt_hit-1751461566147.mp3',
+            '11L-light_ground_thump-1751461500839.mp3',
+            '11L-cushioned_dirt_thud-1751461482310.mp3',
+            '11L-cushioned_dirt_thud-1751461479209.mp3',
+            '11L-cushioned_dirt_thud-1751461465021.mp3',
+            '11L-cushioned_dirt_thud-1751461455586.mp3',
+            '11L-quiet_earth_thump-1751461433286.mp3',
+            '11L-quiet_earth_thump-1751461401720.mp3',
+            '11L-quiet_earth_thump-1751461399646.mp3',
+            '11L-quiet_earth_thump-1751461358880.mp3',
+            '11L-quiet_earth_thump-1751461356421.mp3',
+            '11L-soft_soil_thud-1751461301001.mp3',
+            '11L-soft_soil_thud-1751461297956.mp3',
+            '11L-soft_soil_thud-1751461196165.mp3',
+            '11L-gentle_dirt_thump-1751460916277.mp3',
+            '11L-gentle_dirt_thump-1751460915137.mp3',
+            '11L-gentle_dirt_thump-1751460913757.mp3',
+            '11L-gentle_dirt_thump-1751460905906.mp3',
+            '11L-gentle_dirt_thump-1751460904306.mp3',
+            '11L-gentle_dirt_thump-1751460901940.mp3',
+            '11L-gentle_dirt_thump-1751460898948.mp3',
+            '11L-soft_dirt_thump-1751458128168.mp3',
+            '11L-soft_dirt_thump-1751458113598.mp3'
+        ];
+
+        let selectedHoverSoundIndex = 5; // Default to Hover Sound 6
+        let selectedPlaceSoundIndex = 0; // Default to first place sound
+        let currentHoverSound = null; // Track currently playing sound
+
+        function playHoverSound() {
+            // Stop any currently playing hover sound immediately
+            if (currentHoverSound) {
+                currentHoverSound.pause();
+                currentHoverSound.currentTime = 0;
+            }
+            
+            // Create and play new sound immediately
+            currentHoverSound = new Audio(`../../sounds/Hover/${hoverSounds[selectedHoverSoundIndex]}`);
+            currentHoverSound.volume = 0.5;
+            
+            // Clear reference when sound ends
+            currentHoverSound.addEventListener('ended', () => {
+                currentHoverSound = null;
+            });
+            
+            currentHoverSound.play().catch(e => console.log('Could not play hover sound:', e));
+        }
+
+        function playPlaceSound() {
+            const sound = new Audio(`../../sounds/place/${placeSounds[selectedPlaceSoundIndex]}`);
+            sound.volume = 0.7;
+            sound.play().catch(e => console.log('Could not play place sound:', e));
+        }
+
+        function playMergeSound() {
+            const sound = new Audio('../../sounds/merge/merge.mp3');
+            sound.volume = 0.8;
+            sound.play().catch(e => console.log('Could not play merge sound:', e));
+        }
+
+        // Sound test functions
+        function testSelectedHoverSound() {
+            playHoverSound();
+        }
+
+        function testPlaceSound() {
+            playPlaceSound();
+        }
+
+        function testMergeSound() {
+            playMergeSound();
+        }
+
+        // Hover sound selection functions
+        function previousHoverSound() {
+            selectedHoverSoundIndex = (selectedHoverSoundIndex - 1 + hoverSounds.length) % hoverSounds.length;
+            updateHoverSoundDisplay();
+            playHoverSound(); // Play the newly selected sound
+        }
+
+        function nextHoverSound() {
+            selectedHoverSoundIndex = (selectedHoverSoundIndex + 1) % hoverSounds.length;
+            updateHoverSoundDisplay();
+            playHoverSound(); // Play the newly selected sound
+        }
+
+        function selectHoverSound() {
+            const dropdown = document.getElementById('hoverSoundSelect');
+            selectedHoverSoundIndex = parseInt(dropdown.value);
+            playHoverSound(); // Play the newly selected sound
+        }
+
+        function updateHoverSoundDisplay() {
+            const dropdown = document.getElementById('hoverSoundSelect');
+            dropdown.value = selectedHoverSoundIndex;
+        }
+
+        // Place sound selection functions
+        function previousPlaceSound() {
+            selectedPlaceSoundIndex = (selectedPlaceSoundIndex - 1 + placeSounds.length) % placeSounds.length;
+            updatePlaceSoundDisplay();
+            playPlaceSound(); // Play the newly selected sound
+        }
+
+        function nextPlaceSound() {
+            selectedPlaceSoundIndex = (selectedPlaceSoundIndex + 1) % placeSounds.length;
+            updatePlaceSoundDisplay();
+            playPlaceSound(); // Play the newly selected sound
+        }
+
+        function selectPlaceSound() {
+            const dropdown = document.getElementById('placeSoundSelect');
+            selectedPlaceSoundIndex = parseInt(dropdown.value);
+            playPlaceSound(); // Play the newly selected sound
+        }
+
+        function updatePlaceSoundDisplay() {
+            const dropdown = document.getElementById('placeSoundSelect');
+            dropdown.value = selectedPlaceSoundIndex;
+        }
+
+        // Initialize grid
+        function initializeGrid() {
+            const gridElement = document.getElementById('gameGrid');
+            grid = [];
+            
+            for (let i = 0; i < 25; i++) {
+                const row = Math.floor(i / 5);
+                const col = i % 5;
+                
+                if (!grid[row]) grid[row] = [];
+                grid[row][col] = null;
+                
+                const cell = document.createElement('div');
+                cell.className = 'grid-cell';
+                cell.dataset.row = row;
+                cell.dataset.col = col;
+                
+                cell.addEventListener('mouseenter', handleCellHover);
+                cell.addEventListener('mouseleave', handleCellLeave);
+                cell.addEventListener('click', handleCellClick);
+                
+                gridElement.appendChild(cell);
+            }
+        }
+
+        // Handle cell interactions
+        function handleCellHover(event) {
+            if (selectedBuildingType && !grid[event.target.dataset.row][event.target.dataset.col]) {
+                event.target.classList.add('snap-target');
+                playHoverSound();
+            }
+        }
+
+        function handleCellLeave(event) {
+            event.target.classList.remove('snap-target');
+        }
+
+        function handleCellClick(event) {
+            const row = parseInt(event.target.dataset.row);
+            const col = parseInt(event.target.dataset.col);
+            
+            if (selectedBuildingType && !grid[row][col]) {
+                placeBuilding(row, col, selectedBuildingType, 1);
+                playPlaceSound();
+                checkForMerges(row, col);
+            }
+        }
+
+        // Building placement
+        function placeBuilding(row, col, type, level) {
+            const building = {
+                type: type,
+                level: level,
+                id: Date.now() + Math.random()
+            };
+            
+            grid[row][col] = building;
+            updateGridDisplay();
+        }
+
+        // Update grid visual display
+        function updateGridDisplay() {
+            const cells = document.querySelectorAll('.grid-cell');
+            
+            cells.forEach((cell, index) => {
+                const row = Math.floor(index / 5);
+                const col = index % 5;
+                const building = grid[row][col];
+                
+                // Clear previous building
+                const existingBuilding = cell.querySelector('.building');
+                if (existingBuilding) {
+                    existingBuilding.remove();
+                }
+                
+                // Add new building if exists
+                if (building) {
+                    const buildingElement = document.createElement('div');
+                    buildingElement.className = `building ${building.type}`;
+                    buildingElement.innerHTML = `
+                        ${buildingTypes[building.type].icon}
+                        <div class="building-level">${building.level}</div>
+                    `;
+                    cell.appendChild(buildingElement);
+                }
+            });
+        }
+
+        // Merge detection and handling
+        function checkForMerges(row, col) {
+            const building = grid[row][col];
+            if (!building) return;
+            
+            const adjacentPositions = getAdjacentPositions(row, col);
+            const matchingBuildings = adjacentPositions.filter(pos => {
+                const adjBuilding = grid[pos.row][pos.col];
+                return adjBuilding && 
+                       adjBuilding.type === building.type && 
+                       adjBuilding.level === building.level;
+            });
+            
+            if (matchingBuildings.length >= 2) {
+                // We have 3 matching buildings (including the one just placed)
+                performMerge([{row, col}, ...matchingBuildings], building.type, building.level);
+            }
+        }
+
+        function getAdjacentPositions(row, col) {
+            const positions = [];
+            const directions = [
+                [-1, 0], [1, 0], [0, -1], [0, 1] // up, down, left, right
+            ];
+            
+            directions.forEach(([dr, dc]) => {
+                const newRow = row + dr;
+                const newCol = col + dc;
+                
+                if (newRow >= 0 && newRow < 5 && newCol >= 0 && newCol < 5) {
+                    positions.push({row: newRow, col: newCol});
+                }
+            });
+            
+            return positions;
+        }
+
+        function performMerge(positions, type, level) {
+            // Show merge indicator
+            showMergeIndicator(positions);
+            
+            setTimeout(() => {
+                // Clear all merged buildings
+                positions.forEach(pos => {
+                    grid[pos.row][pos.col] = null;
+                });
+                
+                // Place new higher level building at the last position
+                const lastPos = positions[positions.length - 1];
+                placeBuilding(lastPos.row, lastPos.col, type, level + 1);
+                
+                playMergeSound();
+                
+                // Check for chain merges
+                setTimeout(() => {
+                    checkForMerges(lastPos.row, lastPos.col);
+                }, 500);
+                
+            }, 1000);
+        }
+
+        function showMergeIndicator(positions) {
+            positions.forEach(pos => {
+                const cellIndex = pos.row * 5 + pos.col;
+                const cell = document.querySelectorAll('.grid-cell')[cellIndex];
+                const indicator = document.createElement('div');
+                indicator.className = 'merge-indicator';
+                cell.appendChild(indicator);
+                
+                setTimeout(() => {
+                    if (indicator.parentNode) {
+                        indicator.remove();
+                    }
+                }, 1000);
+            });
+        }
+
+        // Initialize building cards
+        function initializeBuildingCards() {
+            const cardsContainer = document.getElementById('buildingCards');
+            
+            Object.entries(buildingTypes).forEach(([type, config]) => {
+                const card = document.createElement('div');
+                card.className = 'building-card';
+                card.dataset.type = type;
+                
+                card.innerHTML = `
+                    <div class="card-icon ${type}" style="background: linear-gradient(145deg, ${config.color}, ${config.color}aa); color: ${type === 'factory' ? '#333' : 'white'};">
+                        ${config.icon}
+                    </div>
+                    <div class="card-info">
+                        <div class="card-name">${config.name}</div>
+                        <div class="card-level">Level 1 • ${config.description}</div>
+                    </div>
+                `;
+                
+                card.addEventListener('click', () => selectBuildingType(type, card));
+                cardsContainer.appendChild(card);
+            });
+        }
+
+        function selectBuildingType(type, cardElement) {
+            // Remove previous selection
+            document.querySelectorAll('.building-card').forEach(card => {
+                card.classList.remove('selected');
+            });
+            
+            // Set new selection
+            selectedBuildingType = type;
+            cardElement.classList.add('selected');
+        }
+
+        // Initialize the game
+        function initialize() {
+            initializeGrid();
+            initializeBuildingCards();
+            
+            // Select first building type by default
+            const firstCard = document.querySelector('.building-card');
+            if (firstCard) {
+                selectBuildingType(firstCard.dataset.type, firstCard);
+            }
+            
+            // Initialize sound dropdown displays
+            updateHoverSoundDisplay();
+            updatePlaceSoundDisplay();
+            
+            console.log('Grid test initialized!');
+        }
+
+        // Start the game when page loads
+        document.addEventListener('DOMContentLoaded', initialize);
+    </script>
+</body>
+</html> 

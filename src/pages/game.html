@@ -55,6 +55,82 @@
             letter-spacing: 1px;
         }
 
+        /* 3-Day Offerings Button */
+        .offerings-button {
+            position: absolute;
+            top: 20%;
+            right: 5%;
+            transform: translateY(-50%);
+            width: 95px;
+            height: 95px;
+            background: linear-gradient(145deg, rgba(255, 215, 0, 0.9), rgba(255, 140, 0, 0.7));
+            border: 3px solid #ffd700;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(5px);
+            box-shadow: 0 0 30px rgba(255, 215, 0, 0.7), 
+                        inset 0 2px 15px rgba(255, 255, 100, 0.4);
+            z-index: 500;
+            animation: offeringsPulse 4s ease-in-out infinite;
+        }
+
+        .offerings-button:hover {
+            transform: translateY(-50%) scale(1.2);
+            background: linear-gradient(145deg, rgba(255, 215, 0, 1), rgba(255, 140, 0, 0.9));
+            border-color: #ffdd44;
+            box-shadow: 0 0 50px rgba(255, 215, 0, 0.9), 
+                        0 0 80px rgba(255, 215, 0, 0.5),
+                        inset 0 2px 20px rgba(255, 255, 100, 0.6);
+            animation: none;
+        }
+
+        @keyframes offeringsPulse {
+            0%, 100% { 
+                box-shadow: 0 0 30px rgba(255, 215, 0, 0.7), 
+                            inset 0 2px 15px rgba(255, 255, 100, 0.4);
+                transform: translateY(-50%) scale(1);
+            }
+            50% { 
+                box-shadow: 0 0 45px rgba(255, 215, 0, 0.9), 
+                            0 0 70px rgba(255, 215, 0, 0.4),
+                            inset 0 2px 20px rgba(255, 255, 100, 0.5);
+                transform: translateY(-50%) scale(1.05);
+            }
+        }
+
+        .offerings-overlay {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: #ffffff;
+            font-weight: bold;
+            text-shadow: 0 0 15px rgba(255, 215, 0, 1), 
+                         0 0 25px rgba(255, 215, 0, 0.7),
+                         0 2px 6px rgba(0, 0, 0, 0.9);
+        }
+
+        .offerings-overlay i {
+            font-size: 36px;
+            margin-bottom: 6px;
+            color: #ffffff;
+            text-shadow: 0 0 20px rgba(255, 215, 0, 1), 
+                         0 0 30px rgba(255, 215, 0, 0.6),
+                         0 2px 8px rgba(0, 0, 0, 0.9);
+        }
+
+        .offerings-overlay span {
+            font-size: 11px;
+            letter-spacing: 1px;
+            color: #ffffff;
+            text-shadow: 0 0 12px rgba(255, 215, 0, 0.9), 
+                         0 2px 4px rgba(0, 0, 0, 0.9);
+        }
+
         /* Expedition Planning Button */
         .expedition-planning-button {
             position: absolute;
@@ -1611,6 +1687,14 @@
         </div>
     </div>
 
+    <!-- Traveler's Trade Button -->
+    <div class="offerings-button" id="offeringsBtn" onclick="show3DayOfferingsModal()">
+        <div class="offerings-overlay">
+            <i class="fas fa-store"></i>
+            <span>TRADE</span>
+        </div>
+    </div>
+
     <!-- Expedition Planning Button -->
     <div class="expedition-planning-button" id="expeditionPlanningBtn" onclick="showExpeditionPlanningModal()">
         <div class="expedition-overlay">
@@ -1621,6 +1705,14 @@
 
 
     
+    <!-- Traveler's Trade Modal (IFrame Popup) -->
+    <div class="expedition-planning-overlay" id="offeringsModal" style="display: none;">
+        <div class="expedition-iframe-container">
+            <iframe id="offeringsFrame" src="3day-offerings.html" frameborder="0"></iframe>
+            <button class="close-modal-btn" onclick="close3DayOfferingsModal()">✕</button>
+        </div>
+    </div>
+
     <!-- Expedition Planning Modal (IFrame Popup) -->
     <div class="expedition-planning-overlay" id="expeditionPlanningModal" style="display: none;">
         <div class="expedition-iframe-container">
@@ -1660,6 +1752,24 @@
     <script src="../scripts/script.js"></script>
     
     <script>
+        // Traveler's Trade Modal Functions
+        function show3DayOfferingsModal() {
+            const modal = document.getElementById('offeringsModal');
+            modal.style.display = 'flex';
+            modal.style.animation = 'fadeIn 0.8s ease-out';
+            console.log('Traveler\'s Trade Modal opened');
+        }
+
+        function close3DayOfferingsModal() {
+            const modal = document.getElementById('offeringsModal');
+            modal.style.animation = 'fadeOut 0.5s ease-out forwards';
+            
+            setTimeout(() => {
+                modal.style.display = 'none';
+            }, 500);
+            console.log('Traveler\'s Trade Modal closed');
+        }
+
         // Expedition Planning Modal Functions
         function showExpeditionPlanningModal() {
             const modal = document.getElementById('expeditionPlanningModal');
@@ -2280,6 +2390,11 @@
             if (expeditionButton) {
                 expeditionButton.addEventListener('click', showExpeditionPlanningModal);
             }
+            
+            const offeringsButton = document.getElementById('offeringsBtn');
+            if (offeringsButton) {
+                offeringsButton.addEventListener('click', show3DayOfferingsModal);
+            }
 
             // Listen for messages from the iframe
             window.addEventListener('message', function(event) {
@@ -2301,6 +2416,7 @@
             document.addEventListener('keydown', function(e) {
                 const npcModal = document.getElementById('npcSelectionModal');
                 const expeditionModal = document.getElementById('expeditionPlanningModal');
+                const offeringsModal = document.getElementById('offeringsModal');
                 
                 if (npcModal.style.display === 'flex') {
                     if (e.key === 'Escape') {
@@ -2315,6 +2431,12 @@
                 if (expeditionModal.style.display === 'flex') {
                     if (e.key === 'Escape') {
                         closeExpeditionPlanningModal();
+                    }
+                }
+                
+                if (offeringsModal.style.display === 'flex') {
+                    if (e.key === 'Escape') {
+                        close3DayOfferingsModal();
                     }
                 }
 
