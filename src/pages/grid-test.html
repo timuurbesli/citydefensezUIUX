@@ -283,6 +283,47 @@
             box-shadow: 0 0 5px rgba(255, 215, 0, 0.3);
         }
 
+        .shuffle-toggle {
+            margin-top: 8px;
+        }
+
+        .shuffle-button {
+            background: rgba(255, 69, 0, 0.3);
+            border: 1px solid #ff4500;
+            color: #ff6b47;
+            padding: 8px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            width: 100%;
+            justify-content: center;
+        }
+
+        .shuffle-button:hover {
+            background: rgba(255, 69, 0, 0.5);
+            transform: translateY(-1px);
+        }
+
+        .shuffle-button.active {
+            background: rgba(255, 69, 0, 0.6);
+            border-color: #ff6b47;
+            color: #ffffff;
+            box-shadow: 0 0 10px rgba(255, 69, 0, 0.4);
+        }
+
+        .shuffle-icon {
+            font-size: 16px;
+            font-style: normal;
+        }
+
+        .shuffle-text {
+            font-weight: bold;
+        }
+
         .merge-indicator {
             position: absolute;
             top: -10px;
@@ -304,6 +345,52 @@
                 border-color: #ff9999;
                 box-shadow: 0 0 20px #ff6b6b;
             }
+        }
+
+        @keyframes moveAndShrink {
+            0% {
+                transform: scale(1) translate(0, 0);
+                opacity: 1;
+            }
+            70% {
+                transform: scale(0.3) translate(var(--target-x), var(--target-y));
+                opacity: 0.8;
+            }
+            100% {
+                transform: scale(0) translate(var(--target-x), var(--target-y));
+                opacity: 0;
+            }
+        }
+
+        .moving-building {
+            position: fixed;
+            z-index: 1000;
+            pointer-events: none;
+            transition: all 0.8s ease-in-out;
+        }
+
+        @keyframes bounceUpgrade {
+            0% {
+                transform: scale(1);
+            }
+            25% {
+                transform: scale(1.3);
+            }
+            50% {
+                transform: scale(0.9);
+            }
+            75% {
+                transform: scale(1.1);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+
+
+
+        .bounce-merge {
+            animation: bounceUpgrade 0.6s ease-in-out;
         }
 
         .info-panel {
@@ -339,8 +426,9 @@
                 <div class="info-title">How to Play:</div>
                 <div class="info-text">1. Select a building type from the right panel</div>
                 <div class="info-text">2. Click on grid cells to place buildings</div>
-                <div class="info-text">3. Place 3 adjacent buildings of same type and level to merge</div>
-                <div class="info-text">4. Test hover sounds using the sound test buttons</div>
+                <div class="info-text">3. Get 3 same buildings in a line (horizontal/vertical/L-shape) to merge</div>
+                <div class="info-text">4. Watch buildings animate into the merge position!</div>
+                <div class="info-text">5. Use arrows/dropdown to select sounds, or enable shuffle mode</div>
             </div>
         </div>
 
@@ -376,34 +464,22 @@
                     <div class="place-sound-controls">
                         <button class="arrow-button" onclick="previousPlaceSound()">◀</button>
                         <select class="sound-dropdown" id="placeSoundSelect" onchange="selectPlaceSound()">
-                            <option value="0">Muffled Dirt Hit 1</option>
-                            <option value="1">Muffled Dirt Hit 2</option>
-                            <option value="2">Muffled Dirt Hit 3</option>
-                            <option value="3">Muffled Dirt Hit 4</option>
-                            <option value="4">Light Ground Thump</option>
-                            <option value="5">Cushioned Dirt Thud 1</option>
-                            <option value="6">Cushioned Dirt Thud 2</option>
-                            <option value="7">Cushioned Dirt Thud 3</option>
-                            <option value="8">Cushioned Dirt Thud 4</option>
-                            <option value="9">Quiet Earth Thump 1</option>
-                            <option value="10">Quiet Earth Thump 2</option>
-                            <option value="11">Quiet Earth Thump 3</option>
-                            <option value="12">Quiet Earth Thump 4</option>
-                            <option value="13">Quiet Earth Thump 5</option>
-                            <option value="14">Soft Soil Thud 1</option>
-                            <option value="15">Soft Soil Thud 2</option>
-                            <option value="16">Soft Soil Thud 3</option>
-                            <option value="17">Gentle Dirt Thump 1</option>
-                            <option value="18">Gentle Dirt Thump 2</option>
-                            <option value="19">Gentle Dirt Thump 3</option>
-                            <option value="20">Gentle Dirt Thump 4</option>
-                            <option value="21">Gentle Dirt Thump 5</option>
-                            <option value="22">Gentle Dirt Thump 6</option>
-                            <option value="23">Gentle Dirt Thump 7</option>
-                            <option value="24">Soft Dirt Thump 1</option>
-                            <option value="25">Soft Dirt Thump 2</option>
+                            <option value="0">Cush Dirt Thud 2</option>
+                            <option value="1">Muffled Dirt 2</option>
+                            <option value="2">Soft Dirt 2</option>
+                            <option value="3">Muffled Dirt 3</option>
+                            <option value="4">Soft Soil 2</option>
+                            <option value="5">Soft Soil 3</option>
+                            <option value="6">Gentle Dirt Thump 2</option>
+                            <option value="7">Cush Dirt 3</option>
                         </select>
                         <button class="arrow-button" onclick="nextPlaceSound()">▶</button>
+                    </div>
+                    <div class="shuffle-toggle">
+                        <button class="shuffle-button" id="shuffleToggle" onclick="toggleShuffle()">
+                            <i class="shuffle-icon">🔀</i>
+                            <span class="shuffle-text">Shuffle: OFF</span>
+                        </button>
                     </div>
                 </div>
                 
@@ -465,37 +541,21 @@
         ];
 
         const placeSounds = [
-            '11L-muffled_dirt_hit-1751461641229.mp3',
-            '11L-muffled_dirt_hit-1751461578547.mp3',
-            '11L-muffled_dirt_hit-1751461573708.mp3',
-            '11L-muffled_dirt_hit-1751461566147.mp3',
-            '11L-light_ground_thump-1751461500839.mp3',
-            '11L-cushioned_dirt_thud-1751461482310.mp3',
-            '11L-cushioned_dirt_thud-1751461479209.mp3',
-            '11L-cushioned_dirt_thud-1751461465021.mp3',
-            '11L-cushioned_dirt_thud-1751461455586.mp3',
-            '11L-quiet_earth_thump-1751461433286.mp3',
-            '11L-quiet_earth_thump-1751461401720.mp3',
-            '11L-quiet_earth_thump-1751461399646.mp3',
-            '11L-quiet_earth_thump-1751461358880.mp3',
-            '11L-quiet_earth_thump-1751461356421.mp3',
-            '11L-soft_soil_thud-1751461301001.mp3',
-            '11L-soft_soil_thud-1751461297956.mp3',
-            '11L-soft_soil_thud-1751461196165.mp3',
-            '11L-gentle_dirt_thump-1751460916277.mp3',
-            '11L-gentle_dirt_thump-1751460915137.mp3',
-            '11L-gentle_dirt_thump-1751460913757.mp3',
-            '11L-gentle_dirt_thump-1751460905906.mp3',
-            '11L-gentle_dirt_thump-1751460904306.mp3',
-            '11L-gentle_dirt_thump-1751460901940.mp3',
-            '11L-gentle_dirt_thump-1751460898948.mp3',
-            '11L-soft_dirt_thump-1751458128168.mp3',
-            '11L-soft_dirt_thump-1751458113598.mp3'
+            '11L-cushioned_dirt_thud-1751461479209.mp3',      // cush dirt thud 2
+            '11L-muffled_dirt_hit-1751461578547.mp3',         // muffled dirt 2
+            '11L-soft_dirt_thump-1751458113598.mp3',          // soft dirt 2
+            '11L-muffled_dirt_hit-1751461573708.mp3',         // muffled dirt 3
+            '11L-soft_soil_thud-1751461297956.mp3',           // soft soil 2
+            '11L-soft_soil_thud-1751461196165.mp3',           // soft soil 3
+            '11L-gentle_dirt_thump-1751460915137.mp3',        // gentle dirt thump 2
+            '11L-cushioned_dirt_thud-1751461465021.mp3'       // cush dirt 3
         ];
 
         let selectedHoverSoundIndex = 5; // Default to Hover Sound 6
         let selectedPlaceSoundIndex = 0; // Default to first place sound
         let currentHoverSound = null; // Track currently playing sound
+        let shuffleModeEnabled = false; // Shuffle mode toggle
+        let lastPlayedPlaceSoundIndex = -1; // Track last played sound to avoid repeats
 
         function playHoverSound() {
             // Stop any currently playing hover sound immediately
@@ -517,7 +577,20 @@
         }
 
         function playPlaceSound() {
-            const sound = new Audio(`../../sounds/place/${placeSounds[selectedPlaceSoundIndex]}`);
+            let soundIndexToPlay;
+            
+            if (shuffleModeEnabled) {
+                // Generate random index, avoiding the last played sound
+                do {
+                    soundIndexToPlay = Math.floor(Math.random() * placeSounds.length);
+                } while (soundIndexToPlay === lastPlayedPlaceSoundIndex && placeSounds.length > 1);
+                
+                lastPlayedPlaceSoundIndex = soundIndexToPlay;
+            } else {
+                soundIndexToPlay = selectedPlaceSoundIndex;
+            }
+            
+            const sound = new Audio(`../../sounds/place/${placeSounds[soundIndexToPlay]}`);
             sound.volume = 0.7;
             sound.play().catch(e => console.log('Could not play place sound:', e));
         }
@@ -526,6 +599,18 @@
             const sound = new Audio('../../sounds/merge/merge.mp3');
             sound.volume = 0.8;
             sound.play().catch(e => console.log('Could not play merge sound:', e));
+        }
+
+        function playVacuumSound1() {
+            const vacuumSound1 = new Audio('../../sounds/mergepop/SFX_Pop_Designed_Collect_Vacuum_1.wav');
+            vacuumSound1.volume = 0.5;
+            vacuumSound1.play().catch(e => console.log('Could not play vacuum sound 1:', e));
+        }
+
+        function playVacuumSound2() {
+            const vacuumSound2 = new Audio('../../sounds/mergepop/SFX_Pop_Designed_Collect_Vacuum_2.wav');
+            vacuumSound2.volume = 0.5;
+            vacuumSound2.play().catch(e => console.log('Could not play vacuum sound 2:', e));
         }
 
         // Sound test functions
@@ -587,6 +672,31 @@
         function updatePlaceSoundDisplay() {
             const dropdown = document.getElementById('placeSoundSelect');
             dropdown.value = selectedPlaceSoundIndex;
+        }
+
+        // Shuffle mode functions
+        function toggleShuffle() {
+            shuffleModeEnabled = !shuffleModeEnabled;
+            updateShuffleDisplay();
+            
+            // Reset last played sound when toggling
+            lastPlayedPlaceSoundIndex = -1;
+            
+            // Play a sound to demonstrate the new mode
+            playPlaceSound();
+        }
+
+        function updateShuffleDisplay() {
+            const shuffleButton = document.getElementById('shuffleToggle');
+            const shuffleText = shuffleButton.querySelector('.shuffle-text');
+            
+            if (shuffleModeEnabled) {
+                shuffleButton.classList.add('active');
+                shuffleText.textContent = 'Shuffle: ON';
+            } else {
+                shuffleButton.classList.remove('active');
+                shuffleText.textContent = 'Shuffle: OFF';
+            }
         }
 
         // Initialize grid
@@ -661,6 +771,8 @@
                 // Clear previous building
                 const existingBuilding = cell.querySelector('.building');
                 if (existingBuilding) {
+                    // Clear any animation classes before removing
+                    existingBuilding.classList.remove('moving-to-merge', 'bounce-merge');
                     existingBuilding.remove();
                 }
                 
@@ -682,60 +794,260 @@
             const building = grid[row][col];
             if (!building) return;
             
-            const adjacentPositions = getAdjacentPositions(row, col);
-            const matchingBuildings = adjacentPositions.filter(pos => {
-                const adjBuilding = grid[pos.row][pos.col];
-                return adjBuilding && 
-                       adjBuilding.type === building.type && 
-                       adjBuilding.level === building.level;
-            });
+            // Check for horizontal merges (3 in a row)
+            const horizontalMerge = checkHorizontalMerge(row, col, building.type, building.level);
+            if (horizontalMerge) {
+                performMerge(horizontalMerge, building.type, building.level, row, col);
+                return;
+            }
             
-            if (matchingBuildings.length >= 2) {
-                // We have 3 matching buildings (including the one just placed)
-                performMerge([{row, col}, ...matchingBuildings], building.type, building.level);
+            // Check for vertical merges (3 in a column)
+            const verticalMerge = checkVerticalMerge(row, col, building.type, building.level);
+            if (verticalMerge) {
+                performMerge(verticalMerge, building.type, building.level, row, col);
+                return;
+            }
+            
+            // Check for L-shaped merges
+            const lShapeMerge = checkLShapeMerge(row, col, building.type, building.level);
+            if (lShapeMerge) {
+                performMerge(lShapeMerge, building.type, building.level, row, col);
+                return;
             }
         }
 
-        function getAdjacentPositions(row, col) {
-            const positions = [];
-            const directions = [
-                [-1, 0], [1, 0], [0, -1], [0, 1] // up, down, left, right
-            ];
-            
-            directions.forEach(([dr, dc]) => {
-                const newRow = row + dr;
-                const newCol = col + dc;
+        function checkHorizontalMerge(row, col, type, level) {
+            // Check all possible horizontal 3-in-a-row patterns that include this position
+            for (let startCol = Math.max(0, col - 2); startCol <= Math.min(2, col); startCol++) {
+                if (startCol + 2 >= 5) break; // Stay within grid bounds
                 
-                if (newRow >= 0 && newRow < 5 && newCol >= 0 && newCol < 5) {
-                    positions.push({row: newRow, col: newCol});
+                const positions = [
+                    {row, col: startCol},
+                    {row, col: startCol + 1},
+                    {row, col: startCol + 2}
+                ];
+                
+                // Check if all 3 positions have matching buildings
+                const allMatch = positions.every(pos => {
+                    const building = grid[pos.row][pos.col];
+                    return building && building.type === type && building.level === level;
+                });
+                
+                if (allMatch) {
+                    return positions;
                 }
-            });
-            
-            return positions;
+            }
+            return null;
         }
 
-        function performMerge(positions, type, level) {
+        function checkVerticalMerge(row, col, type, level) {
+            // Check all possible vertical 3-in-a-row patterns that include this position
+            for (let startRow = Math.max(0, row - 2); startRow <= Math.min(2, row); startRow++) {
+                if (startRow + 2 >= 5) break; // Stay within grid bounds
+                
+                const positions = [
+                    {row: startRow, col},
+                    {row: startRow + 1, col},
+                    {row: startRow + 2, col}
+                ];
+                
+                // Check if all 3 positions have matching buildings
+                const allMatch = positions.every(pos => {
+                    const building = grid[pos.row][pos.col];
+                    return building && building.type === type && building.level === level;
+                });
+                
+                if (allMatch) {
+                    return positions;
+                }
+            }
+            return null;
+        }
+
+        function checkLShapeMerge(row, col, type, level) {
+            // Define the 4 basic L-shape orientations
+            // Each L-shape is defined by its corner position and two extensions
+            const lShapeTemplates = [
+                // L-shape: corner at (0,0), extends right and down
+                [[0,0], [0,1], [1,0]],
+                // L-shape: corner at (0,1), extends left and down  
+                [[0,0], [0,1], [1,1]],
+                // L-shape: corner at (1,0), extends right and up
+                [[0,0], [1,0], [1,1]],
+                // L-shape: corner at (1,1), extends left and up
+                [[0,1], [1,0], [1,1]]
+            ];
+            
+            // For each L-shape template, try placing it at different positions
+            // so that the placed building (row, col) is part of the pattern
+            for (const template of lShapeTemplates) {
+                for (let i = 0; i < 3; i++) {
+                    // Try making each position in the template be the placed building
+                    const offsetRow = row - template[i][0];
+                    const offsetCol = col - template[i][1];
+                    
+                    // Calculate actual positions for this L-shape
+                    const positions = template.map(([r, c]) => ({
+                        row: r + offsetRow,
+                        col: c + offsetCol
+                    }));
+                    
+                    // Check if all positions are within grid bounds
+                    const inBounds = positions.every(pos => 
+                        pos.row >= 0 && pos.row < 5 && pos.col >= 0 && pos.col < 5
+                    );
+                    
+                    if (inBounds) {
+                        // Check if all 3 positions have matching buildings
+                        const allMatch = positions.every(pos => {
+                            const building = grid[pos.row][pos.col];
+                            return building && building.type === type && building.level === level;
+                        });
+                        
+                        if (allMatch) {
+                            return positions;
+                        }
+                    }
+                }
+            }
+            return null;
+        }
+
+
+
+        function performMerge(positions, type, level, lastPlacedRow, lastPlacedCol) {
             // Show merge indicator
             showMergeIndicator(positions);
             
             setTimeout(() => {
-                // Clear all merged buildings
-                positions.forEach(pos => {
-                    grid[pos.row][pos.col] = null;
+                // Animate buildings moving to merge position
+                animateMergeMovement(positions, lastPlacedRow, lastPlacedCol, type, level);
+            }, 500);
+        }
+
+        function animateMergeMovement(positions, lastPlacedRow, lastPlacedCol, type, level) {
+            // Find buildings that need to move (not the last placed one)
+            const movingBuildings = positions.filter(pos => 
+                pos.row !== lastPlacedRow || pos.col !== lastPlacedCol
+            );
+            
+            // Sort by distance to target (closest first)
+            movingBuildings.sort((a, b) => {
+                const distA = Math.abs(a.row - lastPlacedRow) + Math.abs(a.col - lastPlacedCol);
+                const distB = Math.abs(b.row - lastPlacedRow) + Math.abs(b.col - lastPlacedCol);
+                return distA - distB;
+            });
+            
+            // Get target cell position
+            const targetCellIndex = lastPlacedRow * 5 + lastPlacedCol;
+            const targetCell = document.querySelectorAll('.grid-cell')[targetCellIndex];
+            const targetRect = targetCell.getBoundingClientRect();
+            
+            // Animate buildings sequentially
+            let animationDelay = 0;
+            const animationPromises = [];
+            
+            movingBuildings.forEach((pos, index) => {
+                const promise = new Promise((resolve) => {
+                    setTimeout(() => {
+                        const cellIndex = pos.row * 5 + pos.col;
+                        const cell = document.querySelectorAll('.grid-cell')[cellIndex];
+                        const building = cell.querySelector('.building');
+                        
+                        if (building && cell) {
+                            // Get current position
+                            const currentRect = cell.getBoundingClientRect();
+                            
+                            // Create a clone for animation
+                            const clone = building.cloneNode(true);
+                            clone.classList.add('moving-building');
+                            clone.classList.remove('moving-to-merge', 'bounce-merge'); // Clean up any existing classes
+                            clone.style.left = currentRect.left + 'px';
+                            clone.style.top = currentRect.top + 'px';
+                            clone.style.width = currentRect.width + 'px';
+                            clone.style.height = currentRect.height + 'px';
+                            
+                            document.body.appendChild(clone);
+                            
+                            // Hide original immediately
+                            building.style.opacity = '0';
+                            
+                            // Animate to center of target cell
+                            setTimeout(() => {
+                                const targetCenterX = targetRect.left + targetRect.width / 2 - currentRect.width / 2;
+                                const targetCenterY = targetRect.top + targetRect.height / 2 - currentRect.height / 2;
+                                
+                                clone.style.left = targetCenterX + 'px';
+                                clone.style.top = targetCenterY + 'px';
+                                clone.style.transform = 'scale(0.1)';
+                                clone.style.opacity = '0';
+                                
+                                // Play vacuum sounds when animation starts moving
+                                if (index === 0) {
+                                    // First building (closest) - play vacuum sound 1
+                                    playVacuumSound1();
+                                } else if (index === 1) {
+                                    // Second building - play vacuum sound 2
+                                    playVacuumSound2();
+                                }
+                            }, 50);
+                            
+                            // Clean up after animation completes
+                            setTimeout(() => {
+                                if (document.body.contains(clone)) {
+                                    document.body.removeChild(clone);
+                                }
+                                // Clear the original cell
+                                cell.innerHTML = '';
+                                resolve();
+                            }, 750);
+                        } else {
+                            resolve();
+                        }
+                    }, animationDelay);
                 });
                 
-                // Place new higher level building at the last position
-                const lastPos = positions[positions.length - 1];
-                placeBuilding(lastPos.row, lastPos.col, type, level + 1);
+                animationPromises.push(promise);
+                animationDelay += 200; // Stagger animations by 200ms
+            });
+            
+            // Wait for all animations to complete, then finish merge
+            Promise.all(animationPromises).then(() => {
+                completeMerge(positions, lastPlacedRow, lastPlacedCol, type, level);
                 
-                playMergeSound();
+            });
+        }
+
+        function completeMerge(positions, lastPlacedRow, lastPlacedCol, type, level) {
+            // Clear all merged buildings from grid state (UI already cleared during animation)
+            positions.forEach(pos => {
+                grid[pos.row][pos.col] = null;
+            });
+            
+            // Play merge sound immediately when merge completes
+            playMergeSound();
+            
+            // Place new higher level building at the LAST-PLACED position
+            placeBuilding(lastPlacedRow, lastPlacedCol, type, level + 1);
+            
+            // Add bounce animation to the merged building immediately
+            const cellIndex = lastPlacedRow * 5 + lastPlacedCol;
+            const cell = document.querySelectorAll('.grid-cell')[cellIndex];
+            const mergedBuilding = cell.querySelector('.building');
+            
+            if (mergedBuilding) {
+                mergedBuilding.classList.add('bounce-merge');
                 
-                // Check for chain merges
+                // Remove bounce class after animation
                 setTimeout(() => {
-                    checkForMerges(lastPos.row, lastPos.col);
-                }, 500);
-                
-            }, 1000);
+                    mergedBuilding.classList.remove('bounce-merge');
+                }, 600);
+            }
+            
+            // Check for chain merges at the last-placed position
+            setTimeout(() => {
+                checkForMerges(lastPlacedRow, lastPlacedCol);
+            }, 800);
         }
 
         function showMergeIndicator(positions) {
@@ -750,7 +1062,7 @@
                     if (indicator.parentNode) {
                         indicator.remove();
                     }
-                }, 1000);
+                }, 1800); // Extended to cover the full animation sequence
             });
         }
 
@@ -803,6 +1115,7 @@
             // Initialize sound dropdown displays
             updateHoverSoundDisplay();
             updatePlaceSoundDisplay();
+            updateShuffleDisplay();
             
             console.log('Grid test initialized!');
         }
