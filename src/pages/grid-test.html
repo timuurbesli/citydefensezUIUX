@@ -379,16 +379,20 @@
         .place-sound-controls,
         .first-pop-controls,
         .second-pop-controls,
-        .merge-sound-controls {
+        .merge-sound-controls,
+        .reroll-sound-controls,
+        .card-hover-cancel-sound-controls {
             display: flex;
             align-items: center;
             gap: 8px;
+            min-height: 32px;
         }
 
         .arrow-button {
             background: rgba(255, 215, 0, 0.3);
             border: 1px solid #ffd700;
             color: #ffd700;
+            min-width: 32px; /* Ensure consistent width */
             width: 32px;
             height: 32px;
             border-radius: 4px;
@@ -398,6 +402,9 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            padding: 0; /* Remove any padding that might affect alignment */
+            margin: 0; /* Remove any margin that might affect alignment */
+            line-height: 1; /* Ensure consistent text alignment */
         }
 
         .arrow-button:hover {
@@ -415,6 +422,10 @@
             font-size: 14px;
             cursor: pointer;
             transition: all 0.3s ease;
+            height: 32px; /* Ensure consistent height */
+            line-height: 1; /* Ensure text alignment */
+            display: flex;
+            align-items: center;
         }
 
         .sound-dropdown:hover {
@@ -606,12 +617,24 @@
             <div class="sound-controls">
                 <h4 style="color: #ffd700; margin-bottom: 10px;">Audio Settings</h4>
                 
-                <!-- Hover Sound Selector -->
-                <div class="sound-selector">
-                    <label style="color: #4a9eff; font-size: 14px; margin-bottom: 8px; display: block;">Hover Sound:</label>
+                <!-- Card Hover Sound -->
+                <div class="sound-controls">
+                    <span style="color: #4a9eff;">Card Hover Sound:</span>
+                    <div class="hover-sound-controls">
+                        <button class="arrow-button" onclick="previousCardHoverSound()">◀</button>
+                        <select id="cardHoverSoundSelect" class="sound-dropdown" onchange="selectCardHoverSound()">
+                            <!-- Options populated dynamically -->
+                        </select>
+                        <button class="arrow-button" onclick="nextCardHoverSound()">▶</button>
+                    </div>
+                </div>
+
+                <!-- Grid Hover Sound -->
+                <div class="sound-controls">
+                    <span style="color: #4a9eff;">Grid Hover Sound:</span>
                     <div class="hover-sound-controls">
                         <button class="arrow-button" onclick="previousHoverSound()">◀</button>
-                        <select class="sound-dropdown" id="hoverSoundSelect" onchange="selectHoverSound()">
+                        <select id="hoverSoundSelect" class="sound-dropdown" onchange="selectHoverSound()">
                             <option value="0">Hover Sound 1</option>
                             <option value="1">Hover Sound 2</option>
                             <option value="2">Hover Sound 3</option>
@@ -622,13 +645,13 @@
                         <button class="arrow-button" onclick="nextHoverSound()">▶</button>
                     </div>
                 </div>
-                
-                <!-- Place Sound Selector -->
-                <div class="sound-selector">
-                    <label style="color: #32cd32; font-size: 14px; margin-bottom: 8px; display: block;">Place Sound:</label>
+
+                <!-- Place Sound -->
+                <div class="sound-controls">
+                    <span style="color: #4a9eff;">Place Sound:</span>
                     <div class="place-sound-controls">
                         <button class="arrow-button" onclick="previousPlaceSound()">◀</button>
-                        <select class="sound-dropdown" id="placeSoundSelect" onchange="selectPlaceSound()">
+                        <select id="placeSoundSelect" class="sound-dropdown" onchange="selectPlaceSound()">
                             <option value="0">Cush Dirt Thud 2</option>
                             <option value="1">Muffled Dirt 2</option>
                             <option value="2">Soft Dirt 2</option>
@@ -639,12 +662,6 @@
                             <option value="7">Cush Dirt 3</option>
                         </select>
                         <button class="arrow-button" onclick="nextPlaceSound()">▶</button>
-                    </div>
-                    <div class="shuffle-toggle">
-                        <button class="shuffle-button" id="shuffleToggle" onclick="toggleShuffle()">
-                            <i class="shuffle-icon">🔀</i>
-                            <span class="shuffle-text">Shuffle: OFF</span>
-                        </button>
                     </div>
                 </div>
                 
@@ -683,12 +700,40 @@
                         <button class="arrow-button" onclick="nextMergeSound()">▶</button>
                     </div>
                 </div>
+
+                <!-- Reroll Sound Selector -->
+                <div class="sound-selector">
+                    <label style="color: #4a9eff; font-size: 14px; margin-bottom: 8px; display: block;">Reroll Sound:</label>
+                    <div class="reroll-sound-controls">
+                        <button class="arrow-button" onclick="previousRerollSound()">◀</button>
+                        <select class="sound-dropdown" id="rerollSoundSelect" onchange="selectRerollSound()">
+                            <!-- Options populated dynamically -->
+                        </select>
+                        <button class="arrow-button" onclick="nextRerollSound()">▶</button>
+                    </div>
+                </div>
+
+                <!-- Card Hover Cancel Sound Selector -->
+                <div class="sound-selector">
+                    <label style="color: #ff4444; font-size: 14px; margin-bottom: 8px; display: block;">Card Cancel Sound:</label>
+                    <div class="card-hover-cancel-sound-controls">
+                        <button class="arrow-button" onclick="previousCardHoverCancelSound()">◀</button>
+                        <select class="sound-dropdown" id="cardHoverCancelSoundSelect" onchange="selectCardHoverCancelSound()">
+                            <!-- Options populated dynamically -->
+                        </select>
+                        <button class="arrow-button" onclick="nextCardHoverCancelSound()">▶</button>
+                    </div>
+                </div>
                 
+                <!-- Test Buttons -->
+                <button class="sound-test-button" onclick="testSelectedCardHoverSound()">Test Selected Card Hover Sound</button>
                 <button class="sound-test-button" onclick="testSelectedHoverSound()">Test Selected Hover Sound</button>
                 <button class="sound-test-button" onclick="testPlaceSound()">Test Selected Place Sound</button>
-                <button class="sound-test-button" onclick="testFirstPopSound()">Test First Pop Sound</button>
-                <button class="sound-test-button" onclick="testSecondPopSound()">Test Second Pop Sound</button>
+                <button class="sound-test-button" onclick="testFirstPopSound()">Test Selected First Pop Sound</button>
+                <button class="sound-test-button" onclick="testSecondPopSound()">Test Selected Second Pop Sound</button>
                 <button class="sound-test-button" onclick="testMergeSound()">Test Selected Merge Sound</button>
+                <button class="sound-test-button" onclick="testRerollSound()">Test Selected Reroll Sound</button>
+                <button class="sound-test-button" onclick="testCardHoverCancelSound()">Test Selected Cancel Sound</button>
             </div>
         </div>
     </div>
@@ -865,6 +910,106 @@
         let shuffleModeEnabled = false; // Shuffle mode toggle
         let lastPlayedPlaceSoundIndex = -1; // Track last played sound to avoid repeats
         let draggingWrapper = null;
+
+        // Card hover sound variables and functions
+        const cardHoverSounds = [
+            'BuildingMoveGridHover (1).mp3',
+            'BuildingMoveGridHover (2).mp3',
+            'BuildingMoveGridHover (3).mp3',
+            'BuildingMoveGridHover (4).mp3',
+            'BuildingMoveGridHover (5).mp3',
+            'BuildingMoveGridHover (6).mp3',
+            'SFX_Pop_Bottle_Tiny_1.wav',
+            'SFX_Pop_Bottle_Tiny_2.wav',
+            'SFX_Pop_Designed_Collect_Vacuum_1.wav',
+            'SFX_Pop_Designed_Collect_Vacuum_2.wav',
+            'SFX_Pop_Designed_Movement_1.wav',
+            'SFX_Pop_Designed_Movement_2.wav',
+            'SFX_Pop_Designed_Soft_2.wav',
+            'SFX_Pop_Designed_Soft_3.wav',
+            'SFX_Pop_Designed_Tube_Melodic_1.wav',
+            'SFX_Pop_Designed_Tube_Melodic_2.wav',
+            'SFX_Pop_Designed_Tube_Melodic_3.wav',
+            'SFX_Pop_Designed_Tube_Melodic_4.wav',
+            'SFX_Pop_Mouth_Soft_Muffled_1.wav',
+            'SFX_Pop_Mouth_Soft_Muffled_2.wav',
+            'SFX_Pop_Mouth_Soft_Muffled_3.wav',
+            'SFX_Pop_Whistle_1.wav',
+            'SFX_Pop_Whistle_2.wav',
+            'SFX_Pop_Whistle_Juicy.wav'
+        ];
+
+        const cardHoverSoundNames = [
+            'Grid Hover 1',
+            'Grid Hover 2',
+            'Grid Hover 3',
+            'Grid Hover 4',
+            'Grid Hover 5',
+            'Grid Hover 6',
+            'Bottle Pop 1',
+            'Bottle Pop 2',
+            'Vacuum Pop 1',
+            'Vacuum Pop 2',
+            'Movement Pop 1',
+            'Movement Pop 2',
+            'Soft Pop 2',
+            'Soft Pop 3',
+            'Tube Melodic 1',
+            'Tube Melodic 2',
+            'Tube Melodic 3',
+            'Tube Melodic 4',
+            'Muffled Pop 1',
+            'Muffled Pop 2',
+            'Muffled Pop 3',
+            'Whistle Pop 1',
+            'Whistle Pop 2',
+            'Whistle Juicy'
+        ];
+
+        let selectedCardHoverSoundIndex = 0;
+
+        function playCardHoverSound() {
+            const soundFile = cardHoverSounds[selectedCardHoverSoundIndex];
+            const sound = new Audio(`../../sounds/cardhover/${soundFile}`);
+            sound.volume = 0.3;
+            sound.play().catch(e => console.log('Could not play card hover sound:', e));
+        }
+
+        function testSelectedCardHoverSound() {
+            playCardHoverSound();
+        }
+
+        function previousCardHoverSound() {
+            selectedCardHoverSoundIndex = (selectedCardHoverSoundIndex - 1 + cardHoverSounds.length) % cardHoverSounds.length;
+            updateCardHoverSoundDisplay();
+            playCardHoverSound();
+        }
+
+        function nextCardHoverSound() {
+            selectedCardHoverSoundIndex = (selectedCardHoverSoundIndex + 1) % cardHoverSounds.length;
+            updateCardHoverSoundDisplay();
+            playCardHoverSound();
+        }
+
+        function selectCardHoverSound() {
+            const dropdown = document.getElementById('cardHoverSoundSelect');
+            selectedCardHoverSoundIndex = parseInt(dropdown.value);
+            playCardHoverSound();
+        }
+
+        function updateCardHoverSoundDisplay() {
+            const dropdown = document.getElementById('cardHoverSoundSelect');
+            if (dropdown) {
+                dropdown.innerHTML = '';
+                cardHoverSoundNames.forEach((name, index) => {
+                    const option = document.createElement('option');
+                    option.value = index;
+                    option.textContent = name;
+                    dropdown.appendChild(option);
+                });
+                dropdown.value = selectedCardHoverSoundIndex;
+            }
+        }
 
         function playHoverSound() {
             // Stop any currently playing hover sound immediately
@@ -1127,6 +1272,126 @@
                     dropdown.appendChild(option);
                 });
                 dropdown.value = selectedMergeSoundIndex;
+            }
+        }
+
+        // Reroll sound variables and functions
+        const rerollSounds = [
+            '11L-firm_3_card_shuffle-1751528937799.mp3',
+            '11L-firm_3_card_shuffle-1751528951812.mp3'
+        ];
+
+        const rerollSoundNames = [
+            'Card Shuffle 1',
+            'Card Shuffle 2'
+        ];
+
+        let selectedRerollSoundIndex = 0;
+
+        function playRerollSound() {
+            const soundFile = rerollSounds[selectedRerollSoundIndex];
+            const sound = new Audio(`../../sounds/reroll/${soundFile}`);
+            sound.volume = 0.3;
+            sound.play().catch(e => console.log('Could not play reroll sound:', e));
+        }
+
+        function testRerollSound() {
+            playRerollSound();
+        }
+
+        function previousRerollSound() {
+            selectedRerollSoundIndex = (selectedRerollSoundIndex - 1 + rerollSounds.length) % rerollSounds.length;
+            updateRerollSoundDisplay();
+            playRerollSound();
+        }
+
+        function nextRerollSound() {
+            selectedRerollSoundIndex = (selectedRerollSoundIndex + 1) % rerollSounds.length;
+            updateRerollSoundDisplay();
+            playRerollSound();
+        }
+
+        function selectRerollSound() {
+            const dropdown = document.getElementById('rerollSoundSelect');
+            selectedRerollSoundIndex = parseInt(dropdown.value);
+            playRerollSound();
+        }
+
+        function updateRerollSoundDisplay() {
+            const dropdown = document.getElementById('rerollSoundSelect');
+            if (dropdown) {
+                dropdown.innerHTML = '';
+                rerollSoundNames.forEach((name, index) => {
+                    const option = document.createElement('option');
+                    option.value = index;
+                    option.textContent = name;
+                    dropdown.appendChild(option);
+                });
+                dropdown.value = selectedRerollSoundIndex;
+            }
+        }
+
+        // Card Hover Cancel sound variables and functions
+        const cardHoverCancelSounds = [
+            'BuildingMoveGridHover (1).mp3',
+            'BuildingMoveGridHover (2).mp3',
+            'BuildingMoveGridHover (3).mp3',
+            'BuildingMoveGridHover (4).mp3',
+            'BuildingMoveGridHover (5).mp3',
+            'BuildingMoveGridHover (6).mp3'
+        ];
+
+        const cardHoverCancelSoundNames = [
+            'Cancel Sound 1',
+            'Cancel Sound 2',
+            'Cancel Sound 3',
+            'Cancel Sound 4',
+            'Cancel Sound 5',
+            'Cancel Sound 6'
+        ];
+
+        let selectedCardHoverCancelSoundIndex = 0;
+
+        function playCardHoverCancelSound() {
+            const soundFile = cardHoverCancelSounds[selectedCardHoverCancelSoundIndex];
+            const sound = new Audio(`../../sounds/cardhovercancel/${soundFile}`);
+            sound.volume = 0.3;
+            sound.play().catch(e => console.log('Could not play card hover cancel sound:', e));
+        }
+
+        function testCardHoverCancelSound() {
+            playCardHoverCancelSound();
+        }
+
+        function previousCardHoverCancelSound() {
+            selectedCardHoverCancelSoundIndex = (selectedCardHoverCancelSoundIndex - 1 + cardHoverCancelSounds.length) % cardHoverCancelSounds.length;
+            updateCardHoverCancelSoundDisplay();
+            playCardHoverCancelSound();
+        }
+
+        function nextCardHoverCancelSound() {
+            selectedCardHoverCancelSoundIndex = (selectedCardHoverCancelSoundIndex + 1) % cardHoverCancelSounds.length;
+            updateCardHoverCancelSoundDisplay();
+            playCardHoverCancelSound();
+        }
+
+        function selectCardHoverCancelSound() {
+            const dropdown = document.getElementById('cardHoverCancelSoundSelect');
+            selectedCardHoverCancelSoundIndex = parseInt(dropdown.value);
+            playCardHoverCancelSound();
+        }
+
+        function updateCardHoverCancelSoundDisplay() {
+            const dropdown = document.getElementById('cardHoverCancelSoundSelect');
+            if (dropdown) {
+                dropdown.innerHTML = '';
+                cardHoverCancelSoundNames.forEach((name, index) => {
+                    const option = document.createElement('option');
+                    option.value = index;
+                    option.textContent = name;
+                    dropdown.appendChild(option);
+                });
+                dropdown.value = selectedCardHoverCancelSoundIndex;
             }
         }
 
@@ -1508,7 +1773,7 @@
             
             // Get random building types
             const buildingTypeKeys = Object.keys(buildingTypes);
-            const numberOfCards = 5; // Show 5 cards like in game.html
+            const numberOfCards = 3; // Show 3 cards instead of 5
             
             for (let i = 0; i < numberOfCards; i++) {
                 const randomType = buildingTypeKeys[Math.floor(Math.random() * buildingTypeKeys.length)];
@@ -1516,7 +1781,12 @@
                 
                 const cardWrapper = document.createElement('div');
                 cardWrapper.className = 'card-wrapper';
-                
+                cardWrapper.style.setProperty('--index', i);
+                cardWrapper.style.setProperty('--total', numberOfCards);
+
+                // Add hover sound to wrapper
+                cardWrapper.addEventListener('mouseenter', playCardHoverSound);
+
                 const card = document.createElement('img');
                 card.className = 'building-card-img';
                 card.src = config.image;
@@ -1630,7 +1900,13 @@
                     placeBuilding(r, c, draggedBuilding.type, 1);
                     playPlaceSound();
                     checkForMerges(r, c);
+                } else {
+                    // Play cancel sound when dropping on an occupied cell
+                    playCardHoverCancelSound();
                 }
+            } else {
+                // Play cancel sound when dropping outside the grid
+                playCardHoverCancelSound();
             }
 
             draggedBuilding = null;
@@ -1684,6 +1960,9 @@
             refreshCount--;
             updateResourceDisplay();
             
+            // Play reroll sound
+            playRerollSound();
+            
             // Load new random cards
             loadRandomBuildingCards();
             
@@ -1708,6 +1987,7 @@
         function initialize() {
             initializeGrid();
             initializeBuildingCards();
+            updateCardHoverSoundDisplay(); // Initialize card hover sound display
             
             // Select first building type by default
             const firstCard = document.querySelector('.building-card-img');
@@ -1730,6 +2010,8 @@
             updateFirstPopSoundDisplay();
             updateSecondPopSoundDisplay();
             updateMergeSoundDisplay();
+            updateRerollSoundDisplay();
+            updateCardHoverCancelSoundDisplay();
             updateShuffleDisplay();
             
             console.log('Grid test initialized!');
