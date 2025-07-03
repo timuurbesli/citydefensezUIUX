@@ -992,12 +992,35 @@
 
         let selectedCardHoverSoundIndex = 1; // Grid Hover 2
 
+        let currentCardHoverSound = null; // Add this variable to track current card hover sound
+
         function playCardHoverSound() {
-            const soundFile = cardHoverSounds[selectedCardHoverSoundIndex];
-            const sound = new Audio(`../../sounds/cardhover/${soundFile}`);
-            sound.volume = 0.3;
-            sound.play().catch(e => console.log('Could not play card hover sound:', e));
+            // Cancel any currently playing card hover sound
+            if (currentCardHoverSound) {
+                currentCardHoverSound.pause();
+                currentCardHoverSound.currentTime = 0;
+            }
+
+            // Create and play new sound
+            const soundPath = `sounds/cardhover/${cardHoverSounds[selectedCardHoverSoundIndex]}`;
+            currentCardHoverSound = new Audio(soundPath);
+            currentCardHoverSound.volume = 0.3;
+            currentCardHoverSound.play();
         }
+
+        // Update card hover event listeners
+        document.querySelectorAll('.card').forEach(card => {
+            card.addEventListener('mouseenter', () => {
+                playCardHoverSound();
+            });
+
+            card.addEventListener('mouseleave', () => {
+                if (currentCardHoverSound) {
+                    currentCardHoverSound.pause();
+                    currentCardHoverSound.currentTime = 0;
+                }
+            });
+        });
 
         function testSelectedCardHoverSound() {
             playCardHoverSound();
@@ -1302,15 +1325,39 @@
         // Reroll sound variables and functions
         const rerollSounds = [
             '11L-firm_3_card_shuffle-1751528937799.mp3',
-            '11L-firm_3_card_shuffle-1751528951812.mp3'
+            '11L-firm_3_card_shuffle-1751528951812.mp3',
+            '11L-soft_card_sound-1751548317298.mp3',
+            '11L-soft_card_sound-1751548320946.mp3',
+            '11L-soft_card_sound-1751548322055.mp3',
+            '11L-soft_card_sound-1751548326015.mp3',
+            '11L-soft_card_sound-1751548337230.mp3',
+            '11L-soft_card_sound-1751548348905.mp3',
+            '11L-soft_short_card_soun-1751548366410.mp3',
+            '11L-really_soft_card_sou-1751548415114.mp3',
+            '11L-really_soft_card_sou-1751548424194.mp3',
+            '11L-really_soft_card_sou-1751548431351.mp3',
+            '11L-really_soft_card_sou-1751548444433.mp3',
+            '11L-really_soft_card_sou-1751548455073.mp3'
         ];
 
         const rerollSoundNames = [
-            'Card Shuffle 1',
-            'Card Shuffle 2'
+            'Firm Card Shuffle 1',
+            'Firm Card Shuffle 2',
+            'Soft Card Sound 1',
+            'Soft Card Sound 2',
+            'Soft Card Sound 3',
+            'Soft Card Sound 4',
+            'Soft Card Sound 5',
+            'Soft Card Sound 6',
+            'Soft Short Card',
+            'Really Soft Card 1',
+            'Really Soft Card 2',
+            'Really Soft Card 3',
+            'Really Soft Card 4',
+            'Really Soft Card 5'
         ];
 
-        let selectedRerollSoundIndex = 0;
+        let selectedRerollSoundIndex = 0; // Default to first firm card shuffle
 
         function playRerollSound() {
             const soundFile = rerollSounds[selectedRerollSoundIndex];
