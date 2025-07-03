@@ -877,7 +877,23 @@
             '11L-tough_sequential_bri-1751528675540.mp3',
             '11L-firm_sequential_bric-1751528477098.mp3',
             '11L-firm_sequential_bric-1751528419421.mp3',
-            '11L-firm_sequential_bric-1751528396882.mp3'
+            '11L-firm_sequential_bric-1751528396882.mp3',
+            '11L-soft_pop-1751551254997.mp3',
+            '11L-soft_triple_pop-1751551249755.mp3',
+            '11L-soft_triple_pop-1751551250227.mp3',
+            '11L-soft_triple_pop-1751551250715.mp3',
+            '11L-soft_triple_pop-1751551251127.mp3',
+            '11L-soft_triple_pop-1751551259786.mp3',
+            '11L-soft_triple_pop-1751551270768.mp3',
+            '11L-soft_triple_pop-1751551282315.mp3',
+            '11L-soft_triple_pop-1751551305215.mp3',
+            '11L-soft_triple_pop-1751551315273.mp3',
+            '11L-soft_triple_pop-1751551337433.mp3',
+            '11L-soft_triple_pop-1751551359363.mp3',
+            '11L-soft_triple_pop-1751551385612.mp3',
+            '11L-soft_triple_pop-1751551429252.mp3',
+            '11L-soft_triple_pop-1751551443533.mp3',
+            '11L-soft_triple_pop-1751551456191.mp3'
         ];
 
         // Friendly names for merge sounds
@@ -898,14 +914,30 @@
             'Tough Sequential',
             'Firm Sequential 1',
             'Firm Sequential 2',
-            'Firm Sequential 3'
+            'Firm Sequential 3',
+            'Soft Pop',
+            'Soft Triple Pop 1',
+            'Soft Triple Pop 2',
+            'Soft Triple Pop 3',
+            'Soft Triple Pop 4',
+            'Soft Triple Pop 5',
+            'Soft Triple Pop 6',
+            'Soft Triple Pop 7',
+            'Soft Triple Pop 8',
+            'Soft Triple Pop 9',
+            'Soft Triple Pop 10',
+            'Soft Triple Pop 11',
+            'Soft Triple Pop 12',
+            'Soft Triple Pop 13',
+            'Soft Triple Pop 14',
+            'Soft Triple Pop 15'
         ];
 
         let selectedHoverSoundIndex = 5; // Default to Hover Sound 6
-        let selectedPlaceSoundIndex = 0; // Default to first place sound
-        let selectedFirstPopSoundIndex = 8; // Tube Melodic 1
-        let selectedSecondPopSoundIndex = 9; // Tube Melodic 2
-        let selectedMergeSoundIndex = 9; // Rolling Interlock 9 (index corrected)
+        let selectedPlaceSoundIndex = 2; // Default to first place sound
+        let selectedFirstPopSoundIndex = 15; // Tube Melodic 1
+        let selectedSecondPopSoundIndex = 16; // Tube Melodic 2
+        let selectedMergeSoundIndex = 23; // Rolling Interlock 9 (index corrected)
         let currentHoverSound = null; // Track currently playing sound
         let shuffleModeEnabled = false; // Shuffle mode toggle
         let lastPlayedPlaceSoundIndex = -1; // Track last played sound to avoid repeats
@@ -990,7 +1022,7 @@
             'Whistle Juicy'
         ];
 
-        let selectedCardHoverSoundIndex = 1; // Grid Hover 2
+        let selectedCardHoverSoundIndex = 15; // Grid Hover 2
 
         let currentCardHoverSound = null;
 
@@ -1380,7 +1412,7 @@
             'Really Soft Card 5'
         ];
 
-        let selectedRerollSoundIndex = 0; // Default to first firm card shuffle
+        let selectedRerollSoundIndex = 7; // Default to first firm card shuffle
 
         function playRerollSound() {
             const soundFile = rerollSounds[selectedRerollSoundIndex];
