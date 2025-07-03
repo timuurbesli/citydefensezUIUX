@@ -992,7 +992,7 @@
 
         let selectedCardHoverSoundIndex = 1; // Grid Hover 2
 
-        let currentCardHoverSound = null; // Add this variable to track current card hover sound
+        let currentCardHoverSound = null;
 
         function playCardHoverSound() {
             // Cancel any currently playing card hover sound
@@ -1002,24 +1002,47 @@
             }
 
             // Create and play new sound
-            const soundPath = `sounds/cardhover/${cardHoverSounds[selectedCardHoverSoundIndex]}`;
+            const soundPath = `../../sounds/cardhover/${cardHoverSounds[selectedCardHoverSoundIndex]}`;
             currentCardHoverSound = new Audio(soundPath);
             currentCardHoverSound.volume = 0.3;
-            currentCardHoverSound.play();
+            currentCardHoverSound.play().catch(e => console.error('Error playing card hover sound:', e));
         }
 
         // Update card hover event listeners
-        document.querySelectorAll('.card').forEach(card => {
-            card.addEventListener('mouseenter', () => {
-                playCardHoverSound();
+        function setupCardHoverListeners() {
+            document.querySelectorAll('.card').forEach(card => {
+                // Remove existing listeners to prevent duplicates
+                card.removeEventListener('mouseenter', playCardHoverSound);
+                card.removeEventListener('mouseleave', stopCardHoverSound);
+                
+                // Add new listeners
+                card.addEventListener('mouseenter', playCardHoverSound);
+                card.addEventListener('mouseleave', stopCardHoverSound);
             });
+        }
 
-            card.addEventListener('mouseleave', () => {
-                if (currentCardHoverSound) {
-                    currentCardHoverSound.pause();
-                    currentCardHoverSound.currentTime = 0;
+        function stopCardHoverSound() {
+            if (currentCardHoverSound) {
+                currentCardHoverSound.pause();
+                currentCardHoverSound.currentTime = 0;
+            }
+        }
+
+        // Call setup when document is ready
+        document.addEventListener('DOMContentLoaded', setupCardHoverListeners);
+
+        // Also setup listeners for dynamically added cards
+        const observer = new MutationObserver((mutations) => {
+            mutations.forEach((mutation) => {
+                if (mutation.addedNodes.length) {
+                    setupCardHoverListeners();
                 }
             });
+        });
+
+        observer.observe(document.body, {
+            childList: true,
+            subtree: true
         });
 
         function testSelectedCardHoverSound() {
