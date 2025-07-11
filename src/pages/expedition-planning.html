@@ -684,6 +684,403 @@
         .npc-card.selected {
             animation: pulse 2s ease-in-out infinite;
         }
+
+        /* Expedition Confirmation Modal */
+        .expedition-modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(5px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .expedition-modal-overlay.active {
+            display: flex !important;
+            opacity: 1 !important;
+            visibility: visible !important;
+        }
+
+        .expedition-modal {
+            background: linear-gradient(145deg, rgba(45, 45, 45, 0.95), rgba(30, 30, 30, 0.95));
+            border: 2px solid rgba(255, 140, 66, 0.5);
+            border-radius: 16px;
+            width: 95%;
+            max-width: 1200px;
+            max-height: 95vh;
+            overflow-y: auto;
+            position: relative;
+            backdrop-filter: blur(20px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+            transform: scale(0.9);
+            transition: transform 0.3s ease;
+        }
+
+        .expedition-modal-overlay.active .expedition-modal {
+            transform: scale(1);
+        }
+
+        .modal-header {
+            display: flex;
+            align-items: center;
+            padding: 1.5rem 2rem;
+            border-bottom: 2px solid rgba(255, 140, 66, 0.3);
+            background: linear-gradient(90deg, rgba(0,0,0,0.8) 0%, rgba(20,20,20,0.6) 100%);
+            border-radius: 16px 16px 0 0;
+        }
+
+        .modal-return-btn {
+            background: rgba(0, 0, 0, 0.6);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #ffffff;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-right: 1rem;
+        }
+
+        .modal-return-btn:hover {
+            background: rgba(0, 0, 0, 0.8);
+            border-color: rgba(255, 140, 66, 0.5);
+            transform: scale(1.1);
+        }
+
+        .modal-title {
+            font-family: 'Orbitron', monospace;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #ff8c42;
+            letter-spacing: 2px;
+            margin: 0;
+            text-shadow: 0 0 10px rgba(255, 140, 66, 0.3);
+        }
+
+        .modal-content {
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .modal-top-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+        }
+
+        .modal-bottom-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+        }
+
+        .modal-section {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 1.5rem;
+        }
+
+        .modal-section-title {
+            font-family: 'Orbitron', monospace;
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 1rem;
+            letter-spacing: 1px;
+        }
+
+        .expedition-details-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .detail-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.8rem;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .detail-label {
+            font-weight: 600;
+            color: #d1d5db;
+        }
+
+        .detail-value {
+            font-weight: 700;
+            color: #ffffff;
+        }
+
+        .detail-value.survival-chance {
+            color: #4ade80;
+        }
+
+        .detail-value.survival-chance.low {
+            color: #ef4444;
+        }
+
+        .detail-value.survival-chance.medium {
+            color: #f59e0b;
+        }
+
+        .detail-value.survival-chance.high {
+            color: #4ade80;
+        }
+
+        .modal-cost-display {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .modal-cost-item {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            padding: 1rem;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .modal-cost-item i {
+            font-size: 1.5rem;
+        }
+
+        .cost-label-text {
+            font-weight: 600;
+            color: #d1d5db;
+            flex: 1;
+        }
+
+        .modal-cost-item .cost-value {
+            font-weight: 700;
+            color: #ffffff;
+        }
+
+        .modal-rewards-display {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 1rem;
+        }
+
+        .reward-item {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            padding: 1rem;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            font-weight: 600;
+            color: #ffffff;
+        }
+
+        .reward-item i {
+            font-size: 1.3rem;
+        }
+
+        .selected-npcs-display {
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+        }
+
+        .selected-npc-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .selected-npc-portrait {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #666, #333);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            color: #fff;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .selected-npc-info {
+            flex: 1;
+        }
+
+        .selected-npc-name {
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 0.3rem;
+        }
+
+        .selected-npc-role {
+            color: #ff8c42;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .selected-npc-power {
+            color: #4ade80;
+            font-weight: 700;
+            font-size: 1.1rem;
+        }
+
+        .modal-warning {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            padding: 1rem;
+            background: rgba(239, 68, 68, 0.1);
+            border: 2px solid rgba(239, 68, 68, 0.3);
+            border-radius: 8px;
+        }
+
+        .modal-warning i {
+            color: #ef4444;
+            font-size: 1.5rem;
+            margin-top: 0.2rem;
+        }
+
+        .warning-content h4 {
+            color: #ef4444;
+            font-weight: 700;
+            margin: 0 0 0.5rem 0;
+            font-size: 1.1rem;
+        }
+
+        .warning-content p {
+            color: #ffffff;
+            margin: 0;
+            line-height: 1.5;
+        }
+
+        .modal-confirmation {
+            text-align: center;
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+        }
+
+        .modal-confirmation h3 {
+            color: #ffffff;
+            font-family: 'Orbitron', monospace;
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin: 0;
+            letter-spacing: 1px;
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 1rem;
+            padding: 1.5rem 2rem;
+            border-top: 2px solid rgba(255, 140, 66, 0.3);
+            background: linear-gradient(90deg, rgba(0,0,0,0.8) 0%, rgba(20,20,20,0.6) 100%);
+            border-radius: 0 0 16px 16px;
+        }
+
+        .modal-cancel-btn {
+            flex: 1;
+            padding: 0.8rem;
+            background: linear-gradient(145deg, #6b7280, #4b5563);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            color: #ffffff;
+            font-family: 'Orbitron', monospace;
+            font-size: 1rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+        }
+
+        .modal-cancel-btn:hover {
+            background: linear-gradient(145deg, #4b5563, #374151);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .modal-send-btn {
+            flex: 1;
+            padding: 0.8rem;
+            background: linear-gradient(145deg, #4ade80, #22c55e);
+            border: 2px solid rgba(74, 222, 128, 0.3);
+            border-radius: 8px;
+            color: #000000;
+            font-family: 'Orbitron', monospace;
+            font-size: 1rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+        }
+
+        .modal-send-btn:hover {
+            background: linear-gradient(145deg, #22c55e, #16a34a);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(34, 197, 94, 0.3);
+        }
+
+        /* Responsive Design for Modal */
+        @media (max-width: 1024px) {
+            .modal-top-row {
+                grid-template-columns: 1fr;
+            }
+            
+            .modal-bottom-section {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .expedition-modal {
+                width: 95%;
+                max-height: 95vh;
+            }
+            
+            .modal-content {
+                padding: 1.5rem;
+            }
+            
+            .expedition-details-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .modal-cost-display {
+                flex-direction: column;
+            }
+            
+            .modal-rewards-display {
+                grid-template-columns: 1fr;
+            }
+        }
     </style>
 </head>
 <body>
@@ -819,6 +1216,100 @@
                 </button>
             </aside>
 
+            <!-- Expedition Confirmation Modal -->
+            <div class="expedition-modal-overlay" id="expeditionModal">
+                <div class="expedition-modal">
+                    <!-- Modal Header -->
+                    <div class="modal-header">
+                        <button class="modal-return-btn" id="modalReturnBtn">
+                            <i class="fas fa-arrow-left"></i>
+                        </button>
+                        <h2 class="modal-title">EXPEDITION CONFIRMATION</h2>
+                    </div>
+
+                    <!-- Modal Content -->
+                    <div class="modal-content">
+                        <!-- Top Row: Expedition Details + Resource Cost -->
+                        <div class="modal-top-row">
+                            <!-- Expedition Summary -->
+                            <div class="modal-section">
+                                <h3 class="modal-section-title">EXPEDITION DETAILS</h3>
+                                <div class="expedition-details-grid">
+                                    <div class="detail-item">
+                                        <span class="detail-label">Type:</span>
+                                        <span class="detail-value" id="modalExpeditionType">Medium Expedition</span>
+                                    </div>
+                                    <div class="detail-item">
+                                        <span class="detail-label">Location:</span>
+                                        <span class="detail-value" id="modalExpeditionLocation">Abandoned Suburbs</span>
+                                    </div>
+                                    <div class="detail-item">
+                                        <span class="detail-label">Duration:</span>
+                                        <span class="detail-value" id="modalExpeditionDuration">4 Days</span>
+                                    </div>
+                                    <div class="detail-item">
+                                        <span class="detail-label">Survival Chance:</span>
+                                        <span class="detail-value survival-chance" id="modalSurvivalChance">0%</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Resource Cost -->
+                            <div class="modal-section">
+                                <h3 class="modal-section-title">RESOURCE COST</h3>
+                                <div class="modal-cost-display">
+                                    <div class="modal-cost-item">
+                                        <i class="fas fa-apple-alt" style="color: #FFD700;"></i>
+                                        <span class="cost-label-text">Food</span>
+                                        <span class="cost-value" id="modalFoodCost">0 units</span>
+                                    </div>
+                                    <div class="modal-cost-item">
+                                        <i class="fas fa-bomb" style="color: #32CD32;"></i>
+                                        <span class="cost-label-text">Ammo</span>
+                                        <span class="cost-value" id="modalAmmoCost">0 rounds</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                       
+
+                        <!-- Bottom Section: Selected NPCs + Warning -->
+                        <div class="modal-bottom-section">
+                            <!-- Selected NPCs -->
+                            <div class="modal-section">
+                                <h3 class="modal-section-title">SELECTED EXPEDITION MEMBERS</h3>
+                                <div class="selected-npcs-display" id="selectedNPCsDisplay">
+                                    <!-- NPCs will be populated here -->
+                                </div>
+                            </div>
+
+                            <!-- Warning -->
+                            <div class="modal-section">
+                                <h3 class="modal-section-title">⚠️ WARNING</h3>
+                                <div class="modal-warning">
+                                    <i class="fas fa-exclamation-triangle"></i>
+                                    <div class="warning-content">
+                                        <p>NPCs will be unavailable during the mission. Their buffs and bonuses will not apply to your city defense while they are away.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Confirmation Question -->
+                        <div class="modal-confirmation">
+                            <h3>Are you sure you want to send this expedition?</h3>
+                        </div>
+                    </div>
+
+                    <!-- Modal Actions -->
+                    <div class="modal-actions">
+                        <button class="modal-cancel-btn" id="modalCancelBtn">CANCEL</button>
+                        <button class="modal-send-btn" id="modalSendBtn">SEND EXPEDITION</button>
+                    </div>
+                </div>
+            </div>
+
             <!-- NPC Selection -->
             <section class="npc-selection-area">
                 <div class="npc-section-header">
@@ -933,6 +1424,68 @@
                 small: { power: 100, foodPerNPCPerDay: 2, ammoPerNPC: 15, days: 3 },
                 medium: { power: 120, foodPerNPCPerDay: 2.25, ammoPerNPC: 25, days: 4 },
                 large: { power: 150, foodPerNPCPerDay: 2.5, ammoPerNPC: 37.5, days: 5 }
+            };
+
+            // Modal elements
+            const modal = document.getElementById('expeditionModal');
+            const modalReturnBtn = document.getElementById('modalReturnBtn');
+            const modalCancelBtn = document.getElementById('modalCancelBtn');
+            const modalSendBtn = document.getElementById('modalSendBtn');
+            
+            // Modal content elements
+            const modalExpeditionType = document.getElementById('modalExpeditionType');
+            const modalExpeditionLocation = document.getElementById('modalExpeditionLocation');
+            const modalExpeditionDuration = document.getElementById('modalExpeditionDuration');
+            const modalSurvivalChance = document.getElementById('modalSurvivalChance');
+            const modalFoodCost = document.getElementById('modalFoodCost');
+            const modalAmmoCost = document.getElementById('modalAmmoCost');
+            const selectedNPCsDisplay = document.getElementById('selectedNPCsDisplay');
+
+            // Expedition data
+            const expeditionData = {
+                small: {
+                    name: 'Small Expedition',
+                    location: 'Desert Ruins',
+                    duration: '3 Days'
+                },
+                medium: {
+                    name: 'Medium Expedition',
+                    location: 'Abandoned Suburbs',
+                    duration: '4 Days'
+                },
+                large: {
+                    name: 'Large Expedition',
+                    location: 'Military Lab Complex',
+                    duration: '5 Days'
+                }
+            };
+
+            // NPC data
+            const npcData = {
+                marcus: {
+                    name: 'Marcus Reed',
+                    role: 'Scout',
+                    icon: 'fas fa-search',
+                    power: 70
+                },
+                chen: {
+                    name: 'Dr. Chen',
+                    role: 'Medic',
+                    icon: 'fas fa-user-md',
+                    power: 40
+                },
+                jackson: {
+                    name: 'Sgt. Jackson',
+                    role: 'Soldier',
+                    icon: 'fas fa-user-soldier',
+                    power: 85
+                },
+                maya: {
+                    name: 'Maya Rodriguez',
+                    role: 'Engineer',
+                    icon: 'fas fa-hard-hat',
+                    power: 60
+                }
             };
 
             // Expedition type selection
@@ -1061,25 +1614,132 @@
                 }
             }
 
-            // Send expedition button
+            // Show modal function
+            function showModal() {
+                if (!modal) {
+                    console.error('Modal element not found!');
+                    return;
+                }
+                
+                // Update expedition details
+                const expData = expeditionData[selectedExpedition];
+                modalExpeditionType.textContent = expData.name;
+                modalExpeditionLocation.textContent = expData.location;
+                modalExpeditionDuration.textContent = expData.duration;
+                
+                // Update survival chance
+                const survivalRate = survivalPercentage.textContent;
+                modalSurvivalChance.textContent = survivalRate;
+                
+                // Update survival chance color
+                modalSurvivalChance.classList.remove('low', 'medium', 'high');
+                modalSurvivalChance.classList.add('survival-chance');
+                const rate = parseInt(survivalRate);
+                if (rate < 40) {
+                    modalSurvivalChance.classList.add('low');
+                } else if (rate < 80) {
+                    modalSurvivalChance.classList.add('medium');
+                } else {
+                    modalSurvivalChance.classList.add('high');
+                }
+                
+                // Update costs
+                const requirements = expeditionRequirements[selectedExpedition];
+                const totalFood = Math.ceil(selectedNPCs.length * requirements.foodPerNPCPerDay * requirements.days);
+                const totalAmmo = Math.ceil(selectedNPCs.length * requirements.ammoPerNPC);
+                
+                modalFoodCost.textContent = `${totalFood} units`;
+                modalAmmoCost.textContent = `${totalAmmo} rounds`;
+                
+                // Update selected NPCs display
+                selectedNPCsDisplay.innerHTML = '';
+                selectedNPCs.forEach(npcId => {
+                    const npc = npcData[npcId];
+                    const npcElement = document.createElement('div');
+                    npcElement.className = 'selected-npc-item';
+                    npcElement.innerHTML = `
+                        <div class="selected-npc-portrait">
+                            <i class="${npc.icon}"></i>
+                        </div>
+                        <div class="selected-npc-info">
+                            <div class="selected-npc-name">${npc.name}</div>
+                            <div class="selected-npc-role">${npc.role}</div>
+                        </div>
+                        <div class="selected-npc-power">${npc.power} Power</div>
+                    `;
+                    selectedNPCsDisplay.appendChild(npcElement);
+                });
+                
+                // Show modal with direct style application for reliability
+                modal.style.display = 'flex';
+                modal.style.opacity = '1';
+                modal.style.visibility = 'visible';
+                modal.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            }
+
+            // Hide modal function
+            function hideModal() {
+                modal.classList.remove('active');
+                modal.style.display = 'none';
+                modal.style.opacity = '0';
+                modal.style.visibility = 'hidden';
+                document.body.style.overflow = 'auto';
+            }
+
+            // Send expedition button - NO ALERTS
             sendBtn.addEventListener('click', function() {
                 if (selectedNPCs.length > 0) {
-                    const selectedNames = selectedNPCs.map(id => {
-                        const card = document.querySelector(`[data-npc="${id}"]`);
-                        return card.querySelector('.npc-name').textContent;
-                    });
-                    
-                    const survivalRate = survivalPercentage.textContent;
-                    const requirements = expeditionRequirements[selectedExpedition];
-                    const totalFood = Math.ceil(selectedNPCs.length * requirements.foodPerNPCPerDay * requirements.days);
-                    const totalAmmo = Math.ceil(selectedNPCs.length * requirements.ammoPerNPC);
-                    
-                    const confirmMessage = `Send ${selectedNames.join(', ')} on a ${selectedExpedition} expedition?\n\nSurvival Chance: ${survivalRate}\nCost: ${totalFood} food, ${totalAmmo} ammo\nNPCs will be unavailable during the mission.`;
-                    
-                    if (confirm(confirmMessage)) {
-                        alert('Expedition deployed successfully! NPCs are now on their mission.');
-                        // Here you would typically redirect or update the game state
+                    showModal();
+                }
+            });
+
+            // Modal event listeners
+            modalReturnBtn.addEventListener('click', hideModal);
+            modalCancelBtn.addEventListener('click', hideModal);
+            
+            // Modal send button - NO ALERTS
+            modalSendBtn.addEventListener('click', function() {
+                const selectedNames = selectedNPCs.map(id => npcData[id].name);
+                hideModal();
+                
+                // Show success message without alerts
+                const successMessage = document.createElement('div');
+                successMessage.innerHTML = `
+                    <div style="
+                        position: fixed;
+                        top: 50%;
+                        left: 50%;
+                        transform: translate(-50%, -50%);
+                        background: linear-gradient(145deg, #22c55e, #16a34a);
+                        color: white;
+                        padding: 2rem;
+                        border-radius: 12px;
+                        z-index: 10000;
+                        font-family: 'Orbitron', monospace;
+                        font-weight: 700;
+                        text-align: center;
+                        border: 2px solid #4ade80;
+                        box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+                    ">
+                        <h3 style="margin: 0 0 1rem 0; font-size: 1.5rem;">EXPEDITION DEPLOYED!</h3>
+                        <p style="margin: 0; font-size: 1.1rem;">${selectedNames.join(', ')} are now on their mission to ${expeditionData[selectedExpedition].location}.</p>
+                    </div>
+                `;
+                document.body.appendChild(successMessage);
+                
+                // Remove success message after 3 seconds
+                setTimeout(() => {
+                    if (document.body.contains(successMessage)) {
+                        document.body.removeChild(successMessage);
                     }
+                }, 3000);
+            });
+
+            // Close modal when clicking outside
+            modal.addEventListener('click', function(e) {
+                if (e.target === modal) {
+                    hideModal();
                 }
             });
 

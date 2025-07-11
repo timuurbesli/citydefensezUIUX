@@ -61,9 +61,10 @@
             border-radius: 10px;
             box-shadow: 0 0 30px rgba(255, 140, 0, 0.3);
             display: flex;
+            flex-direction: column;
             position: relative;
             animation: slideIn 0.4s ease-out;
-            padding-bottom: 80px;
+            padding: 20px;
         }
 
         @keyframes slideIn {
@@ -90,63 +91,24 @@
             transform: scale(1.1);
         }
 
-        /* Left Sidebar */
-        .sidebar {
-            width: 15%;
-            background: #1E1E1E;
-            border-right: 1px solid #444;
-            padding: 20px 10px;
+        /* Top Section with RP Display Only */
+        .top-section {
             display: flex;
-            flex-direction: column;
-            max-height: 100%;
-            overflow-y: auto;
-            scrollbar-width: thin;
-            scrollbar-color: #FF8C00 #2C2C2C;
-        }
-
-        /* Custom Scrollbar for Webkit browsers */
-        .sidebar::-webkit-scrollbar {
-            width: 8px;
-        }
-
-        .sidebar::-webkit-scrollbar-track {
-            background: #2C2C2C;
-            border-radius: 4px;
-            margin: 10px 0;
-        }
-
-        .sidebar::-webkit-scrollbar-thumb {
-            background: linear-gradient(180deg, #FF8C00 0%, #FFA500 100%);
-            border-radius: 4px;
-            transition: all 0.3s ease;
-        }
-
-        .sidebar::-webkit-scrollbar-thumb:hover {
-            background: linear-gradient(180deg, #FFA500 0%, #FFB347 100%);
-            box-shadow: 0 0 10px rgba(255, 140, 0, 0.5);
-        }
-
-        .sidebar::-webkit-scrollbar-thumb:active {
-            background: linear-gradient(180deg, #FF7F00 0%, #FF8C00 100%);
-        }
-
-        /* Scrollbar corner */
-        .sidebar::-webkit-scrollbar-corner {
-            background: #2C2C2C;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 20px;
+            padding: 0 20px;
         }
 
         /* Research Points Display */
         .rp-display {
             display: flex;
             align-items: center;
-            justify-content: center;
-            gap: 8px;
-            padding: 10px 15px;
+            gap: 12px;
+            padding: 12px 20px;
             background: rgba(65, 105, 225, 0.15);
             border: 1px solid rgba(65, 105, 225, 0.3);
             border-radius: 8px;
-            margin-bottom: 15px;
-            flex-shrink: 0;
             transition: all 0.3s ease;
         }
 
@@ -168,7 +130,7 @@
         }
 
         .rp-amount {
-            font-size: 20px;
+            font-size: 24px;
             font-weight: bold;
             color: #4169E1;
             text-shadow: 0 0 10px rgba(65, 105, 225, 0.5);
@@ -176,154 +138,346 @@
         }
 
         .rp-label {
-            font-size: 10px;
+            font-size: 12px;
             color: #888;
             font-weight: normal;
             line-height: 1;
         }
 
-        /* Category Icons */
-        .category-list {
+        /* Main Content Area */
+        .main-content {
             flex: 1;
             display: flex;
             flex-direction: column;
-            gap: 15px;
-            overflow-y: auto;
-            padding-bottom: 10px;
-            scrollbar-width: thin;
-            scrollbar-color: #FF8C00 #2C2C2C;
+            overflow: hidden;
         }
 
-        /* Custom Scrollbar for Category List */
-        .category-list::-webkit-scrollbar {
-            width: 6px;
+        /* All Trees Container */
+        .all-trees-container {
+            flex: 1;
+            position: relative;
+            overflow: hidden;
+            cursor: grab;
         }
 
-        .category-list::-webkit-scrollbar-track {
-            background: #2C2C2C;
-            border-radius: 3px;
+        .all-trees-container:active {
+            cursor: grabbing;
         }
 
-        .category-list::-webkit-scrollbar-thumb {
-            background: linear-gradient(180deg, #FF8C00 0%, #FFA500 100%);
-            border-radius: 3px;
+        .all-trees-container.panning {
+            cursor: grabbing;
+        }
+
+        /* Trees Content Wrapper */
+        .trees-content-wrapper {
+            position: absolute;
+            width: 2000px;
+            height: 2000px;
+            transition: transform 0.1s ease-out;
+            transform-origin: center center;
+            user-select: none;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        /* Horizontal Layout Styles */
+        .trees-content-wrapper.horizontal {
+            position: relative;
+            width: auto;
+            height: auto;
+            left: auto;
+            top: auto;
+            transform: none;
+            display: flex;
+            gap: 30px;
+            padding: 20px;
+            transform-origin: 0 0;
+        }
+
+        .horizontal .main-category-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-width: 250px;
+            flex-shrink: 0;
+            margin-right: 40px;
             transition: all 0.3s ease;
         }
 
-        .category-list::-webkit-scrollbar-thumb:hover {
-            background: linear-gradient(180deg, #FFA500 0%, #FFB347 100%);
-            box-shadow: 0 0 8px rgba(255, 140, 0, 0.4);
+        .horizontal .main-category-header {
+            font-size: 20px;
+            font-weight: bold;
+            color: #FFA500;
+            margin-bottom: 20px;
+            text-align: center;
+            border-bottom: 3px solid #FFA500;
+            padding-bottom: 8px;
+            width: 100%;
+            white-space: nowrap;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
-        .category-item {
+        .horizontal .sub-categories-container {
+            display: flex;
+            gap: 20px;
+            align-items: flex-start;
+        }
+
+        .horizontal .sub-tree-container {
             display: flex;
             flex-direction: column;
+            align-items: center;
+            min-width: 180px;
+            flex-shrink: 0;
+            transition: all 0.3s ease;
+        }
+
+        .horizontal .sub-tree-header {
+            font-size: 14px;
+            font-weight: bold;
+            color: #FF8C00;
+            margin-bottom: 15px;
+            text-align: center;
+            border-bottom: 2px solid #FF8C00;
+            padding-bottom: 5px;
+            width: 100%;
+            white-space: nowrap;
+        }
+
+        .horizontal .upgrade-path {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 50px;
+            position: relative;
+        }
+
+        .horizontal .upgrade-node {
+            position: relative;
+            width: 60px;
+            height: 60px;
+        }
+
+        .horizontal .connection-line {
+            position: absolute;
+            width: 4px;
+            background: #666;
+            left: 50%;
+            transform: translateX(-50%);
+            transition: background 0.3s;
+            z-index: 1;
+            border-radius: 2px;
+        }
+
+        /* Hide radial elements in horizontal mode */
+        .horizontal .central-hub,
+        .horizontal .radial-branch,
+        .horizontal .main-category-node,
+        .horizontal .sub-category-node,
+        .horizontal .radial-connection {
+            display: none;
+        }
+
+        /* Central Hub */
+        .central-hub {
+            position: absolute;
+            width: 120px;
+            height: 120px;
+            background: linear-gradient(135deg, #FF8C00, #FFA500);
+            border: 4px solid #FFB347;
+            border-radius: 50%;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 0 30px rgba(255, 140, 0, 0.6);
+            z-index: 20;
+            font-size: 14px;
+            font-weight: bold;
+            color: white;
+            text-align: center;
+        }
+
+        .central-hub-icon {
+            font-size: 24px;
+            margin-bottom: 5px;
+        }
+
+        /* Layout Toggle */
+        .layout-toggle {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            display: flex;
+            background: rgba(0, 0, 0, 0.7);
+            border: 2px solid #FF8C00;
+            border-radius: 8px;
+            overflow: hidden;
+            z-index: 10;
+        }
+
+        .toggle-option {
+            padding: 10px 15px;
+            background: transparent;
+            border: none;
+            color: #FF8C00;
+            font-size: 12px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
             align-items: center;
             gap: 5px;
         }
 
-        .category-label {
-            font-size: 10px;
-            color: #CCC;
-            text-align: center;
-            font-weight: bold;
-            max-width: 60px;
-            line-height: 1.2;
-            word-wrap: break-word;
+        .toggle-option:hover {
+            background: rgba(255, 140, 0, 0.2);
         }
 
-        .category-item.active .category-label {
-            color: #FF8C00;
-        }
-
-        .category-icon {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            background: #404040;
-            border: 2px solid #666;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            position: relative;
-            margin: 0 auto 5px auto;
-            flex-shrink: 0;
-        }
-
-        .category-icon:hover {
-            transform: scale(1.1);
-            border-color: #FF8C00;
-        }
-
-        .category-item.active .category-icon {
+        .toggle-option.active {
             background: #FF8C00;
-            border-color: #FFA500;
-            box-shadow: 0 0 15px rgba(255, 140, 0, 0.5);
+            color: white;
         }
 
-        .category-icon .icon {
-            font-size: 20px;
+        .toggle-icon {
+            font-size: 14px;
         }
 
-        .category-icon .notification {
+        /* Zoom Controls */
+        .zoom-controls {
             position: absolute;
-            top: -5px;
-            right: -5px;
-            width: 18px;
-            height: 18px;
-            background: #32CD32;
-            border-radius: 50%;
-            font-size: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-        }
-
-        /* Main Content Area */
-        .main-content {
-            flex: 1;
-            padding: 30px;
+            top: 20px;
+            right: 20px;
             display: flex;
             flex-direction: column;
+            gap: 5px;
+            z-index: 10;
         }
 
-        /* Content Header */
-        .content-header {
-            margin-bottom: 30px;
-            border-bottom: 1px solid #444;
-            padding-bottom: 20px;
-        }
-
-        .category-title {
-            font-size: 28px;
+        .zoom-button {
+            width: 40px;
+            height: 40px;
+            background: rgba(0, 0, 0, 0.7);
+            border: 2px solid #FF8C00;
+            border-radius: 8px;
+            color: #FF8C00;
+            font-size: 20px;
             font-weight: bold;
-            color: #FF8C00;
-            margin-bottom: 10px;
-        }
-
-        .progress-indicator {
-            font-size: 14px;
-            color: #FF8C00;
-            margin-bottom: 10px;
-        }
-
-        .category-description {
-            font-size: 14px;
-            color: #CCC;
-            line-height: 1.4;
-        }
-
-        /* Upgrade Tree Container */
-        .upgrade-tree {
-            flex: 1;
-            position: relative;
+            cursor: pointer;
             display: flex;
+            align-items: center;
             justify-content: center;
-            align-items: flex-start;
-            padding-top: 20px;
+            transition: all 0.2s ease;
+        }
+
+        .zoom-button:hover {
+            background: rgba(255, 140, 0, 0.2);
+            transform: scale(1.1);
+        }
+
+        .zoom-indicator {
+            background: rgba(0, 0, 0, 0.7);
+            border: 1px solid #FF8C00;
+            border-radius: 4px;
+            color: #FF8C00;
+            font-size: 12px;
+            padding: 5px 8px;
+            text-align: center;
+            margin-top: 5px;
+        }
+
+        /* Radial Branch Container */
+        .radial-branch {
+            position: absolute;
+            transform-origin: center center;
+        }
+
+        /* Main Category Node */
+        .main-category-node {
+            position: absolute;
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #FF8C00, #FFA500);
+            border: 3px solid #FFB347;
+            border-radius: 50%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 0 20px rgba(255, 140, 0, 0.4);
+            z-index: 15;
+            font-size: 12px;
+            font-weight: bold;
+            color: white;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .main-category-node:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 25px rgba(255, 140, 0, 0.6);
+        }
+
+        .main-category-icon {
+            font-size: 18px;
+            margin-bottom: 3px;
+        }
+
+        .main-category-title {
+            font-size: 9px;
+            line-height: 1;
+        }
+
+        /* Sub-Category Node */
+        .sub-category-node {
+            position: absolute;
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #4169E1, #6495ED);
+            border: 2px solid #87CEEB;
+            border-radius: 50%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 0 15px rgba(65, 105, 225, 0.4);
+            z-index: 12;
+            font-size: 10px;
+            font-weight: bold;
+            color: white;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .sub-category-node:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 20px rgba(65, 105, 225, 0.6);
+        }
+
+        /* Radial Connection Lines */
+        .radial-connection {
+            position: absolute;
+            background: linear-gradient(to right, #FF8C00, #666);
+            height: 3px;
+            transform-origin: left center;
+            z-index: 5;
+            border-radius: 2px;
+        }
+
+        .radial-connection.main-to-sub {
+            background: linear-gradient(to right, #FF8C00, #4169E1);
+        }
+
+        .radial-connection.sub-to-upgrade {
+            background: linear-gradient(to right, #4169E1, #666);
+            height: 2px;
         }
 
         /* Upgrade Path */
@@ -331,23 +485,25 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 60px;
+            gap: 50px;
             position: relative;
         }
 
         /* Connection Lines */
         .connection-line {
             position: absolute;
-            width: 3px;
+            width: 4px;
             background: #666;
             left: 50%;
             transform: translateX(-50%);
             transition: background 0.3s;
+            z-index: 1;
+            border-radius: 2px;
         }
 
         .connection-line.unlocked {
             background: linear-gradient(to bottom, #FF8C00, #FFA500);
-            box-shadow: 0 0 10px rgba(255, 140, 0, 0.3);
+            box-shadow: 0 0 8px rgba(255, 140, 0, 0.4);
         }
 
         .connection-line.available {
@@ -355,17 +511,21 @@
             animation: pulse 2s infinite;
         }
 
+        .connection-line.locked {
+            background: #444;
+        }
+
         @keyframes pulse {
             0%, 100% { opacity: 1; }
-            50% { opacity: 0.5; }
+            50% { opacity: 0.6; }
         }
 
         /* Upgrade Nodes */
         .upgrade-node {
-            width: 80px;
-            height: 80px;
+            width: 50px;
+            height: 50px;
             border-radius: 50%;
-            border: 3px solid #666;
+            border: 2px solid #666;
             background: #404040;
             display: flex;
             flex-direction: column;
@@ -373,8 +533,9 @@
             justify-content: center;
             cursor: pointer;
             transition: all 0.3s ease;
-            position: relative;
-            z-index: 5;
+            position: absolute;
+            z-index: 10;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
         }
 
         .upgrade-node:hover {
@@ -411,40 +572,41 @@
         }
 
         .upgrade-node .node-icon {
-            font-size: 20px;
-            margin-bottom: 3px;
+            font-size: 14px;
+            margin-bottom: 1px;
         }
 
         .upgrade-node .node-level {
-            font-size: 10px;
+            font-size: 7px;
             font-weight: bold;
         }
 
         .upgrade-node .node-cost {
             position: absolute;
-            bottom: -25px;
+            bottom: -18px;
             left: 50%;
             transform: translateX(-50%);
-            font-size: 11px;
+            font-size: 8px;
             color: #4169E1;
             font-weight: bold;
-            background: rgba(0, 0, 0, 0.7);
-            padding: 2px 6px;
+            background: rgba(0, 0, 0, 0.8);
+            padding: 2px 4px;
             border-radius: 3px;
+            white-space: nowrap;
         }
 
         .upgrade-node .lock-icon {
             position: absolute;
-            top: -10px;
-            right: -10px;
+            top: -6px;
+            right: -6px;
             background: #666;
             border-radius: 50%;
-            width: 20px;
-            height: 20px;
+            width: 14px;
+            height: 14px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 10px;
+            font-size: 7px;
         }
 
         /* Upgrade Details Panel */
@@ -478,10 +640,10 @@
         /* Unlock Button */
         .unlock-button {
             position: absolute;
-            bottom: 30px;
+            bottom: 20px;
             right: 30px;
-            padding: 15px 30px;
-            font-size: 16px;
+            padding: 12px 25px;
+            font-size: 14px;
             font-weight: bold;
             border: none;
             border-radius: 8px;
@@ -598,18 +760,101 @@
                 height: 90%;
             }
             
-            .sidebar {
-                width: 18%;
+            .trees-content-wrapper {
+                gap: 15px;
+                padding: 15px;
             }
             
-            .category-icon {
+            .main-category-container {
+                min-width: 200px;
+                margin-right: 30px;
+            }
+            
+            .sub-tree-container {
+                min-width: 150px;
+            }
+            
+            .upgrade-node {
                 width: 50px;
                 height: 50px;
             }
             
-            .upgrade-node {
-                width: 70px;
-                height: 70px;
+            .main-category-header {
+                font-size: 16px;
+            }
+            
+            .sub-tree-header {
+                font-size: 12px;
+            }
+            
+            .zoom-controls {
+                top: 10px;
+                right: 10px;
+            }
+            
+            .zoom-button {
+                width: 35px;
+                height: 35px;
+                font-size: 16px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .layout-toggle {
+                top: 5px;
+                left: 5px;
+            }
+            
+            .toggle-option {
+                padding: 8px 10px;
+                font-size: 10px;
+            }
+            
+            .toggle-icon {
+                font-size: 12px;
+            }
+            
+            .zoom-controls {
+                top: 5px;
+                right: 5px;
+            }
+            
+            .zoom-button {
+                width: 30px;
+                height: 30px;
+                font-size: 14px;
+            }
+            
+            .zoom-indicator {
+                font-size: 10px;
+                padding: 3px 5px;
+            }
+            
+            .trees-content-wrapper {
+                gap: 10px;
+                padding: 10px;
+            }
+            
+            .horizontal .main-category-container {
+                min-width: 150px;
+                margin-right: 20px;
+            }
+            
+            .horizontal .sub-tree-container {
+                min-width: 120px;
+            }
+            
+            .horizontal .upgrade-path {
+                gap: 40px;
+            }
+            
+            .horizontal .upgrade-node {
+                width: 50px;
+                height: 50px;
+            }
+            
+            .horizontal .connection-line {
+                width: 3px;
             }
         }
     </style>
@@ -624,9 +869,8 @@
             <!-- Close Button -->
             <button class="close-button" onclick="closeModal()">&times;</button>
 
-            <!-- Left Sidebar -->
-            <div class="sidebar">
-                <!-- Research Points Display -->
+            <!-- Top Section with RP Display Only -->
+            <div class="top-section">
                 <div class="rp-display">
                     <div class="rp-icon">
                         <i class="fas fa-flask"></i>
@@ -636,95 +880,36 @@
                         <div class="rp-label">Research Points</div>
                     </div>
                 </div>
-
-                <!-- Category Icons -->
-                <div class="category-list">
-                    <div class="category-item active" data-category="buildings">
-                        <div class="category-icon" data-category="buildings">
-                            <span class="icon">🏗️</span>
-                            <span class="notification">3</span>
-                        </div>
-                        <div class="category-label">Buildings</div>
-                    </div>
-                    <div class="category-item" data-category="soldiers">
-                        <div class="category-icon" data-category="soldiers">
-                            <span class="icon">👥</span>
-                            <span class="notification">2</span>
-                        </div>
-                        <div class="category-label">Soldiers</div>
-                    </div>
-                    <div class="category-item" data-category="walls">
-                        <div class="category-icon" data-category="walls">
-                            <span class="icon">🧱</span>
-                            <span class="notification">1</span>
-                        </div>
-                        <div class="category-label">Walls</div>
-                    </div>
-                    <div class="category-item" data-category="farm">
-                        <div class="category-icon" data-category="farm">
-                            <span class="icon">🌾</span>
-                        </div>
-                        <div class="category-label">Farm</div>
-                    </div>
-                    <div class="category-item" data-category="laboratory">
-                        <div class="category-icon" data-category="laboratory">
-                            <span class="icon">🧪</span>
-                        </div>
-                        <div class="category-label">Laboratory</div>
-                    </div>
-                    <div class="category-item" data-category="expeditions">
-                        <div class="category-icon" data-category="expeditions">
-                            <span class="icon">🗺️</span>
-                        </div>
-                        <div class="category-label">Expeditions</div>
-                    </div>
-                    <div class="category-item" data-category="npc">
-                        <div class="category-icon" data-category="npc">
-                            <span class="icon">👤</span>
-                        </div>
-                        <div class="category-label">NPC Buffs</div>
-                    </div>
-                    <div class="category-item" data-category="revive">
-                        <div class="category-icon" data-category="revive">
-                            <span class="icon">❤️</span>
-                        </div>
-                        <div class="category-label">Revive</div>
-                    </div>
-                    <div class="category-item" data-category="weapons">
-                        <div class="category-icon" data-category="weapons">
-                            <span class="icon">🔫</span>
-                        </div>
-                        <div class="category-label">Weapons</div>
-                    </div>
-                    <div class="category-item" data-category="airstrike">
-                        <div class="category-icon" data-category="airstrike">
-                            <span class="icon">✈️</span>
-                        </div>
-                        <div class="category-label">Airstrike</div>
-                    </div>
-                    <div class="category-item" data-category="reroll">
-                        <div class="category-icon" data-category="reroll">
-                            <span class="icon">🔄</span>
-                        </div>
-                        <div class="category-label">Reroll Cards</div>
-                    </div>
-                </div>
             </div>
 
             <!-- Main Content Area -->
             <div class="main-content">
-                <!-- Content Header -->
-                <div class="content-header">
-                    <div class="category-title" id="categoryTitle">Buildings Upgrade Tree</div>
-                    <div class="progress-indicator" id="progressIndicator">2/5 Unlocked</div>
-                    <div class="category-description" id="categoryDescription">
-                        Increases the default level of all building cards, making them more powerful from the start of each run.
+                <!-- All Trees Container -->
+                <div class="all-trees-container" id="allTreesContainer">
+                    <!-- Layout Toggle -->
+                    <div class="layout-toggle">
+                        <button class="toggle-option active" id="radialToggle" data-layout="radial">
+                            <span class="toggle-icon">🔘</span>
+                            <span>Radial</span>
+                        </button>
+                        <button class="toggle-option" id="horizontalToggle" data-layout="horizontal">
+                            <span class="toggle-icon">📋</span>
+                            <span>Horizontal</span>
+                        </button>
                     </div>
-                </div>
-
-                <!-- Upgrade Tree -->
-                <div class="upgrade-tree" id="upgradeTree">
-                    <!-- Dynamic content will be populated here -->
+                    
+                    <!-- Zoom Controls -->
+                    <div class="zoom-controls">
+                        <button class="zoom-button" id="zoomInBtn">+</button>
+                        <button class="zoom-button" id="zoomOutBtn">−</button>
+                        <button class="zoom-button" id="resetZoomBtn" style="font-size: 14px;">⌂</button>
+                        <div class="zoom-indicator" id="zoomIndicator">100%</div>
+                    </div>
+                    
+                    <!-- Trees Content Wrapper -->
+                    <div class="trees-content-wrapper" id="treesContentWrapper">
+                        <!-- Dynamic content will be populated here -->
+                    </div>
                 </div>
             </div>
 
@@ -741,242 +926,802 @@
         let selectedUpgrade = null;
         let currentCategory = 'buildings';
 
-        // Upgrade Data
+        // Zoom and Pan State
+        let currentZoom = 1;
+        let currentPanX = 0;
+        let currentPanY = 0;
+        let isPanning = false;
+        let lastMouseX = 0;
+        let lastMouseY = 0;
+        let minZoom = 0.3;
+        let maxZoom = 3;
+        let zoomStep = 0.2;
+
+        // Layout State
+        let currentLayout = 'radial'; // 'radial' or 'horizontal'
+
+        // Upgrade Data with Sub-Categories
         const upgradeData = {
             buildings: {
-                title: "Buildings Upgrade Tree",
-                description: "Increases the default level of all building cards, making them more powerful from the start of each run.",
-                upgrades: [
-                    { id: 1, name: "Basic Buildings", cost: 50, effect: "+1 Default Building Level", unlocked: true, icon: "🏠" },
-                    { id: 2, name: "Improved Buildings", cost: 100, effect: "+1 Default Building Level", unlocked: true, icon: "🏢" },
-                    { id: 3, name: "Advanced Buildings", cost: 150, effect: "+1 Default Building Level", unlocked: false, icon: "🏭" },
-                    { id: 4, name: "Superior Buildings", cost: 200, effect: "+1 Default Building Level", unlocked: false, icon: "🏗️" },
-                    { id: 5, name: "Master Buildings", cost: 300, effect: "+1 Default Building Level", unlocked: false, icon: "🏛️" }
-                ]
+                title: "Buildings",
+                subCategories: {
+                    levels: {
+                        title: "Building Levels",
+                        description: "Increases the default level of all building cards.",
+                        upgrades: [
+                            { id: 1, name: "Basic Buildings", cost: 50, effect: "+1 Default Building Level", unlocked: true, icon: "🏠" },
+                            { id: 2, name: "Improved Buildings", cost: 100, effect: "+1 Default Building Level", unlocked: true, icon: "🏢" },
+                            { id: 3, name: "Advanced Buildings", cost: 150, effect: "+1 Default Building Level", unlocked: false, icon: "🏭" },
+                            { id: 4, name: "Superior Buildings", cost: 200, effect: "+1 Default Building Level", unlocked: false, icon: "🏗️" },
+                            { id: 5, name: "Master Buildings", cost: 300, effect: "+1 Default Building Level", unlocked: false, icon: "🏛️" }
+                        ]
+                    }
+                }
             },
             soldiers: {
-                title: "Soldiers Upgrade Tree",
-                description: "Enhances the default effectiveness and level of all trained soldiers.",
-                upgrades: [
-                    { id: 1, name: "Basic Training", cost: 75, effect: "+1 Default Soldier Level", unlocked: true, icon: "🥉" },
-                    { id: 2, name: "Advanced Training", cost: 125, effect: "+1 Default Soldier Level", unlocked: false, icon: "🥈" },
-                    { id: 3, name: "Elite Training", cost: 175, effect: "+1 Default Soldier Level", unlocked: false, icon: "🥇" },
-                    { id: 4, name: "Special Forces", cost: 250, effect: "+1 Default Soldier Level", unlocked: false, icon: "🎖️" },
-                    { id: 5, name: "Legendary Warriors", cost: 350, effect: "+1 Default Soldier Level", unlocked: false, icon: "⭐" }
-                ]
+                title: "Soldiers",
+                subCategories: {
+                    training: {
+                        title: "Training",
+                        description: "Enhances the default effectiveness and level of all trained soldiers.",
+                        upgrades: [
+                            { id: 1, name: "Basic Training", cost: 75, effect: "+1 Default Soldier Level", unlocked: true, icon: "🥉" },
+                            { id: 2, name: "Advanced Training", cost: 125, effect: "+1 Default Soldier Level", unlocked: false, icon: "🥈" },
+                            { id: 3, name: "Elite Training", cost: 175, effect: "+1 Default Soldier Level", unlocked: false, icon: "🥇" },
+                            { id: 4, name: "Special Forces", cost: 250, effect: "+1 Default Soldier Level", unlocked: false, icon: "🎖️" },
+                            { id: 5, name: "Legendary Warriors", cost: 350, effect: "+1 Default Soldier Level", unlocked: false, icon: "⭐" }
+                        ]
+                    }
+                }
             },
             walls: {
-                title: "Wall Upgrade Tree",
-                description: "Enhances the capacity, durability, and special abilities of defensive walls.",
-                upgrades: [
-                    { id: 1, name: "Extended Walls", cost: 80, effect: "Wall capacity +20", unlocked: false, icon: "🧱" },
-                    { id: 2, name: "Reinforced Walls", cost: 160, effect: "Capacity +20, +HP", unlocked: false, icon: "🛡️" },
-                    { id: 3, name: "Fortified Walls", cost: 240, effect: "Wall capacity +20", unlocked: false, icon: "⛩️" },
-                    { id: 4, name: "Electrified Walls", cost: 400, effect: "Electric damage to attackers", unlocked: false, icon: "⚡" }
-                ]
+                title: "Walls",
+                subCategories: {
+                    defense: {
+                        title: "Defense",
+                        description: "Enhances the capacity, durability, and special abilities of defensive walls.",
+                        upgrades: [
+                            { id: 1, name: "Extended Walls", cost: 80, effect: "Wall capacity +20", unlocked: false, icon: "🧱" },
+                            { id: 2, name: "Reinforced Walls", cost: 160, effect: "Capacity +20, +HP", unlocked: false, icon: "🛡️" },
+                            { id: 3, name: "Fortified Walls", cost: 240, effect: "Wall capacity +20", unlocked: false, icon: "⛩️" },
+                            { id: 4, name: "Electrified Walls", cost: 400, effect: "Electric damage to attackers", unlocked: false, icon: "⚡" }
+                        ]
+                    }
+                }
             },
             farm: {
-                title: "Farm Upgrade Tree",
-                description: "Improves crop yield, growth speed, and farming efficiency.",
-                upgrades: [
-                    { id: 1, name: "Better Harvest", cost: 60, effect: "+75% crop harvest", unlocked: false, icon: "🌾" },
-                    { id: 2, name: "Fast Growth", cost: 120, effect: "Crops grow 1 day faster", unlocked: false, icon: "⏰" },
-                    { id: 3, name: "Expanded Fields", cost: 180, effect: "+2 crop grid expansion", unlocked: false, icon: "🚜" },
-                    { id: 4, name: "Abundant Harvest", cost: 240, effect: "+100% crop harvest", unlocked: false, icon: "🌻" },
-                    { id: 5, name: "Super Growth", cost: 300, effect: "Crops grow 1 day faster", unlocked: false, icon: "💨" }
-                ]
+                title: "Farm",
+                subCategories: {
+                    speed: {
+                        title: "Harvest Speed",
+                        description: "Reduces the time needed for crop harvests.",
+                        upgrades: [
+                            { id: 1, name: "Quick Harvest", cost: 60, effect: "Crops grow 1 day faster", unlocked: false, icon: "⏰" },
+                            { id: 2, name: "Rapid Growth", cost: 120, effect: "Crops grow 1 day faster", unlocked: false, icon: "💨" },
+                            { id: 3, name: "Super Growth", cost: 180, effect: "Crops grow 1 day faster", unlocked: false, icon: "⚡" },
+                            { id: 4, name: "Instant Harvest", cost: 240, effect: "Crops grow 1 day faster", unlocked: false, icon: "🌟" }
+                        ]
+                    },
+                    grid: {
+                        title: "Grid Expansion",
+                        description: "Adds more grid spaces to the farm for additional crops.",
+                        upgrades: [
+                            { id: 1, name: "Small Expansion", cost: 80, effect: "+1 crop grid expansion", unlocked: false, icon: "🚜" },
+                            { id: 2, name: "Medium Expansion", cost: 160, effect: "+2 crop grid expansion", unlocked: false, icon: "🏞️" },
+                            { id: 3, name: "Large Expansion", cost: 240, effect: "+3 crop grid expansion", unlocked: false, icon: "🌾" },
+                            { id: 4, name: "Massive Expansion", cost: 320, effect: "+4 crop grid expansion", unlocked: false, icon: "🌿" }
+                        ]
+                    },
+                    yield: {
+                        title: "Harvest Yield",
+                        description: "Increases the amount of crops harvested from each plot.",
+                        upgrades: [
+                            { id: 1, name: "Better Harvest", cost: 70, effect: "+25% crop harvest", unlocked: false, icon: "🌾" },
+                            { id: 2, name: "Rich Harvest", cost: 140, effect: "+50% crop harvest", unlocked: false, icon: "🌻" },
+                            { id: 3, name: "Abundant Harvest", cost: 210, effect: "+75% crop harvest", unlocked: false, icon: "🌽" },
+                            { id: 4, name: "Golden Harvest", cost: 280, effect: "+100% crop harvest", unlocked: false, icon: "🌼" }
+                        ]
+                    }
+                }
             },
             laboratory: {
-                title: "Laboratory Upgrade Tree",
-                description: "Boosts research point generation and research completion speed.",
-                upgrades: [
-                    { id: 1, name: "Efficient Research", cost: 100, effect: "+50% RP generation", unlocked: false, icon: "🔬" },
-                    { id: 2, name: "Rapid Research", cost: 200, effect: "Research 1 day faster", unlocked: false, icon: "⚡" },
-                    { id: 3, name: "Advanced Research", cost: 300, effect: "+100% RP generation", unlocked: false, icon: "🧬" }
-                ]
+                title: "Laboratory",
+                subCategories: {
+                    research: {
+                        title: "Research",
+                        description: "Boosts research point generation and research completion speed.",
+                        upgrades: [
+                            { id: 1, name: "Efficient Research", cost: 100, effect: "+50% RP generation", unlocked: false, icon: "🔬" },
+                            { id: 2, name: "Rapid Research", cost: 200, effect: "Research 1 day faster", unlocked: false, icon: "⚡" },
+                            { id: 3, name: "Advanced Research", cost: 300, effect: "+100% RP generation", unlocked: false, icon: "🧬" }
+                        ]
+                    }
+                }
             },
             expeditions: {
-                title: "Expedition Upgrade Tree",
-                description: "Improves expedition success rates, rewards, and completion time.",
-                upgrades: [
-                    { id: 1, name: "Safe Expeditions", cost: 120, effect: "+20% survival rate", unlocked: false, icon: "🛡️" },
-                    { id: 2, name: "Rich Rewards", cost: 180, effect: "+50% expedition rewards", unlocked: false, icon: "💰" },
-                    { id: 3, name: "Swift Expeditions", cost: 250, effect: "Expeditions 1 day faster", unlocked: false, icon: "💨" }
-                ]
+                title: "Expeditions",
+                subCategories: {
+                    missions: {
+                        title: "Missions",
+                        description: "Improves expedition success rates, rewards, and completion time.",
+                        upgrades: [
+                            { id: 1, name: "Safe Expeditions", cost: 120, effect: "+20% survival rate", unlocked: false, icon: "🛡️" },
+                            { id: 2, name: "Rich Rewards", cost: 180, effect: "+50% expedition rewards", unlocked: false, icon: "💰" },
+                            { id: 3, name: "Swift Expeditions", cost: 250, effect: "Expeditions 1 day faster", unlocked: false, icon: "💨" }
+                        ]
+                    }
+                }
             },
             npc: {
-                title: "NPC Buff Upgrade Tree",
-                description: "Amplifies the beneficial effects provided by recruited NPCs.",
-                upgrades: [
-                    { id: 1, name: "Enhanced NPCs", cost: 150, effect: "+50% NPC buff effects", unlocked: false, icon: "👤" },
-                    { id: 2, name: "Empowered NPCs", cost: 250, effect: "+75% NPC buff effects", unlocked: false, icon: "✨" },
-                    { id: 3, name: "Legendary NPCs", cost: 400, effect: "+100% NPC buff effects", unlocked: false, icon: "⭐" }
-                ]
+                title: "NPC Buffs",
+                subCategories: {
+                    effects: {
+                        title: "Buff Effects",
+                        description: "Amplifies the beneficial effects provided by recruited NPCs.",
+                        upgrades: [
+                            { id: 1, name: "Enhanced NPCs", cost: 150, effect: "+50% NPC buff effects", unlocked: false, icon: "👤" },
+                            { id: 2, name: "Empowered NPCs", cost: 250, effect: "+75% NPC buff effects", unlocked: false, icon: "✨" },
+                            { id: 3, name: "Legendary NPCs", cost: 400, effect: "+100% NPC buff effects", unlocked: false, icon: "⭐" }
+                        ]
+                    }
+                }
             },
             revive: {
-                title: "Revive Upgrade Tree",
-                description: "The most expensive upgrade - provides multiple chances to recover from defeat.",
-                upgrades: [
-                    { id: 1, name: "Phoenix Rising", cost: 500, effect: "Revive ability (1 use per run)", unlocked: false, icon: "❤️" },
-                    { id: 2, name: "Double Phoenix", cost: 750, effect: "Revive ability (2 uses per run)", unlocked: false, icon: "💖" },
-                    { id: 3, name: "Eternal Phoenix", cost: 1000, effect: "Revive ability (3 uses per run)", unlocked: false, icon: "💝" }
-                ]
+                title: "Revive",
+                subCategories: {
+                    phoenix: {
+                        title: "Phoenix",
+                        description: "Provides multiple chances to recover from defeat.",
+                        upgrades: [
+                            { id: 1, name: "Phoenix Rising", cost: 500, effect: "Revive ability (1 use per run)", unlocked: false, icon: "❤️" },
+                            { id: 2, name: "Double Phoenix", cost: 750, effect: "Revive ability (2 uses per run)", unlocked: false, icon: "💖" },
+                            { id: 3, name: "Eternal Phoenix", cost: 1000, effect: "Revive ability (3 uses per run)", unlocked: false, icon: "💝" }
+                        ]
+                    }
+                }
             },
             weapons: {
-                title: "Weapons Upgrade Tree",
-                description: "Enhances combat effectiveness through improved fire rate, reload speed, and damage.",
-                upgrades: [
-                    { id: 1, name: "Rapid Fire", cost: 100, effect: "Soldiers attack faster", unlocked: false, icon: "🔫" },
-                    { id: 2, name: "Quick Reload", cost: 175, effect: "-50% reload time", unlocked: false, icon: "🔄" },
-                    { id: 3, name: "High Damage", cost: 250, effect: "+50% soldier damage", unlocked: false, icon: "💥" }
-                ]
+                title: "Weapons",
+                subCategories: {
+                    combat: {
+                        title: "Combat",
+                        description: "Enhances combat effectiveness through improved fire rate, reload speed, and damage.",
+                        upgrades: [
+                            { id: 1, name: "Rapid Fire", cost: 100, effect: "Soldiers attack faster", unlocked: false, icon: "🔫" },
+                            { id: 2, name: "Quick Reload", cost: 175, effect: "-50% reload time", unlocked: false, icon: "🔄" },
+                            { id: 3, name: "High Damage", cost: 250, effect: "+50% soldier damage", unlocked: false, icon: "💥" }
+                        ]
+                    }
+                }
             },
             airstrike: {
-                title: "Airstrike Upgrade Tree",
-                description: "Improves aerial support through cost reduction, new weapons, and increased effectiveness.",
-                upgrades: [
-                    { id: 1, name: "Cheap Strikes", cost: 125, effect: "Airstrikes 50% cheaper", unlocked: false, icon: "💰" },
-                    { id: 2, name: "Triple Bomber", cost: 200, effect: "3-bomb launcher plane", unlocked: false, icon: "💣" },
-                    { id: 3, name: "Wide Bombardment", cost: 300, effect: "+50% airstrike radius", unlocked: false, icon: "💥" }
-                ]
+                title: "Airstrike",
+                subCategories: {
+                    bombing: {
+                        title: "Bombing",
+                        description: "Improves aerial support through cost reduction, new weapons, and increased effectiveness.",
+                        upgrades: [
+                            { id: 1, name: "Cheap Strikes", cost: 125, effect: "Airstrikes 50% cheaper", unlocked: false, icon: "💰" },
+                            { id: 2, name: "Triple Bomber", cost: 200, effect: "3-bomb launcher plane", unlocked: false, icon: "💣" },
+                            { id: 3, name: "Wide Bombardment", cost: 300, effect: "+50% airstrike radius", unlocked: false, icon: "💥" }
+                        ]
+                    }
+                }
             },
             reroll: {
-                title: "Card Reroll Upgrade Tree",
-                description: "Adds flexibility to building selection with reroll functionality.",
-                upgrades: [
-                    { id: 1, name: "Basic Reroll", cost: 75, effect: "Unlocks reroll function", unlocked: false, icon: "🔄" },
-                    { id: 2, name: "Extra Reroll", cost: 125, effect: "+1 reroll count", unlocked: false, icon: "🔄" },
-                    { id: 3, name: "More Rerolls", cost: 175, effect: "+1 reroll count", unlocked: false, icon: "🔄" },
-                    { id: 4, name: "Maximum Rerolls", cost: 250, effect: "+1 reroll count", unlocked: false, icon: "🔄" }
-                ]
+                title: "Reroll Cards",
+                subCategories: {
+                    cards: {
+                        title: "Cards",
+                        description: "Adds flexibility to building selection with reroll functionality.",
+                        upgrades: [
+                            { id: 1, name: "Basic Reroll", cost: 75, effect: "Unlocks reroll function", unlocked: false, icon: "🔄" },
+                            { id: 2, name: "Extra Reroll", cost: 125, effect: "+1 reroll count", unlocked: false, icon: "🔄" },
+                            { id: 3, name: "More Rerolls", cost: 175, effect: "+1 reroll count", unlocked: false, icon: "🔄" },
+                            { id: 4, name: "Maximum Rerolls", cost: 250, effect: "+1 reroll count", unlocked: false, icon: "🔄" }
+                        ]
+                    }
+                }
             }
         };
 
         // Initialize the interface
         function init() {
             updateRPDisplay();
-            switchCategory('buildings');
+            renderUpgradeTrees();
+            initializeView();
             setupEventListeners();
         }
 
         // Setup event listeners
         function setupEventListeners() {
-            // Category selection
-            document.querySelectorAll('.category-item').forEach(item => {
-                item.addEventListener('click', function() {
-                    const category = this.dataset.category;
-                    switchCategory(category);
-                });
-            });
-
             // Keyboard shortcuts
             document.addEventListener('keydown', function(e) {
                 if (e.key === 'Escape') {
                     closeModal();
+                } else if (e.key === '=' || e.key === '+') {
+                    e.preventDefault();
+                    zoomIn();
+                } else if (e.key === '-' || e.key === '_') {
+                    e.preventDefault();
+                    zoomOut();
+                } else if (e.key === '0' || e.key === 'Home') {
+                    e.preventDefault();
+                    resetZoom();
                 }
+            });
+
+            // Zoom and Pan Event Listeners
+            setupZoomAndPanListeners();
+
+            // Layout Toggle Event Listeners
+            setupLayoutToggle();
+        }
+
+        // Setup zoom and pan functionality
+        function setupZoomAndPanListeners() {
+            const container = document.getElementById('allTreesContainer');
+            const wrapper = document.getElementById('treesContentWrapper');
+            
+            // Zoom Controls
+            document.getElementById('zoomInBtn').addEventListener('click', zoomIn);
+            document.getElementById('zoomOutBtn').addEventListener('click', zoomOut);
+            document.getElementById('resetZoomBtn').addEventListener('click', resetZoom);
+            
+            // Mouse wheel zoom
+            container.addEventListener('wheel', function(e) {
+                e.preventDefault();
+                const delta = e.deltaY > 0 ? -zoomStep : zoomStep;
+                zoom(delta, e.clientX, e.clientY);
+            });
+            
+            // Mouse panning
+            container.addEventListener('mousedown', startPanning);
+            document.addEventListener('mousemove', updatePanning);
+            document.addEventListener('mouseup', stopPanning);
+            
+            // Touch events for mobile
+            container.addEventListener('touchstart', handleTouchStart, { passive: false });
+            container.addEventListener('touchmove', handleTouchMove, { passive: false });
+            container.addEventListener('touchend', handleTouchEnd, { passive: false });
+            
+            // Prevent context menu on right click
+            container.addEventListener('contextmenu', function(e) {
+                e.preventDefault();
             });
         }
 
-        // Switch between categories
-        function switchCategory(category) {
-            currentCategory = category;
-            selectedUpgrade = null;
-            
-            // Update active category item
-            document.querySelectorAll('.category-item').forEach(item => {
-                item.classList.remove('active');
-            });
-            document.querySelector(`.category-item[data-category="${category}"]`).classList.add('active');
-            
-            // Update content
-            const data = upgradeData[category];
-            document.getElementById('categoryTitle').textContent = data.title;
-            document.getElementById('categoryDescription').textContent = data.description;
-            
-            // Update progress indicator
-            const unlockedCount = data.upgrades.filter(u => u.unlocked).length;
-            const totalCount = data.upgrades.length;
-            document.getElementById('progressIndicator').textContent = `${unlockedCount}/${totalCount} Unlocked`;
-            
-            // Render upgrade tree
-            renderUpgradeTree(data.upgrades);
-            
-            // Update unlock button
-            updateUnlockButton();
+        // Zoom Functions
+        function zoomIn() {
+            zoom(zoomStep);
         }
 
-        // Render the upgrade tree
-        function renderUpgradeTree(upgrades) {
-            const treeContainer = document.getElementById('upgradeTree');
-            treeContainer.innerHTML = '';
+        function zoomOut() {
+            zoom(-zoomStep);
+        }
+
+        function resetZoom() {
+            currentZoom = 1;
+            currentPanX = 0;
+            currentPanY = 0;
+            updateTransform();
+        }
+
+        function zoom(delta, clientX, clientY) {
+            const newZoom = Math.max(minZoom, Math.min(maxZoom, currentZoom + delta));
             
-            const upgradePath = document.createElement('div');
-            upgradePath.className = 'upgrade-path';
-            
-            upgrades.forEach((upgrade, index) => {
-                // Create connection line (except for first upgrade)
-                if (index > 0) {
-                    const connectionLine = document.createElement('div');
-                    connectionLine.className = 'connection-line';
-                    connectionLine.style.top = `${(index - 1) * 140 + 80}px`;
-                    connectionLine.style.height = '60px';
+            if (newZoom !== currentZoom) {
+                // If mouse position is provided, zoom towards that point
+                if (clientX !== undefined && clientY !== undefined) {
+                    const container = document.getElementById('allTreesContainer');
+                    const rect = container.getBoundingClientRect();
+                    const mouseX = clientX - rect.left;
+                    const mouseY = clientY - rect.top;
                     
-                    // Determine line state
-                    if (upgrades[index - 1].unlocked && upgrade.unlocked) {
-                        connectionLine.classList.add('unlocked');
-                    } else if (upgrades[index - 1].unlocked && !upgrade.unlocked) {
-                        connectionLine.classList.add('available');
-                    }
+                    // Calculate the zoom center relative to the wrapper
+                    const zoomCenterX = (mouseX - currentPanX) / currentZoom;
+                    const zoomCenterY = (mouseY - currentPanY) / currentZoom;
                     
-                    upgradePath.appendChild(connectionLine);
-                }
-                
-                // Create upgrade node
-                const node = document.createElement('div');
-                node.className = 'upgrade-node';
-                node.dataset.upgradeId = upgrade.id;
-                
-                // Determine node state
-                if (upgrade.unlocked) {
-                    node.classList.add('unlocked');
-                } else if (index === 0 || upgrades[index - 1].unlocked) {
-                    node.classList.add('available');
+                    // Update zoom
+                    currentZoom = newZoom;
+                    
+                    // Adjust pan to keep the zoom center in place
+                    currentPanX = mouseX - zoomCenterX * currentZoom;
+                    currentPanY = mouseY - zoomCenterY * currentZoom;
                 } else {
-                    node.classList.add('locked');
+                    currentZoom = newZoom;
                 }
                 
-                // Node content
-                node.innerHTML = `
-                    <div class="node-icon">${upgrade.icon}</div>
-                    <div class="node-level">Lv.${upgrade.id}</div>
-                    ${!upgrade.unlocked ? `<div class="node-cost">${upgrade.cost} RP</div>` : ''}
-                    ${node.classList.contains('locked') ? '<div class="lock-icon">🔒</div>' : ''}
-                `;
-                
-                // Add click event
-                if (!upgrade.unlocked && (index === 0 || upgrades[index - 1].unlocked)) {
-                    node.addEventListener('click', () => selectUpgrade(upgrade));
-                }
-                
-                // Add hover tooltip
-                node.addEventListener('mouseenter', (e) => showTooltip(e, upgrade));
-                node.addEventListener('mouseleave', hideTooltip);
-                
-                upgradePath.appendChild(node);
-            });
+                updateTransform();
+            }
+        }
+
+        // Panning Functions
+        function startPanning(e) {
+            if (e.button !== 0) return; // Only left mouse button
+            isPanning = true;
+            lastMouseX = e.clientX;
+            lastMouseY = e.clientY;
+            document.getElementById('allTreesContainer').classList.add('panning');
+            e.preventDefault();
+        }
+
+        function updatePanning(e) {
+            if (!isPanning) return;
             
-            treeContainer.appendChild(upgradePath);
+            const deltaX = e.clientX - lastMouseX;
+            const deltaY = e.clientY - lastMouseY;
+            
+            currentPanX += deltaX;
+            currentPanY += deltaY;
+            
+            lastMouseX = e.clientX;
+            lastMouseY = e.clientY;
+            
+            updateTransform();
+        }
+
+        function stopPanning() {
+            isPanning = false;
+            document.getElementById('allTreesContainer').classList.remove('panning');
+        }
+
+        // Touch Events for Mobile
+        let touchStartX = 0;
+        let touchStartY = 0;
+        let initialDistance = 0;
+        let initialZoom = 1;
+
+        function handleTouchStart(e) {
+            e.preventDefault();
+            
+            if (e.touches.length === 1) {
+                // Single touch - start panning
+                isPanning = true;
+                touchStartX = e.touches[0].clientX;
+                touchStartY = e.touches[0].clientY;
+                lastMouseX = touchStartX;
+                lastMouseY = touchStartY;
+            } else if (e.touches.length === 2) {
+                // Two touches - start zooming
+                isPanning = false;
+                const touch1 = e.touches[0];
+                const touch2 = e.touches[1];
+                initialDistance = Math.hypot(
+                    touch2.clientX - touch1.clientX,
+                    touch2.clientY - touch1.clientY
+                );
+                initialZoom = currentZoom;
+            }
+        }
+
+        function handleTouchMove(e) {
+            e.preventDefault();
+            
+            if (e.touches.length === 1 && isPanning) {
+                // Single touch - panning
+                const deltaX = e.touches[0].clientX - lastMouseX;
+                const deltaY = e.touches[0].clientY - lastMouseY;
+                
+                currentPanX += deltaX;
+                currentPanY += deltaY;
+                
+                lastMouseX = e.touches[0].clientX;
+                lastMouseY = e.touches[0].clientY;
+                
+                updateTransform();
+            } else if (e.touches.length === 2) {
+                // Two touches - zooming
+                const touch1 = e.touches[0];
+                const touch2 = e.touches[1];
+                const currentDistance = Math.hypot(
+                    touch2.clientX - touch1.clientX,
+                    touch2.clientY - touch1.clientY
+                );
+                
+                const zoomRatio = currentDistance / initialDistance;
+                const newZoom = Math.max(minZoom, Math.min(maxZoom, initialZoom * zoomRatio));
+                
+                if (newZoom !== currentZoom) {
+                    currentZoom = newZoom;
+                    updateTransform();
+                }
+            }
+        }
+
+        function handleTouchEnd(e) {
+            e.preventDefault();
+            isPanning = false;
+        }
+
+        // Update the transform of the wrapper
+        function updateTransform() {
+            const wrapper = document.getElementById('treesContentWrapper');
+            
+            if (currentLayout === 'radial') {
+                const baseTransform = 'translate(-50%, -50%)';
+                const zoomTransform = `translate(${currentPanX}px, ${currentPanY}px) scale(${currentZoom})`;
+                wrapper.style.transform = `${baseTransform} ${zoomTransform}`;
+            } else {
+                // For horizontal layout, use simpler transform
+                wrapper.style.transform = `translate(${currentPanX}px, ${currentPanY}px) scale(${currentZoom})`;
+            }
+            
+            // Update zoom indicator
+            document.getElementById('zoomIndicator').textContent = Math.round(currentZoom * 100) + '%';
+        }
+
+        // Initialize view to center on hub
+        function initializeView() {
+            if (currentLayout === 'radial') {
+                currentZoom = 0.6; // Start zoomed out to see more of the tree
+                currentPanX = 0;
+                currentPanY = 0;
+            } else {
+                currentZoom = 1;
+                currentPanX = 0;
+                currentPanY = 0;
+            }
+            updateTransform();
+        }
+
+        // Setup layout toggle functionality
+        function setupLayoutToggle() {
+            document.getElementById('radialToggle').addEventListener('click', () => switchLayout('radial'));
+            document.getElementById('horizontalToggle').addEventListener('click', () => switchLayout('horizontal'));
+        }
+
+        // Switch between layouts
+        function switchLayout(layout) {
+            if (currentLayout === layout) return;
+            
+            currentLayout = layout;
+            
+            // Update toggle buttons
+            document.querySelectorAll('.toggle-option').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            document.getElementById(layout + 'Toggle').classList.add('active');
+            
+            // Re-render with new layout
+            if (layout === 'radial') {
+                renderRadialTrees();
+            } else {
+                renderHorizontalTrees();
+            }
+            
+            // Reset view
+            initializeView();
+        }
+
+        // Main render function - delegates to layout-specific functions
+        function renderUpgradeTrees() {
+            if (currentLayout === 'radial') {
+                renderRadialTrees();
+            } else {
+                renderHorizontalTrees();
+            }
+        }
+
+        // Render radial skill tree
+        function renderRadialTrees() {
+            const treesContentWrapper = document.getElementById('treesContentWrapper');
+            treesContentWrapper.innerHTML = '';
+            treesContentWrapper.className = 'trees-content-wrapper'; // Remove horizontal class
+            
+            // Create central hub
+            const centralHub = document.createElement('div');
+            centralHub.className = 'central-hub';
+            centralHub.innerHTML = `
+                <div class="central-hub-icon">⚡</div>
+                <div>META<br>UPGRADES</div>
+            `;
+            treesContentWrapper.appendChild(centralHub);
+            
+            // Get category keys and calculate positions
+            const categoryKeys = Object.keys(upgradeData);
+            const centerX = 1000; // Center of the 2000px container
+            const centerY = 1000;
+            const mainRadius = 300; // Distance from center to main categories
+            
+                         // Render main categories in a circle
+             categoryKeys.forEach((categoryKey, categoryIndex) => {
+                 const categoryData = upgradeData[categoryKey];
+                 // Start at top (90 degrees offset) and distribute evenly
+                 const angle = (categoryIndex / categoryKeys.length) * 2 * Math.PI - Math.PI / 2;
+                 
+                 // Calculate main category position
+                 const mainCategoryX = centerX + Math.cos(angle) * mainRadius;
+                 const mainCategoryY = centerY + Math.sin(angle) * mainRadius;
+                
+                // Create connection from center to main category
+                const centerConnection = document.createElement('div');
+                centerConnection.className = 'radial-connection';
+                centerConnection.style.left = centerX + 'px';
+                centerConnection.style.top = centerY + 'px';
+                centerConnection.style.width = mainRadius + 'px';
+                centerConnection.style.transform = `rotate(${angle}rad)`;
+                treesContentWrapper.appendChild(centerConnection);
+                
+                // Create main category node
+                const mainCategoryNode = document.createElement('div');
+                mainCategoryNode.className = 'main-category-node';
+                mainCategoryNode.style.left = (mainCategoryX - 40) + 'px';
+                mainCategoryNode.style.top = (mainCategoryY - 40) + 'px';
+                
+                // Get first sub-category for icon
+                const firstSubKey = Object.keys(categoryData.subCategories)[0];
+                const icon = getIconForCategory(categoryKey);
+                
+                mainCategoryNode.innerHTML = `
+                    <div class="main-category-icon">${icon}</div>
+                    <div class="main-category-title">${categoryData.title.toUpperCase()}</div>
+                `;
+                treesContentWrapper.appendChild(mainCategoryNode);
+                
+                                 // Render sub-categories around main category
+                 const subCategoryKeys = Object.keys(categoryData.subCategories);
+                 const subRadius = 150; // Distance from main category to sub-categories
+                 
+                 subCategoryKeys.forEach((subCategoryKey, subIndex) => {
+                     const subCategoryData = categoryData.subCategories[subCategoryKey];
+                     // For single sub-category, place it on the same angle as main category
+                     // For multiple sub-categories, distribute them symmetrically around the main category
+                     let subAngle;
+                     if (subCategoryKeys.length === 1) {
+                         subAngle = angle;
+                     } else {
+                         // Distribute sub-categories in an arc around the main category
+                         const arcSpan = Math.PI / 3; // 60 degree arc
+                         const angleStep = arcSpan / (subCategoryKeys.length - 1);
+                         subAngle = angle + (subIndex * angleStep) - (arcSpan / 2);
+                     }
+                    
+                    // Calculate sub-category position
+                    const subCategoryX = mainCategoryX + Math.cos(subAngle) * subRadius;
+                    const subCategoryY = mainCategoryY + Math.sin(subAngle) * subRadius;
+                    
+                    // Create connection from main to sub-category
+                    const subConnection = document.createElement('div');
+                    subConnection.className = 'radial-connection main-to-sub';
+                    subConnection.style.left = mainCategoryX + 'px';
+                    subConnection.style.top = mainCategoryY + 'px';
+                    subConnection.style.width = subRadius + 'px';
+                    subConnection.style.transform = `rotate(${subAngle}rad)`;
+                    treesContentWrapper.appendChild(subConnection);
+                    
+                    // Create sub-category node
+                    const subCategoryNode = document.createElement('div');
+                    subCategoryNode.className = 'sub-category-node';
+                    subCategoryNode.style.left = (subCategoryX - 30) + 'px';
+                    subCategoryNode.style.top = (subCategoryY - 30) + 'px';
+                    subCategoryNode.innerHTML = `
+                        <div>${subCategoryData.title.charAt(0)}</div>
+                    `;
+                    treesContentWrapper.appendChild(subCategoryNode);
+                    
+                    // Render upgrade nodes extending from sub-category
+                    const upgradeRadius = 80; // Distance between upgrade levels
+                    
+                    subCategoryData.upgrades.forEach((upgrade, upgradeIndex) => {
+                        const upgradeDistance = upgradeRadius * (upgradeIndex + 1);
+                        const upgradeX = subCategoryX + Math.cos(subAngle) * upgradeDistance;
+                        const upgradeY = subCategoryY + Math.sin(subAngle) * upgradeDistance;
+                        
+                        // Create connection line for upgrade
+                        if (upgradeIndex === 0) {
+                            // Connection from sub-category to first upgrade
+                            const upgradeConnection = document.createElement('div');
+                            upgradeConnection.className = 'radial-connection sub-to-upgrade';
+                            upgradeConnection.style.left = subCategoryX + 'px';
+                            upgradeConnection.style.top = subCategoryY + 'px';
+                            upgradeConnection.style.width = (upgradeRadius * subCategoryData.upgrades.length) + 'px';
+                            upgradeConnection.style.transform = `rotate(${subAngle}rad)`;
+                            treesContentWrapper.appendChild(upgradeConnection);
+                        }
+                        
+                        // Create upgrade node
+                        const upgradeNode = document.createElement('div');
+                        upgradeNode.className = 'upgrade-node';
+                        upgradeNode.dataset.upgradeId = upgrade.id;
+                        upgradeNode.dataset.category = categoryKey;
+                        upgradeNode.dataset.subCategory = subCategoryKey;
+                        upgradeNode.style.left = (upgradeX - 25) + 'px';
+                        upgradeNode.style.top = (upgradeY - 25) + 'px';
+                        
+                        // Determine node state
+                        if (upgrade.unlocked) {
+                            upgradeNode.classList.add('unlocked');
+                        } else if (upgradeIndex === 0 || subCategoryData.upgrades[upgradeIndex - 1].unlocked) {
+                            upgradeNode.classList.add('available');
+                        } else {
+                            upgradeNode.classList.add('locked');
+                        }
+                        
+                        // Add selection state
+                        if (selectedUpgrade && selectedUpgrade.id === upgrade.id && 
+                            selectedUpgrade.category === categoryKey && 
+                            selectedUpgrade.subCategory === subCategoryKey) {
+                            upgradeNode.classList.add('selected');
+                        }
+                        
+                        // Node content
+                        upgradeNode.innerHTML = `
+                            <div class="node-icon">${upgrade.icon}</div>
+                            <div class="node-level">Lv.${upgrade.id}</div>
+                            ${!upgrade.unlocked ? `<div class="node-cost">${upgrade.cost} RP</div>` : ''}
+                            ${upgradeNode.classList.contains('locked') ? '<div class="lock-icon">🔒</div>' : ''}
+                        `;
+                        
+                        // Add click event
+                        if (!upgrade.unlocked && (upgradeIndex === 0 || subCategoryData.upgrades[upgradeIndex - 1].unlocked)) {
+                            upgradeNode.addEventListener('click', () => selectUpgrade(upgrade, categoryKey, subCategoryKey));
+                        }
+                        
+                        // Add hover tooltip
+                        upgradeNode.addEventListener('mouseenter', (e) => showTooltip(e, upgrade));
+                        upgradeNode.addEventListener('mouseleave', hideTooltip);
+                        
+                        treesContentWrapper.appendChild(upgradeNode);
+                    });
+                });
+            });
+        }
+
+        // Render horizontal skill tree
+        function renderHorizontalTrees() {
+            const treesContentWrapper = document.getElementById('treesContentWrapper');
+            treesContentWrapper.innerHTML = '';
+            treesContentWrapper.className = 'trees-content-wrapper horizontal'; // Add horizontal class
+            
+            // Render all main categories
+            Object.keys(upgradeData).forEach(categoryKey => {
+                const categoryData = upgradeData[categoryKey];
+                
+                // Create main category container
+                const mainCategoryContainer = document.createElement('div');
+                mainCategoryContainer.className = 'main-category-container';
+                mainCategoryContainer.dataset.category = categoryKey;
+                
+                // Main category header
+                const mainCategoryHeader = document.createElement('div');
+                mainCategoryHeader.className = 'main-category-header';
+                mainCategoryHeader.textContent = categoryData.title;
+                mainCategoryContainer.appendChild(mainCategoryHeader);
+                
+                // Sub-categories container
+                const subCategoriesContainer = document.createElement('div');
+                subCategoriesContainer.className = 'sub-categories-container';
+                
+                // Render all sub-categories
+                Object.keys(categoryData.subCategories).forEach(subCategoryKey => {
+                    const subCategoryData = categoryData.subCategories[subCategoryKey];
+                    
+                    // Create sub-tree container
+                    const subTreeContainer = document.createElement('div');
+                    subTreeContainer.className = 'sub-tree-container';
+                    subTreeContainer.dataset.category = categoryKey;
+                    subTreeContainer.dataset.subCategory = subCategoryKey;
+                    
+                    // Sub-tree header
+                    const subTreeHeader = document.createElement('div');
+                    subTreeHeader.className = 'sub-tree-header';
+                    subTreeHeader.textContent = subCategoryData.title;
+                    subTreeContainer.appendChild(subTreeHeader);
+                    
+                    // Upgrade path
+                    const upgradePath = document.createElement('div');
+                    upgradePath.className = 'upgrade-path';
+                    
+                    subCategoryData.upgrades.forEach((upgrade, index) => {
+                        // Create connection line (except for first upgrade)
+                        if (index > 0) {
+                            const connectionLine = document.createElement('div');
+                            connectionLine.className = 'connection-line';
+                            
+                            // Calculate positioning based on screen size
+                            const isMobile = window.innerWidth <= 768;
+                            const nodeSize = isMobile ? 50 : 60;
+                            const gapSize = isMobile ? 40 : 50;
+                            const lineHeight = gapSize;
+                            
+                            connectionLine.style.top = `${(index - 1) * (nodeSize + gapSize) + nodeSize}px`;
+                            connectionLine.style.height = `${lineHeight}px`;
+                            
+                            // Determine line state
+                            const prevUpgrade = subCategoryData.upgrades[index - 1];
+                            if (prevUpgrade.unlocked && upgrade.unlocked) {
+                                connectionLine.classList.add('unlocked');
+                            } else if (prevUpgrade.unlocked && !upgrade.unlocked) {
+                                connectionLine.classList.add('available');
+                            } else {
+                                connectionLine.classList.add('locked');
+                            }
+                            
+                            upgradePath.appendChild(connectionLine);
+                        }
+                        
+                        // Create upgrade node
+                        const upgradeNode = document.createElement('div');
+                        upgradeNode.className = 'upgrade-node';
+                        upgradeNode.dataset.upgradeId = upgrade.id;
+                        upgradeNode.dataset.category = categoryKey;
+                        upgradeNode.dataset.subCategory = subCategoryKey;
+                        
+                        // Determine node state
+                        if (upgrade.unlocked) {
+                            upgradeNode.classList.add('unlocked');
+                        } else if (index === 0 || subCategoryData.upgrades[index - 1].unlocked) {
+                            upgradeNode.classList.add('available');
+                        } else {
+                            upgradeNode.classList.add('locked');
+                        }
+                        
+                        // Add selection state
+                        if (selectedUpgrade && selectedUpgrade.id === upgrade.id && 
+                            selectedUpgrade.category === categoryKey && 
+                            selectedUpgrade.subCategory === subCategoryKey) {
+                            upgradeNode.classList.add('selected');
+                        }
+                        
+                        // Node content
+                        upgradeNode.innerHTML = `
+                            <div class="node-icon">${upgrade.icon}</div>
+                            <div class="node-level">Lv.${upgrade.id}</div>
+                            ${!upgrade.unlocked ? `<div class="node-cost">${upgrade.cost} RP</div>` : ''}
+                            ${upgradeNode.classList.contains('locked') ? '<div class="lock-icon">🔒</div>' : ''}
+                        `;
+                        
+                        // Add click event
+                        if (!upgrade.unlocked && (index === 0 || subCategoryData.upgrades[index - 1].unlocked)) {
+                            upgradeNode.addEventListener('click', () => selectUpgrade(upgrade, categoryKey, subCategoryKey));
+                        }
+                        
+                        // Add hover tooltip
+                        upgradeNode.addEventListener('mouseenter', (e) => showTooltip(e, upgrade));
+                        upgradeNode.addEventListener('mouseleave', hideTooltip);
+                        
+                        upgradePath.appendChild(upgradeNode);
+                    });
+                    
+                    subTreeContainer.appendChild(upgradePath);
+                    subCategoriesContainer.appendChild(subTreeContainer);
+                });
+                
+                mainCategoryContainer.appendChild(subCategoriesContainer);
+                treesContentWrapper.appendChild(mainCategoryContainer);
+            });
+        }
+
+        // Get icon for category
+        function getIconForCategory(categoryKey) {
+            const icons = {
+                buildings: '🏗️',
+                soldiers: '👥',
+                walls: '🧱',
+                farm: '🌾',
+                laboratory: '🧪',
+                expeditions: '🗺️',
+                npc: '👤',
+                revive: '❤️',
+                weapons: '🔫',
+                airstrike: '✈️',
+                reroll: '🔄'
+            };
+            return icons[categoryKey] || '⭐';
         }
 
         // Select an upgrade
-        function selectUpgrade(upgrade) {
+        function selectUpgrade(upgrade, category, subCategory) {
             selectedUpgrade = upgrade;
+            selectedUpgrade.category = category;
+            selectedUpgrade.subCategory = subCategory;
             
             // Update visual selection
             document.querySelectorAll('.upgrade-node').forEach(node => {
                 node.classList.remove('selected');
             });
-            document.querySelector(`[data-upgrade-id="${upgrade.id}"]`).classList.add('selected');
+            document.querySelector(`[data-upgrade-id="${upgrade.id}"][data-category="${category}"][data-sub-category="${subCategory}"]`).classList.add('selected');
             
             // Show upgrade details
             showUpgradeDetails(upgrade);
@@ -1036,13 +1781,13 @@
             selectedUpgrade.unlocked = true;
             
             // Play unlock animation
-            const nodeElement = document.querySelector(`[data-upgrade-id="${selectedUpgrade.id}"]`);
+            const nodeElement = document.querySelector(`[data-upgrade-id="${selectedUpgrade.id}"][data-category="${selectedUpgrade.category}"][data-sub-category="${selectedUpgrade.subCategory}"]`);
             nodeElement.classList.add('unlock-animation');
             
             setTimeout(() => {
                 nodeElement.classList.remove('unlock-animation');
-                // Refresh the current category to update visuals
-                switchCategory(currentCategory);
+                // Re-render all trees to update visuals
+                renderUpgradeTrees();
             }, 600);
             
             // Clear selection
@@ -1065,6 +1810,13 @@
             const tooltip = document.createElement('div');
             tooltip.className = 'tooltip';
             
+            // Find the category and sub-category this upgrade belongs to
+            const upgradeNode = event.target.closest('.upgrade-node');
+            const upgradeCategory = upgradeNode.dataset.category;
+            const upgradeSubCategory = upgradeNode.dataset.subCategory;
+            const categoryData = upgradeData[upgradeCategory];
+            const subCategoryData = categoryData.subCategories[upgradeSubCategory];
+            
             // Determine status
             let status = '';
             let statusClass = '';
@@ -1072,9 +1824,8 @@
                 status = 'UNLOCKED';
                 statusClass = 'unlocked';
             } else {
-                const currentCategoryData = upgradeData[currentCategory];
-                const upgradeIndex = currentCategoryData.upgrades.findIndex(u => u.id === upgrade.id);
-                const canUnlock = upgradeIndex === 0 || currentCategoryData.upgrades[upgradeIndex - 1].unlocked;
+                const upgradeIndex = subCategoryData.upgrades.findIndex(u => u.id === upgrade.id);
+                const canUnlock = upgradeIndex === 0 || subCategoryData.upgrades[upgradeIndex - 1].unlocked;
                 
                 if (canUnlock) {
                     status = `COST: ${upgrade.cost} RP`;
@@ -1089,7 +1840,7 @@
                 <div class="tooltip-icon">${upgrade.icon}</div>
                 <div class="tooltip-title">${upgrade.name}</div>
                 <div class="tooltip-effect">${upgrade.effect}</div>
-                <div class="tooltip-description">Level ${upgrade.id} upgrade for ${currentCategory}</div>
+                <div class="tooltip-description">Level ${upgrade.id} upgrade for ${categoryData.title} - ${subCategoryData.title}</div>
                 <div class="tooltip-status ${statusClass}">${status}</div>
             `;
             
