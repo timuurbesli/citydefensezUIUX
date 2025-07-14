@@ -1,5 +1,6 @@
 # City Defense Z - UI/UX Interactive Mockup
 
+python -m http.server 8000
 A fast, interactive HTML/CSS/JavaScript prototype demonstrating the improved UI/UX design for City Defense Z tower defense game.
 
 ## 📁 Project Structure
