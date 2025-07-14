@@ -161,32 +161,6 @@
             opacity: 0.8;
         }
 
-        .risk-badge {
-            padding: 0.3rem 0.8rem;
-            border-radius: 12px;
-            font-size: 0.8rem;
-            font-weight: 700;
-            letter-spacing: 1px;
-        }
-
-        .risk-low {
-            background: rgba(74, 222, 128, 0.2);
-            color: #4ade80;
-            border: 1px solid rgba(74, 222, 128, 0.3);
-        }
-
-        .risk-high {
-            background: rgba(245, 158, 11, 0.2);
-            color: #f59e0b;
-            border: 1px solid rgba(245, 158, 11, 0.3);
-        }
-
-        .risk-locked {
-            background: rgba(239, 68, 68, 0.2);
-            color: #ef4444;
-            border: 1px solid rgba(239, 68, 68, 0.3);
-        }
-
         .expedition-title-text {
             font-family: 'Orbitron', monospace;
             font-size: 1.4rem;
@@ -387,27 +361,6 @@
             font-weight: 700;
             margin-bottom: 1rem;
             color: #ffffff;
-        }
-
-        .risk-display {
-            background: rgba(245, 158, 11, 0.1);
-            border: 1px solid rgba(245, 158, 11, 0.3);
-            border-radius: 8px;
-            padding: 0.8rem;
-            text-align: center;
-            margin-bottom: 0.8rem;
-        }
-
-        .risk-level {
-            font-size: 1.1rem;
-            font-weight: 700;
-            color: #f59e0b;
-            margin-bottom: 0.5rem;
-        }
-
-        .risk-context {
-            font-size: 0.9rem;
-            color: #d1d5db;
         }
 
         .rewards-display {
@@ -1112,7 +1065,6 @@
                 <div class="expedition-type-card" data-type="small">
                     <div class="expedition-card-header">
                         <i class="fas fa-home expedition-icon" style="color: #4ade80;"></i>
-                        <span class="risk-badge risk-low">LOW RISK</span>
                     </div>
                     <div>
                         <h3 class="expedition-title-text">Small Expedition</h3>
@@ -1125,7 +1077,6 @@
                 <div class="expedition-type-card selected" data-type="medium">
                     <div class="expedition-card-header">
                         <i class="fas fa-city expedition-icon" style="color: #f59e0b;"></i>
-                        <span class="risk-badge risk-high">HIGH RISK</span>
                     </div>
                     <div>
                         <h3 class="expedition-title-text">Medium Expedition</h3>
@@ -1138,7 +1089,6 @@
                 <div class="expedition-type-card locked" data-type="large">
                     <div class="expedition-card-header">
                         <i class="fas fa-industry expedition-icon" style="color: #ef4444;"></i>
-                        <span class="risk-badge risk-locked">HIGH RISK</span>
                     </div>
                     <div>
                         <h3 class="expedition-title-text">Large Expedition</h3>
@@ -1172,11 +1122,6 @@
                                 <span class="required-power">/ <span id="requiredPower">100</span> Power</span>
                             </div>
                         </div>
-                    </div>
-                    
-                    <div class="risk-display">
-                        <div class="risk-level" id="riskLevel">SELECT NPCS TO START</div>
-                        <div class="risk-context">Based on expedition type and team composition</div>
                     </div>
                     
                     <h4 style="margin-bottom: 1rem; color: #d1d5db;">POTENTIAL REWARDS</h4>
@@ -1405,7 +1350,6 @@
             const survivalSliderFill = document.getElementById('survivalSliderFill');
             const currentPowerElement = document.getElementById('currentPower');
             const requiredPowerElement = document.getElementById('requiredPower');
-            const riskLevelElement = document.getElementById('riskLevel');
             
             let selectedExpedition = 'medium';
             let selectedNPCs = [];
@@ -1601,17 +1545,6 @@
                 } else {
                     survivalPercentage.classList.add('high');
                 }
-
-                // Update risk level text
-                if (selectedNPCs.length === 0) {
-                    riskLevelElement.textContent = 'SELECT NPCS TO START';
-                } else if (survivalRate >= 90) {
-                    riskLevelElement.textContent = 'LOW RISK - HIGH SUCCESS';
-                } else if (survivalRate >= 60) {
-                    riskLevelElement.textContent = 'MEDIUM RISK - MODERATE SUCCESS';
-                } else {
-                    riskLevelElement.textContent = 'HIGH RISK - LOW SUCCESS';
-                }
             }
 
             // Show modal function
@@ -1701,6 +1634,35 @@
             // Modal send button - NO ALERTS
             modalSendBtn.addEventListener('click', function() {
                 const selectedNames = selectedNPCs.map(id => npcData[id].name);
+                const selectedNPCsData = selectedNPCs.map(id => ({
+                    id: id,
+                    name: npcData[id].name,
+                    role: npcData[id].role,
+                    icon: npcData[id].icon,
+                    power: npcData[id].power
+                }));
+                
+                // Get current survival rate
+                const survivalRate = parseInt(survivalPercentage.textContent.replace('%', ''));
+                
+                // Prepare expedition data
+                const expeditionData = {
+                    type: selectedExpedition,
+                    team: selectedNPCsData,
+                    successChance: survivalRate
+                };
+                
+                // Send expedition data to parent window
+                if (window.parent !== window) {
+                    window.parent.postMessage({
+                        type: 'expedition-deployed',
+                        data: expeditionData
+                    }, '*');
+                } else {
+                    // Fallback for testing
+                    console.log('Expedition deployed:', expeditionData);
+                }
+                
                 hideModal();
                 
                 // Show success message without alerts

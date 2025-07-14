@@ -54,11 +54,11 @@
 
         /* Main Modal Container */
         .meta-upgrade-modal {
-            width: 90%;
-            height: 85%;
+            width: 100%;
+            height: 100%;
             background: #2C2C2C;
-            border: 2px solid #FF8C00;
-            border-radius: 10px;
+            border: none;
+            border-radius: 0;
             box-shadow: 0 0 30px rgba(255, 140, 0, 0.3);
             display: flex;
             flex-direction: column;
@@ -423,6 +423,225 @@
             transform: scale(1.1);
             box-shadow: 0 0 25px rgba(255, 140, 0, 0.6);
         }
+        
+        .main-category-node.collapsed {
+            background: linear-gradient(135deg, #666, #888);
+            border-color: #999;
+            box-shadow: 0 0 10px rgba(150, 150, 150, 0.3);
+        }
+        
+        .main-category-node.expanded {
+            background: linear-gradient(135deg, #FF8C00, #FFA500);
+            border-color: #FFB347;
+            box-shadow: 0 0 25px rgba(255, 140, 0, 0.6);
+        }
+        
+        /* Sub-Category Node (intermediate nodes) */
+        .sub-category-node {
+            position: absolute;
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #4CAF50, #45a049);
+            border: 3px solid #66BB6A;
+            border-radius: 50%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 0 15px rgba(76, 175, 80, 0.4);
+            z-index: 12;
+            font-size: 10px;
+            font-weight: bold;
+            color: white;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .sub-category-node:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 20px rgba(76, 175, 80, 0.6);
+        }
+        
+        .sub-category-node.collapsed {
+            background: linear-gradient(135deg, #666, #888);
+            border-color: #999;
+            box-shadow: 0 0 10px rgba(150, 150, 150, 0.3);
+        }
+        
+        .sub-category-node.expanded {
+            background: linear-gradient(135deg, #4CAF50, #45a049);
+            border-color: #66BB6A;
+            box-shadow: 0 0 20px rgba(76, 175, 80, 0.6);
+        }
+        
+        /* Horizontal Sub-Category Node */
+        .sub-category-node-horizontal {
+            width: 120px;
+            height: 50px;
+            background: linear-gradient(135deg, #4CAF50, #45a049);
+            border: 2px solid #66BB6A;
+            border-radius: 25px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 0 15px rgba(76, 175, 80, 0.4);
+            margin: 10px 0;
+            font-size: 12px;
+            font-weight: bold;
+            color: white;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            gap: 8px;
+        }
+
+        .sub-category-node-horizontal:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 20px rgba(76, 175, 80, 0.6);
+        }
+        
+        .sub-category-node-horizontal.collapsed {
+            background: linear-gradient(135deg, #666, #888);
+            border-color: #999;
+            box-shadow: 0 0 10px rgba(150, 150, 150, 0.3);
+        }
+        
+        .sub-category-node-horizontal.expanded {
+            background: linear-gradient(135deg, #4CAF50, #45a049);
+            border-color: #66BB6A;
+            box-shadow: 0 0 20px rgba(76, 175, 80, 0.6);
+        }
+        
+        /* Horizontal layout toggle styles */
+        .horizontal .main-category-header {
+            cursor: pointer;
+            transition: all 0.3s ease;
+            padding: 10px 15px;
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
+        
+        .horizontal .main-category-header.collapsed {
+            background: linear-gradient(135deg, #666, #888);
+            color: #ccc;
+            border: 2px solid #999;
+        }
+        
+        .horizontal .main-category-header.expanded {
+            background: linear-gradient(135deg, #FF8C00, #FFA500);
+            color: white;
+            border: 2px solid #FFB347;
+            box-shadow: 0 0 15px rgba(255, 140, 0, 0.4);
+        }
+        
+        .horizontal .main-category-header:hover {
+            transform: scale(1.05);
+        }
+        
+        /* Animation styles for skill nodes */
+        .skill-node-animate {
+            opacity: 1;
+            transform: scale(1) translateY(0);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        
+        .skill-node-animate.animate-in {
+            opacity: 0;
+            transform: scale(0) translateY(-20px);
+        }
+        
+        .skill-node-animate.animate-in.show {
+            opacity: 1;
+            transform: scale(1) translateY(0);
+        }
+        
+        .skill-node-animate.prepare-opening {
+            opacity: 0 !important;
+            transform: scale(0) !important;
+            pointer-events: none;
+        }
+        
+        .skill-node-animate.animate-out {
+            opacity: 0;
+            transform: scale(0.1) translateY(20px);
+        }
+        
+        .skill-node-animate.completely-hidden {
+            opacity: 0 !important;
+            transform: scale(0) !important;
+            pointer-events: none;
+        }
+        
+        /* Connection line animations */
+        .connection-animate {
+            opacity: 1;
+            transform: scaleX(1);
+            transform-origin: left center;
+            transition: all 0.3s ease-out;
+        }
+        
+        .connection-animate.animate-in {
+            opacity: 0;
+            transform: scaleX(0);
+        }
+        
+        .connection-animate.animate-in.show {
+            opacity: 1;
+            transform: scaleX(1);
+        }
+        
+        .connection-animate.prepare-opening {
+            opacity: 0 !important;
+            transform: scaleX(0) !important;
+            pointer-events: none;
+        }
+        
+        .connection-animate.animate-out {
+            opacity: 0;
+            transform: scaleX(0);
+        }
+        
+        .connection-animate.completely-hidden {
+            opacity: 0 !important;
+            transform: scaleX(0) !important;
+            pointer-events: none;
+        }
+        
+        /* Radial connection animations */
+        .radial-connection-animate {
+            opacity: 1;
+            transform-origin: left center;
+            transition: all 0.3s ease-out;
+            transform: scaleX(1) rotate(var(--rotation, 0deg));
+        }
+        
+        .radial-connection-animate.animate-in {
+            opacity: 0;
+            transform: scaleX(0) rotate(var(--rotation, 0deg));
+        }
+        
+        .radial-connection-animate.animate-in.show {
+            opacity: 1;
+            transform: scaleX(1) rotate(var(--rotation, 0deg));
+        }
+        
+        .radial-connection-animate.prepare-opening {
+            opacity: 0 !important;
+            transform: scaleX(0) rotate(var(--rotation, 0deg)) !important;
+            pointer-events: none;
+        }
+        
+        .radial-connection-animate.animate-out {
+            opacity: 0;
+            transform: scaleX(0) rotate(var(--rotation, 0deg));
+        }
+        
+        .radial-connection-animate.completely-hidden {
+            opacity: 0 !important;
+            transform: scaleX(0) rotate(var(--rotation, 0deg)) !important;
+            pointer-events: none;
+        }
 
         .main-category-icon {
             font-size: 18px;
@@ -753,6 +972,80 @@
             color: white;
         }
 
+        /* Building Upgrade Comparison Table */
+        .building-comparison-table {
+            margin: 10px 0;
+            border-collapse: collapse;
+            width: 100%;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .building-comparison-table th {
+            background: linear-gradient(135deg, #FF8C00, #FFA500);
+            color: white;
+            padding: 8px 12px;
+            font-size: 12px;
+            font-weight: bold;
+            text-align: center;
+            border-bottom: 2px solid #FFB347;
+        }
+
+        .building-comparison-table td {
+            padding: 6px 12px;
+            font-size: 11px;
+            text-align: center;
+            border-bottom: 1px solid rgba(255, 140, 0, 0.2);
+        }
+
+        .building-comparison-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .building-comparison-table .level-cell {
+            font-weight: bold;
+            color: #FFA500;
+            background: rgba(255, 140, 0, 0.1);
+            width: 15%;
+        }
+
+        .building-comparison-table .before-cell {
+            color: #CCC;
+            background: rgba(100, 100, 100, 0.2);
+            width: 30%;
+        }
+
+        .building-comparison-table .after-cell {
+            color: #90EE90;
+            background: rgba(144, 238, 144, 0.1);
+            font-weight: bold;
+            width: 30%;
+        }
+
+        .building-comparison-table .change-cell {
+            width: 25%;
+            font-weight: bold;
+        }
+
+        .building-comparison-table .change-up {
+            color: #90EE90;
+        }
+
+        .building-comparison-table .change-down {
+            color: #FFB347;
+        }
+
+        .building-comparison-table .change-new {
+            color: #FFD700;
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes glow {
+            from { text-shadow: 0 0 5px #FFD700; }
+            to { text-shadow: 0 0 15px #FFD700, 0 0 20px #FFD700; }
+        }
+
         /* Responsive Design */
         @media (max-width: 1366px) {
             .meta-upgrade-modal {
@@ -939,6 +1232,10 @@
 
         // Layout State
         let currentLayout = 'radial'; // 'radial' or 'horizontal'
+        
+        // Category Toggle State
+        let expandedCategories = new Set(); // Track which categories are expanded
+        let expandedSubCategories = new Set(); // Track which sub-categories are expanded
 
         // Upgrade Data with Sub-Categories
         const upgradeData = {
@@ -946,20 +1243,20 @@
                 title: "Buildings",
                 subCategories: {
                     levels: {
-                        title: "Building Levels",
-                        description: "Increases the default level of all building cards.",
+                        title: "Building Card Levels",
+                        description: "Improves building card level probabilities through RNG enhancement. Affects all building types - Factory, Ammunition, Barracks, Laboratory, and House cards.",
                         upgrades: [
-                            { id: 1, name: "Basic Buildings", cost: 50, effect: "+1 Default Building Level", unlocked: true, icon: "🏠" },
-                            { id: 2, name: "Improved Buildings", cost: 100, effect: "+1 Default Building Level", unlocked: true, icon: "🏢" },
-                            { id: 3, name: "Advanced Buildings", cost: 150, effect: "+1 Default Building Level", unlocked: false, icon: "🏭" },
-                            { id: 4, name: "Superior Buildings", cost: 200, effect: "+1 Default Building Level", unlocked: false, icon: "🏗️" },
-                            { id: 5, name: "Master Buildings", cost: 300, effect: "+1 Default Building Level", unlocked: false, icon: "🏛️" }
+                            { id: 1, name: "Enhanced Buildings", cost: 50, effect: "L1: 50%, L2: 30%, L3: 15%, L4: 5%", unlocked: true, icon: "🏠" },
+                            { id: 2, name: "Improved Buildings", cost: 100, effect: "L1: 25%, L2: 35%, L3: 25%, L4: 12%, L5: 3%", unlocked: true, icon: "🏢" },
+                            { id: 3, name: "Advanced Buildings", cost: 150, effect: "L1: 10%, L2: 25%, L3: 35%, L4: 25%, L5: 5%", unlocked: false, icon: "🏭" },
+                            { id: 4, name: "Superior Buildings", cost: 200, effect: "L1: 5%, L2: 15%, L3: 30%, L4: 35%, L5: 15%", unlocked: false, icon: "🏗️" },
+                            { id: 5, name: "Master Buildings", cost: 300, effect: "L1: 2%, L2: 8%, L3: 20%, L4: 40%, L5: 30%", unlocked: false, icon: "🏛️" }
                         ]
                     }
                 }
             },
-            soldiers: {
-                title: "Soldiers",
+            combat: {
+                title: "Combat",
                 subCategories: {
                     training: {
                         title: "Training",
@@ -971,20 +1268,58 @@
                             { id: 4, name: "Special Forces", cost: 250, effect: "+1 Default Soldier Level", unlocked: false, icon: "🎖️" },
                             { id: 5, name: "Legendary Warriors", cost: 350, effect: "+1 Default Soldier Level", unlocked: false, icon: "⭐" }
                         ]
+                    },
+                    weapons: {
+                        title: "Weapons",
+                        description: "Enhances combat effectiveness through improved fire rate, reload speed, and damage.",
+                        upgrades: [
+                            { id: 1, name: "Rapid Fire", cost: 100, effect: "Soldiers attack faster", unlocked: false, icon: "🔫" },
+                            { id: 2, name: "Quick Reload", cost: 175, effect: "-50% reload time", unlocked: false, icon: "🔄" },
+                            { id: 3, name: "High Damage", cost: 250, effect: "+50% soldier damage", unlocked: false, icon: "💥" }
+                        ]
+                    },
+                    airstrike: {
+                        title: "Airstrike",
+                        description: "Improves aerial support through cost reduction, new weapons, and increased effectiveness.",
+                        upgrades: [
+                            { id: 1, name: "Cheap Strikes", cost: 125, effect: "Airstrikes 50% cheaper", unlocked: false, icon: "💰" },
+                            { id: 2, name: "Triple Bomber", cost: 200, effect: "3-bomb launcher plane", unlocked: false, icon: "💣" },
+                            { id: 3, name: "Wide Bombardment", cost: 300, effect: "+50% airstrike radius", unlocked: false, icon: "💥" }
+                        ]
                     }
                 }
             },
             walls: {
                 title: "Walls",
                 subCategories: {
-                    defense: {
-                        title: "Defense",
-                        description: "Enhances the capacity, durability, and special abilities of defensive walls.",
+                    capacity: {
+                        title: "Wall Capacity",
+                        description: "Increases the maximum number of wall segments that can be built.",
                         upgrades: [
                             { id: 1, name: "Extended Walls", cost: 80, effect: "Wall capacity +20", unlocked: false, icon: "🧱" },
-                            { id: 2, name: "Reinforced Walls", cost: 160, effect: "Capacity +20, +HP", unlocked: false, icon: "🛡️" },
-                            { id: 3, name: "Fortified Walls", cost: 240, effect: "Wall capacity +20", unlocked: false, icon: "⛩️" },
-                            { id: 4, name: "Electrified Walls", cost: 400, effect: "Electric damage to attackers", unlocked: false, icon: "⚡" }
+                            { id: 2, name: "Expanded Walls", cost: 160, effect: "Wall capacity +25", unlocked: false, icon: "🏗️" },
+                            { id: 3, name: "Fortified Walls", cost: 240, effect: "Wall capacity +30", unlocked: false, icon: "⛩️" },
+                            { id: 4, name: "Massive Walls", cost: 320, effect: "Wall capacity +35", unlocked: false, icon: "🏰" }
+                        ]
+                    },
+                    durability: {
+                        title: "Wall Durability",
+                        description: "Increases the health and resilience of all wall segments.",
+                        upgrades: [
+                            { id: 1, name: "Reinforced Walls", cost: 90, effect: "+25% wall HP", unlocked: false, icon: "🛡️" },
+                            { id: 2, name: "Hardened Walls", cost: 180, effect: "+50% wall HP", unlocked: false, icon: "🔒" },
+                            { id: 3, name: "Armored Walls", cost: 270, effect: "+75% wall HP", unlocked: false, icon: "⚔️" },
+                            { id: 4, name: "Impenetrable Walls", cost: 360, effect: "+100% wall HP", unlocked: false, icon: "🛡️" }
+                        ]
+                    },
+                    offense: {
+                        title: "Wall Offense",
+                        description: "Adds damage and special effects to walls when attacked.",
+                        upgrades: [
+                            { id: 1, name: "Spiked Walls", cost: 100, effect: "Walls deal damage when attacked", unlocked: false, icon: "🔺" },
+                            { id: 2, name: "Electrified Walls", cost: 200, effect: "Electric damage to attackers", unlocked: false, icon: "⚡" },
+                            { id: 3, name: "Toxic Walls", cost: 300, effect: "Poison damage over time", unlocked: false, icon: "☠️" },
+                            { id: 4, name: "Explosive Walls", cost: 400, effect: "Area damage when destroyed", unlocked: false, icon: "💥" }
                         ]
                     }
                 }
@@ -1027,36 +1362,42 @@
             laboratory: {
                 title: "Laboratory",
                 subCategories: {
-                    research: {
-                        title: "Research",
-                        description: "Boosts research point generation and research completion speed.",
+                    efficiency: {
+                        title: "Research Efficiency",
+                        description: "Increases research point generation and resource efficiency.",
                         upgrades: [
                             { id: 1, name: "Efficient Research", cost: 100, effect: "+50% RP generation", unlocked: false, icon: "🔬" },
-                            { id: 2, name: "Rapid Research", cost: 200, effect: "Research 1 day faster", unlocked: false, icon: "⚡" },
-                            { id: 3, name: "Advanced Research", cost: 300, effect: "+100% RP generation", unlocked: false, icon: "🧬" }
+                            { id: 2, name: "Optimized Research", cost: 200, effect: "+75% RP generation", unlocked: false, icon: "⚗️" },
+                            { id: 3, name: "Advanced Research", cost: 300, effect: "+100% RP generation", unlocked: false, icon: "🧬" },
+                            { id: 4, name: "Quantum Research", cost: 400, effect: "+150% RP generation", unlocked: false, icon: "🔮" }
+                        ]
+                    },
+                    speed: {
+                        title: "Research Speed",
+                        description: "Reduces research completion time and accelerates discoveries.",
+                        upgrades: [
+                            { id: 1, name: "Rapid Research", cost: 120, effect: "Research 1 day faster", unlocked: false, icon: "⚡" },
+                            { id: 2, name: "Accelerated Research", cost: 240, effect: "Research 2 days faster", unlocked: false, icon: "🚀" },
+                            { id: 3, name: "Lightning Research", cost: 360, effect: "Research 3 days faster", unlocked: false, icon: "⚡" },
+                            { id: 4, name: "Instant Research", cost: 480, effect: "Research 4 days faster", unlocked: false, icon: "💫" }
                         ]
                     }
                 }
             },
-            expeditions: {
-                title: "Expeditions",
+            support: {
+                title: "Support",
                 subCategories: {
-                    missions: {
-                        title: "Missions",
+                    expeditions: {
+                        title: "Expeditions",
                         description: "Improves expedition success rates, rewards, and completion time.",
                         upgrades: [
                             { id: 1, name: "Safe Expeditions", cost: 120, effect: "+20% survival rate", unlocked: false, icon: "🛡️" },
                             { id: 2, name: "Rich Rewards", cost: 180, effect: "+50% expedition rewards", unlocked: false, icon: "💰" },
                             { id: 3, name: "Swift Expeditions", cost: 250, effect: "Expeditions 1 day faster", unlocked: false, icon: "💨" }
                         ]
-                    }
-                }
-            },
-            npc: {
-                title: "NPC Buffs",
-                subCategories: {
-                    effects: {
-                        title: "Buff Effects",
+                    },
+                    npc: {
+                        title: "NPC Buffs",
                         description: "Amplifies the beneficial effects provided by recruited NPCs.",
                         upgrades: [
                             { id: 1, name: "Enhanced NPCs", cost: 150, effect: "+50% NPC buff effects", unlocked: false, icon: "👤" },
@@ -1080,34 +1421,7 @@
                     }
                 }
             },
-            weapons: {
-                title: "Weapons",
-                subCategories: {
-                    combat: {
-                        title: "Combat",
-                        description: "Enhances combat effectiveness through improved fire rate, reload speed, and damage.",
-                        upgrades: [
-                            { id: 1, name: "Rapid Fire", cost: 100, effect: "Soldiers attack faster", unlocked: false, icon: "🔫" },
-                            { id: 2, name: "Quick Reload", cost: 175, effect: "-50% reload time", unlocked: false, icon: "🔄" },
-                            { id: 3, name: "High Damage", cost: 250, effect: "+50% soldier damage", unlocked: false, icon: "💥" }
-                        ]
-                    }
-                }
-            },
-            airstrike: {
-                title: "Airstrike",
-                subCategories: {
-                    bombing: {
-                        title: "Bombing",
-                        description: "Improves aerial support through cost reduction, new weapons, and increased effectiveness.",
-                        upgrades: [
-                            { id: 1, name: "Cheap Strikes", cost: 125, effect: "Airstrikes 50% cheaper", unlocked: false, icon: "💰" },
-                            { id: 2, name: "Triple Bomber", cost: 200, effect: "3-bomb launcher plane", unlocked: false, icon: "💣" },
-                            { id: 3, name: "Wide Bombardment", cost: 300, effect: "+50% airstrike radius", unlocked: false, icon: "💥" }
-                        ]
-                    }
-                }
-            },
+
             reroll: {
                 title: "Reroll Cards",
                 subCategories: {
@@ -1127,6 +1441,15 @@
 
         // Initialize the interface
         function init() {
+            // Initialize all categories as expanded
+            Object.keys(upgradeData).forEach(categoryKey => {
+                expandedCategories.add(categoryKey);
+                // Initialize all sub-categories as expanded
+                Object.keys(upgradeData[categoryKey].subCategories).forEach(subCategoryKey => {
+                    expandedSubCategories.add(`${categoryKey}_${subCategoryKey}`);
+                });
+            });
+            
             updateRPDisplay();
             renderUpgradeTrees();
             initializeView();
@@ -1424,6 +1747,10 @@
             const centerY = 1000;
             const mainRadius = 300; // Distance from center to main categories
             
+            // Calculate angular space per category for collision avoidance
+            const totalCategories = categoryKeys.length;
+            const angularSpacePerCategory = (2 * Math.PI) / totalCategories;
+            
                          // Render main categories in a circle
              categoryKeys.forEach((categoryKey, categoryIndex) => {
                  const categoryData = upgradeData[categoryKey];
@@ -1436,11 +1763,22 @@
                 
                 // Create connection from center to main category
                 const centerConnection = document.createElement('div');
-                centerConnection.className = 'radial-connection';
+                centerConnection.className = 'radial-connection radial-connection-animate';
+                centerConnection.dataset.category = categoryKey;
                 centerConnection.style.left = centerX + 'px';
                 centerConnection.style.top = centerY + 'px';
                 centerConnection.style.width = mainRadius + 'px';
+                centerConnection.style.setProperty('--rotation', `${angle}rad`);
                 centerConnection.style.transform = `rotate(${angle}rad)`;
+                
+                // Clean animation classes
+                centerConnection.classList.remove('animate-in', 'animate-out', 'show', 'completely-hidden', 'prepare-opening');
+                
+                // If this category is preparing to open, make connections invisible initially
+                if (window.preparingToOpen === categoryKey) {
+                    centerConnection.classList.add('prepare-opening');
+                }
+                
                 treesContentWrapper.appendChild(centerConnection);
                 
                 // Create main category node
@@ -1457,116 +1795,417 @@
                     <div class="main-category-icon">${icon}</div>
                     <div class="main-category-title">${categoryData.title.toUpperCase()}</div>
                 `;
+                
+                // Add toggle functionality
+                const isExpanded = expandedCategories.has(categoryKey);
+                mainCategoryNode.classList.add(isExpanded ? 'expanded' : 'collapsed');
+                mainCategoryNode.addEventListener('click', () => toggleCategory(categoryKey));
+                
                 treesContentWrapper.appendChild(mainCategoryNode);
                 
-                                 // Render sub-categories around main category
-                 const subCategoryKeys = Object.keys(categoryData.subCategories);
-                 const subRadius = 150; // Distance from main category to sub-categories
-                 
-                 subCategoryKeys.forEach((subCategoryKey, subIndex) => {
-                     const subCategoryData = categoryData.subCategories[subCategoryKey];
-                     // For single sub-category, place it on the same angle as main category
-                     // For multiple sub-categories, distribute them symmetrically around the main category
-                     let subAngle;
-                     if (subCategoryKeys.length === 1) {
-                         subAngle = angle;
-                     } else {
-                         // Distribute sub-categories in an arc around the main category
-                         const arcSpan = Math.PI / 3; // 60 degree arc
-                         const angleStep = arcSpan / (subCategoryKeys.length - 1);
-                         subAngle = angle + (subIndex * angleStep) - (arcSpan / 2);
-                     }
+                // Only render child nodes if category is expanded
+                if (!isExpanded) {
+                    return; // Skip rendering child nodes for collapsed categories
+                }
+                
+                // Check if this category has multiple sub-categories
+                const subCategoryKeys = Object.keys(categoryData.subCategories);
+                const subCategoryDistance = 120; // Distance from main category to sub-category nodes
+                const upgradeRadius = 100; // Distance between upgrade levels (increased for more space)
+                
+                // Only show sub-category nodes for categories that truly have distinct sub-categories
+                const showSubCategoryNodes = (categoryKey === 'combat' || categoryKey === 'support') && subCategoryKeys.length > 1;
+                
+                if (showSubCategoryNodes) {
+                    // Multiple sub-categories: render each as a separate branch
+                    // Calculate maximum safe arc span to prevent collisions
+                    const maxUpgrades = Math.max(...subCategoryKeys.map(key => categoryData.subCategories[key].upgrades.length));
+                    const maxExtension = subCategoryDistance + (upgradeRadius * maxUpgrades); // How far the longest branch extends
                     
-                    // Calculate sub-category position
-                    const subCategoryX = mainCategoryX + Math.cos(subAngle) * subRadius;
-                    const subCategoryY = mainCategoryY + Math.sin(subAngle) * subRadius;
+                    // Calculate safe arc span based on angular space and extension distance
+                    // Use trigonometry: at distance maxExtension, the arc length should not exceed neighboring category space
+                    // Increased safety margin and base spacing to prevent collisions and allow for future expansion
+                    const safeArcLength = angularSpacePerCategory * maxExtension * 1.4; // 140% of available space for better spacing
+                    const safeArcSpan = Math.min(safeArcLength / maxExtension, angularSpacePerCategory * 1.2); // Increased from 0.8 to 1.2
                     
-                    // Create connection from main to sub-category
-                    const subConnection = document.createElement('div');
-                    subConnection.className = 'radial-connection main-to-sub';
-                    subConnection.style.left = mainCategoryX + 'px';
-                    subConnection.style.top = mainCategoryY + 'px';
-                    subConnection.style.width = subRadius + 'px';
-                    subConnection.style.transform = `rotate(${subAngle}rad)`;
-                    treesContentWrapper.appendChild(subConnection);
-                    
-                    // Create sub-category node
-                    const subCategoryNode = document.createElement('div');
-                    subCategoryNode.className = 'sub-category-node';
-                    subCategoryNode.style.left = (subCategoryX - 30) + 'px';
-                    subCategoryNode.style.top = (subCategoryY - 30) + 'px';
-                    subCategoryNode.innerHTML = `
-                        <div>${subCategoryData.title.charAt(0)}</div>
-                    `;
-                    treesContentWrapper.appendChild(subCategoryNode);
-                    
-                    // Render upgrade nodes extending from sub-category
-                    const upgradeRadius = 80; // Distance between upgrade levels
-                    
-                    subCategoryData.upgrades.forEach((upgrade, upgradeIndex) => {
-                        const upgradeDistance = upgradeRadius * (upgradeIndex + 1);
-                        const upgradeX = subCategoryX + Math.cos(subAngle) * upgradeDistance;
-                        const upgradeY = subCategoryY + Math.sin(subAngle) * upgradeDistance;
+                    subCategoryKeys.forEach((subCategoryKey, subIndex) => {
+                        const subCategoryData = categoryData.subCategories[subCategoryKey];
                         
-                        // Create connection line for upgrade
-                        if (upgradeIndex === 0) {
-                            // Connection from sub-category to first upgrade
-                            const upgradeConnection = document.createElement('div');
-                            upgradeConnection.className = 'radial-connection sub-to-upgrade';
-                            upgradeConnection.style.left = subCategoryX + 'px';
-                            upgradeConnection.style.top = subCategoryY + 'px';
-                            upgradeConnection.style.width = (upgradeRadius * subCategoryData.upgrades.length) + 'px';
-                            upgradeConnection.style.transform = `rotate(${subAngle}rad)`;
-                            treesContentWrapper.appendChild(upgradeConnection);
-                        }
-                        
-                        // Create upgrade node
-                        const upgradeNode = document.createElement('div');
-                        upgradeNode.className = 'upgrade-node';
-                        upgradeNode.dataset.upgradeId = upgrade.id;
-                        upgradeNode.dataset.category = categoryKey;
-                        upgradeNode.dataset.subCategory = subCategoryKey;
-                        upgradeNode.style.left = (upgradeX - 25) + 'px';
-                        upgradeNode.style.top = (upgradeY - 25) + 'px';
-                        
-                        // Determine node state
-                        if (upgrade.unlocked) {
-                            upgradeNode.classList.add('unlocked');
-                        } else if (upgradeIndex === 0 || subCategoryData.upgrades[upgradeIndex - 1].unlocked) {
-                            upgradeNode.classList.add('available');
+                        // Calculate branch angle using the mathematically safe arc span
+                        let branchAngle;
+                        if (subCategoryKeys.length === 2) {
+                            // For 2 sub-categories, place them at calculated safe angles with increased spacing
+                            const angleOffset = safeArcSpan / 3; // Increased from /4 to /3 for more spacing
+                            branchAngle = angle + (subIndex === 0 ? -angleOffset : angleOffset);
                         } else {
-                            upgradeNode.classList.add('locked');
+                            // For 3+ sub-categories, distribute them within the safe arc span
+                            const angleStep = safeArcSpan / (subCategoryKeys.length - 1);
+                            branchAngle = angle + (subIndex * angleStep) - (safeArcSpan / 2);
                         }
                         
-                        // Add selection state
-                        if (selectedUpgrade && selectedUpgrade.id === upgrade.id && 
-                            selectedUpgrade.category === categoryKey && 
-                            selectedUpgrade.subCategory === subCategoryKey) {
-                            upgradeNode.classList.add('selected');
+                        // Calculate sub-category node position
+                        const subCategoryX = mainCategoryX + Math.cos(branchAngle) * subCategoryDistance;
+                        const subCategoryY = mainCategoryY + Math.sin(branchAngle) * subCategoryDistance;
+                        
+                        // Create sub-category node
+                        const subCategoryNode = document.createElement('div');
+                        subCategoryNode.className = 'sub-category-node skill-node-animate';
+                        subCategoryNode.dataset.category = categoryKey;
+                        subCategoryNode.dataset.subCategory = subCategoryKey;
+                        subCategoryNode.style.left = (subCategoryX - 30) + 'px';
+                        subCategoryNode.style.top = (subCategoryY - 30) + 'px';
+                        
+                        // Clean animation classes
+                        subCategoryNode.classList.remove('animate-in', 'animate-out', 'show', 'completely-hidden', 'prepare-opening');
+                        
+                        // If this category is preparing to open, make nodes invisible initially
+                        if (window.preparingToOpen === categoryKey) {
+                            subCategoryNode.classList.add('prepare-opening');
                         }
                         
-                        // Node content
-                        upgradeNode.innerHTML = `
-                            <div class="node-icon">${upgrade.icon}</div>
-                            <div class="node-level">Lv.${upgrade.id}</div>
-                            ${!upgrade.unlocked ? `<div class="node-cost">${upgrade.cost} RP</div>` : ''}
-                            ${upgradeNode.classList.contains('locked') ? '<div class="lock-icon">🔒</div>' : ''}
+                        // If this sub-category is preparing to open, make nodes invisible initially
+                        const subCategoryId = `${categoryKey}_${subCategoryKey}`;
+                        if (window.preparingToOpenSub === subCategoryId) {
+                            subCategoryNode.classList.add('prepare-opening');
+                        }
+                        
+                        // Add visual state based on expansion
+                        const isSubCategoryExpanded = expandedSubCategories.has(subCategoryId);
+                        subCategoryNode.classList.add(isSubCategoryExpanded ? 'expanded' : 'collapsed');
+                        
+                        // Sub-category node content
+                        let subCategoryIcon = '';
+                        if (subCategoryKey === 'training') subCategoryIcon = '🎖️';
+                        else if (subCategoryKey === 'weapons') subCategoryIcon = '🔫';
+                        else if (subCategoryKey === 'airstrike') subCategoryIcon = '✈️';
+                        else if (subCategoryKey === 'expeditions') subCategoryIcon = '🗺️';
+                        else if (subCategoryKey === 'npc') subCategoryIcon = '👤';
+                        else subCategoryIcon = '⚡';
+                        
+                        subCategoryNode.innerHTML = `
+                            <div class="node-icon">${subCategoryIcon}</div>
+                            <div class="node-level">${subCategoryData.title}</div>
                         `;
                         
-                        // Add click event
-                        if (!upgrade.unlocked && (upgradeIndex === 0 || subCategoryData.upgrades[upgradeIndex - 1].unlocked)) {
-                            upgradeNode.addEventListener('click', () => selectUpgrade(upgrade, categoryKey, subCategoryKey));
+                        // Add click event to toggle sub-category
+                        subCategoryNode.addEventListener('click', () => toggleSubCategory(categoryKey, subCategoryKey));
+                        
+                        treesContentWrapper.appendChild(subCategoryNode);
+                        
+                        // Create connection line from main category to sub-category
+                        const mainToSubConnection = document.createElement('div');
+                        mainToSubConnection.className = 'radial-connection radial-connection-animate';
+                        mainToSubConnection.dataset.category = categoryKey;
+                        mainToSubConnection.style.left = mainCategoryX + 'px';
+                        mainToSubConnection.style.top = mainCategoryY + 'px';
+                        mainToSubConnection.style.width = subCategoryDistance + 'px';
+                        mainToSubConnection.style.setProperty('--rotation', `${branchAngle}rad`);
+                        mainToSubConnection.style.transform = `rotate(${branchAngle}rad)`;
+                        
+                        // Clean animation classes
+                        mainToSubConnection.classList.remove('animate-in', 'animate-out', 'show', 'completely-hidden', 'prepare-opening');
+                        
+                        // If this category is preparing to open, make connections invisible initially
+                        if (window.preparingToOpen === categoryKey) {
+                            mainToSubConnection.classList.add('prepare-opening');
                         }
                         
-                        // Add hover tooltip
-                        upgradeNode.addEventListener('mouseenter', (e) => showTooltip(e, upgrade));
-                        upgradeNode.addEventListener('mouseleave', hideTooltip);
+                        treesContentWrapper.appendChild(mainToSubConnection);
                         
-                        treesContentWrapper.appendChild(upgradeNode);
+                        // Only render upgrades if sub-category is expanded
+                        if (isSubCategoryExpanded) {
+                            // Render upgrades for this sub-category branch
+                            subCategoryData.upgrades.forEach((upgrade, upgradeIndex) => {
+                            const upgradeDistance = upgradeRadius * (upgradeIndex + 1);
+                            const upgradeX = subCategoryX + Math.cos(branchAngle) * upgradeDistance;
+                            const upgradeY = subCategoryY + Math.sin(branchAngle) * upgradeDistance;
+                            
+                            // Create connection line from sub-category to upgrades
+                            if (upgradeIndex === 0) {
+                                const subToUpgradeConnection = document.createElement('div');
+                                subToUpgradeConnection.className = 'radial-connection radial-connection-animate';
+                                subToUpgradeConnection.dataset.category = categoryKey;
+                                subToUpgradeConnection.dataset.subCategory = subCategoryKey;
+                                subToUpgradeConnection.style.left = subCategoryX + 'px';
+                                subToUpgradeConnection.style.top = subCategoryY + 'px';
+                                subToUpgradeConnection.style.width = (upgradeRadius * subCategoryData.upgrades.length) + 'px';
+                                subToUpgradeConnection.style.setProperty('--rotation', `${branchAngle}rad`);
+                                subToUpgradeConnection.style.transform = `rotate(${branchAngle}rad)`;
+                                
+                                // Clean animation classes
+                                subToUpgradeConnection.classList.remove('animate-in', 'animate-out', 'show', 'completely-hidden', 'prepare-opening');
+                                
+                                // If this category is preparing to open, make connections invisible initially
+                                if (window.preparingToOpen === categoryKey) {
+                                    subToUpgradeConnection.classList.add('prepare-opening');
+                                }
+                                
+                                // If this sub-category is preparing to open, make connections invisible initially
+                                const subCategoryId = `${categoryKey}_${subCategoryKey}`;
+                                if (window.preparingToOpenSub === subCategoryId) {
+                                    subToUpgradeConnection.classList.add('prepare-opening');
+                                }
+                                
+                                treesContentWrapper.appendChild(subToUpgradeConnection);
+                            }
+                            
+                            // Create upgrade node
+                            const upgradeNode = document.createElement('div');
+                            upgradeNode.className = 'upgrade-node skill-node-animate';
+                            upgradeNode.dataset.upgradeId = upgrade.id;
+                            upgradeNode.dataset.category = categoryKey;
+                            upgradeNode.dataset.subCategory = subCategoryKey;
+                            upgradeNode.style.left = (upgradeX - 25) + 'px';
+                            upgradeNode.style.top = (upgradeY - 25) + 'px';
+                            
+                            // Clean animation classes
+                            upgradeNode.classList.remove('animate-in', 'animate-out', 'show', 'completely-hidden', 'prepare-opening');
+                            
+                            // If this category is preparing to open, make nodes invisible initially
+                            if (window.preparingToOpen === categoryKey) {
+                                upgradeNode.classList.add('prepare-opening');
+                            }
+                            
+                            // If this sub-category is preparing to open, make nodes invisible initially
+                            const subCategoryId = `${categoryKey}_${subCategoryKey}`;
+                            if (window.preparingToOpenSub === subCategoryId) {
+                                upgradeNode.classList.add('prepare-opening');
+                            }
+                            
+                            // Determine node state based on prerequisite progression within sub-category
+                            if (upgrade.unlocked) {
+                                upgradeNode.classList.add('unlocked');
+                            } else if (upgradeIndex === 0 || subCategoryData.upgrades[upgradeIndex - 1].unlocked) {
+                                upgradeNode.classList.add('available');
+                            } else {
+                                upgradeNode.classList.add('locked');
+                            }
+                            
+                            // Add selection state
+                            if (selectedUpgrade && selectedUpgrade.id === upgrade.id && 
+                                selectedUpgrade.category === categoryKey && 
+                                selectedUpgrade.subCategory === subCategoryKey) {
+                                upgradeNode.classList.add('selected');
+                            }
+                            
+                            // Node content
+                            upgradeNode.innerHTML = `
+                                <div class="node-icon">${upgrade.icon}</div>
+                                <div class="node-level">Lv.${upgrade.id}</div>
+                                ${!upgrade.unlocked ? `<div class="node-cost">${upgrade.cost} RP</div>` : ''}
+                                ${upgradeNode.classList.contains('locked') ? '<div class="lock-icon">🔒</div>' : ''}
+                            `;
+                            
+                            // Add click event
+                            if (!upgrade.unlocked && (upgradeIndex === 0 || subCategoryData.upgrades[upgradeIndex - 1].unlocked)) {
+                                upgradeNode.addEventListener('click', () => selectUpgrade(upgrade, categoryKey, subCategoryKey));
+                            }
+                            
+                            // Add hover tooltip
+                            upgradeNode.addEventListener('mouseenter', (e) => showTooltip(e, upgrade));
+                            upgradeNode.addEventListener('mouseleave', hideTooltip);
+                            
+                            treesContentWrapper.appendChild(upgradeNode);
+                        });
+                        }
                     });
-                });
+                } else {
+                    // Handle categories without sub-category nodes
+                    if (subCategoryKeys.length === 1) {
+                        // Single sub-category: render as a single line directly from main category
+                        const subCategoryKey = subCategoryKeys[0];
+                        const subCategoryData = categoryData.subCategories[subCategoryKey];
+                        
+                        subCategoryData.upgrades.forEach((upgrade, upgradeIndex) => {
+                            const upgradeDistance = upgradeRadius * (upgradeIndex + 1);
+                            const upgradeX = mainCategoryX + Math.cos(angle) * upgradeDistance;
+                            const upgradeY = mainCategoryY + Math.sin(angle) * upgradeDistance;
+                            
+                            // Create connection line from main category to upgrades
+                            if (upgradeIndex === 0) {
+                                const upgradeConnection = document.createElement('div');
+                                upgradeConnection.className = 'radial-connection radial-connection-animate';
+                                upgradeConnection.dataset.category = categoryKey;
+                                upgradeConnection.style.left = mainCategoryX + 'px';
+                                upgradeConnection.style.top = mainCategoryY + 'px';
+                                upgradeConnection.style.width = (upgradeRadius * subCategoryData.upgrades.length) + 'px';
+                                upgradeConnection.style.setProperty('--rotation', `${angle}rad`);
+                                upgradeConnection.style.transform = `rotate(${angle}rad)`;
+                                
+                                // Clean animation classes
+                                upgradeConnection.classList.remove('animate-in', 'animate-out', 'show', 'completely-hidden', 'prepare-opening');
+                                
+                                // If this category is preparing to open, make connections invisible initially
+                                if (window.preparingToOpen === categoryKey) {
+                                    upgradeConnection.classList.add('prepare-opening');
+                                }
+                                
+                                treesContentWrapper.appendChild(upgradeConnection);
+                            }
+                            
+                            // Create upgrade node
+                            const upgradeNode = document.createElement('div');
+                            upgradeNode.className = 'upgrade-node skill-node-animate';
+                            upgradeNode.dataset.upgradeId = upgrade.id;
+                            upgradeNode.dataset.category = categoryKey;
+                            upgradeNode.dataset.subCategory = subCategoryKey;
+                            upgradeNode.style.left = (upgradeX - 25) + 'px';
+                            upgradeNode.style.top = (upgradeY - 25) + 'px';
+                            
+                            // Clean animation classes
+                            upgradeNode.classList.remove('animate-in', 'animate-out', 'show', 'completely-hidden', 'prepare-opening');
+                            
+                            // If this category is preparing to open, make nodes invisible initially
+                            if (window.preparingToOpen === categoryKey) {
+                                upgradeNode.classList.add('prepare-opening');
+                            }
+                            
+                            // Determine node state based on prerequisite progression
+                            if (upgrade.unlocked) {
+                                upgradeNode.classList.add('unlocked');
+                            } else if (upgradeIndex === 0 || subCategoryData.upgrades[upgradeIndex - 1].unlocked) {
+                                upgradeNode.classList.add('available');
+                            } else {
+                                upgradeNode.classList.add('locked');
+                            }
+                            
+                            // Add selection state
+                            if (selectedUpgrade && selectedUpgrade.id === upgrade.id && 
+                                selectedUpgrade.category === categoryKey && 
+                                selectedUpgrade.subCategory === subCategoryKey) {
+                                upgradeNode.classList.add('selected');
+                            }
+                            
+                            // Node content
+                            upgradeNode.innerHTML = `
+                                <div class="node-icon">${upgrade.icon}</div>
+                                <div class="node-level">Lv.${upgrade.id}</div>
+                                ${!upgrade.unlocked ? `<div class="node-cost">${upgrade.cost} RP</div>` : ''}
+                                ${upgradeNode.classList.contains('locked') ? '<div class="lock-icon">🔒</div>' : ''}
+                            `;
+                            
+                            // Add click event
+                            if (!upgrade.unlocked && (upgradeIndex === 0 || subCategoryData.upgrades[upgradeIndex - 1].unlocked)) {
+                                upgradeNode.addEventListener('click', () => selectUpgrade(upgrade, categoryKey, subCategoryKey));
+                            }
+                            
+                            // Add hover tooltip
+                            upgradeNode.addEventListener('mouseenter', (e) => showTooltip(e, upgrade));
+                            upgradeNode.addEventListener('mouseleave', hideTooltip);
+                            
+                            treesContentWrapper.appendChild(upgradeNode);
+                        });
+                    } else {
+                        // Multiple sub-categories but no sub-category nodes: render each as a separate branch
+                        // Calculate maximum safe arc span to prevent collisions
+                        const maxUpgrades = Math.max(...subCategoryKeys.map(key => categoryData.subCategories[key].upgrades.length));
+                        const maxExtension = upgradeRadius * maxUpgrades; // How far the longest branch extends
+                        
+                        // Calculate safe arc span based on angular space and extension distance
+                        // Increased safety margin and base spacing to prevent collisions and allow for future expansion
+                        const safeArcLength = angularSpacePerCategory * maxExtension * 1.4; // 140% of available space for better spacing
+                        const safeArcSpan = Math.min(safeArcLength / maxExtension, angularSpacePerCategory * 1.2); // Increased from 0.8 to 1.2
+                        
+                        subCategoryKeys.forEach((subCategoryKey, subIndex) => {
+                            const subCategoryData = categoryData.subCategories[subCategoryKey];
+                            
+                            // Calculate branch angle using the mathematically safe arc span
+                            let branchAngle;
+                            if (subCategoryKeys.length === 2) {
+                                // For 2 sub-categories, place them at calculated safe angles with increased spacing
+                                const angleOffset = safeArcSpan / 3; // Increased from /4 to /3 for more spacing
+                                branchAngle = angle + (subIndex === 0 ? -angleOffset : angleOffset);
+                            } else {
+                                // For 3+ sub-categories, distribute them within the safe arc span
+                                const angleStep = safeArcSpan / (subCategoryKeys.length - 1);
+                                branchAngle = angle + (subIndex * angleStep) - (safeArcSpan / 2);
+                            }
+                            
+                            // Render upgrades for this sub-category branch directly from main category
+                            subCategoryData.upgrades.forEach((upgrade, upgradeIndex) => {
+                                const upgradeDistance = upgradeRadius * (upgradeIndex + 1);
+                                const upgradeX = mainCategoryX + Math.cos(branchAngle) * upgradeDistance;
+                                const upgradeY = mainCategoryY + Math.sin(branchAngle) * upgradeDistance;
+                                
+                                // Create connection line from main category to upgrades
+                                if (upgradeIndex === 0) {
+                                    const upgradeConnection = document.createElement('div');
+                                    upgradeConnection.className = 'radial-connection radial-connection-animate';
+                                    upgradeConnection.dataset.category = categoryKey;
+                                    upgradeConnection.style.left = mainCategoryX + 'px';
+                                    upgradeConnection.style.top = mainCategoryY + 'px';
+                                    upgradeConnection.style.width = (upgradeRadius * subCategoryData.upgrades.length) + 'px';
+                                    upgradeConnection.style.setProperty('--rotation', `${branchAngle}rad`);
+                                    upgradeConnection.style.transform = `rotate(${branchAngle}rad)`;
+                                    
+                                    // Clean animation classes
+                                    upgradeConnection.classList.remove('animate-in', 'animate-out', 'show', 'completely-hidden', 'prepare-opening');
+                                    
+                                    // If this category is preparing to open, make connections invisible initially
+                                    if (window.preparingToOpen === categoryKey) {
+                                        upgradeConnection.classList.add('prepare-opening');
+                                    }
+                                    
+                                    treesContentWrapper.appendChild(upgradeConnection);
+                                }
+                                
+                                // Create upgrade node
+                                const upgradeNode = document.createElement('div');
+                                upgradeNode.className = 'upgrade-node skill-node-animate';
+                                upgradeNode.dataset.upgradeId = upgrade.id;
+                                upgradeNode.dataset.category = categoryKey;
+                                upgradeNode.dataset.subCategory = subCategoryKey;
+                                upgradeNode.style.left = (upgradeX - 25) + 'px';
+                                upgradeNode.style.top = (upgradeY - 25) + 'px';
+                                
+                                // Clean animation classes
+                                upgradeNode.classList.remove('animate-in', 'animate-out', 'show', 'completely-hidden', 'prepare-opening');
+                                
+                                // If this category is preparing to open, make nodes invisible initially
+                                if (window.preparingToOpen === categoryKey) {
+                                    upgradeNode.classList.add('prepare-opening');
+                                }
+                                
+                                // Determine node state based on prerequisite progression
+                                if (upgrade.unlocked) {
+                                    upgradeNode.classList.add('unlocked');
+                                } else if (upgradeIndex === 0 || subCategoryData.upgrades[upgradeIndex - 1].unlocked) {
+                                    upgradeNode.classList.add('available');
+                                } else {
+                                    upgradeNode.classList.add('locked');
+                                }
+                                
+                                // Add selection state
+                                if (selectedUpgrade && selectedUpgrade.id === upgrade.id && 
+                                    selectedUpgrade.category === categoryKey && 
+                                    selectedUpgrade.subCategory === subCategoryKey) {
+                                    upgradeNode.classList.add('selected');
+                                }
+                                
+                                // Node content
+                                upgradeNode.innerHTML = `
+                                    <div class="node-icon">${upgrade.icon}</div>
+                                    <div class="node-level">Lv.${upgrade.id}</div>
+                                    ${!upgrade.unlocked ? `<div class="node-cost">${upgrade.cost} RP</div>` : ''}
+                                    ${upgradeNode.classList.contains('locked') ? '<div class="lock-icon">🔒</div>' : ''}
+                                `;
+                                
+                                // Add click event
+                                if (!upgrade.unlocked && (upgradeIndex === 0 || subCategoryData.upgrades[upgradeIndex - 1].unlocked)) {
+                                    upgradeNode.addEventListener('click', () => selectUpgrade(upgrade, categoryKey, subCategoryKey));
+                                }
+                                
+                                // Add hover tooltip
+                                upgradeNode.addEventListener('mouseenter', (e) => showTooltip(e, upgrade));
+                                upgradeNode.addEventListener('mouseleave', hideTooltip);
+                                
+                                treesContentWrapper.appendChild(upgradeNode);
+                            });
+                        });
+                    }
+                }
             });
-        }
+         }
 
         // Render horizontal skill tree
         function renderHorizontalTrees() {
@@ -1587,11 +2226,19 @@
                 const mainCategoryHeader = document.createElement('div');
                 mainCategoryHeader.className = 'main-category-header';
                 mainCategoryHeader.textContent = categoryData.title;
+                
+                // Add toggle functionality
+                const isExpanded = expandedCategories.has(categoryKey);
+                mainCategoryHeader.classList.add(isExpanded ? 'expanded' : 'collapsed');
+                mainCategoryHeader.addEventListener('click', () => toggleCategory(categoryKey));
+                
                 mainCategoryContainer.appendChild(mainCategoryHeader);
                 
-                // Sub-categories container
-                const subCategoriesContainer = document.createElement('div');
-                subCategoriesContainer.className = 'sub-categories-container';
+                // Only render sub-categories if category is expanded
+                if (isExpanded) {
+                    // Sub-categories container
+                    const subCategoriesContainer = document.createElement('div');
+                    subCategoriesContainer.className = 'sub-categories-container';
                 
                 // Render all sub-categories
                 Object.keys(categoryData.subCategories).forEach(subCategoryKey => {
@@ -1603,21 +2250,89 @@
                     subTreeContainer.dataset.category = categoryKey;
                     subTreeContainer.dataset.subCategory = subCategoryKey;
                     
-                    // Sub-tree header
-                    const subTreeHeader = document.createElement('div');
-                    subTreeHeader.className = 'sub-tree-header';
-                    subTreeHeader.textContent = subCategoryData.title;
-                    subTreeContainer.appendChild(subTreeHeader);
+                    // Only show sub-category nodes for categories that truly have distinct sub-categories
+                    const showSubCategoryNodes = (categoryKey === 'combat' || categoryKey === 'support');
                     
-                    // Upgrade path
-                    const upgradePath = document.createElement('div');
-                    upgradePath.className = 'upgrade-path';
+                    if (showSubCategoryNodes) {
+                        // Sub-category node (styled like other nodes)
+                        const subCategoryNode = document.createElement('div');
+                        subCategoryNode.className = 'sub-category-node-horizontal skill-node-animate';
+                        subCategoryNode.dataset.category = categoryKey;
+                        subCategoryNode.dataset.subCategory = subCategoryKey;
+                        
+                        // Clean animation classes
+                        subCategoryNode.classList.remove('animate-in', 'animate-out', 'show', 'completely-hidden', 'prepare-opening');
+                        
+                        // If this category is preparing to open, make nodes invisible initially
+                        if (window.preparingToOpen === categoryKey) {
+                            subCategoryNode.classList.add('prepare-opening');
+                        }
+                        
+                        // If this sub-category is preparing to open, make nodes invisible initially
+                        const subCategoryId = `${categoryKey}_${subCategoryKey}`;
+                        if (window.preparingToOpenSub === subCategoryId) {
+                            subCategoryNode.classList.add('prepare-opening');
+                        }
+                        
+                        // Add visual state based on expansion
+                        const isSubCategoryExpanded = expandedSubCategories.has(subCategoryId);
+                        subCategoryNode.classList.add(isSubCategoryExpanded ? 'expanded' : 'collapsed');
+                        
+                        // Sub-category node content
+                        let subCategoryIcon = '';
+                        if (subCategoryKey === 'training') subCategoryIcon = '🎖️';
+                        else if (subCategoryKey === 'weapons') subCategoryIcon = '🔫';
+                        else if (subCategoryKey === 'airstrike') subCategoryIcon = '✈️';
+                        else if (subCategoryKey === 'expeditions') subCategoryIcon = '🗺️';
+                        else if (subCategoryKey === 'npc') subCategoryIcon = '👤';
+                        else subCategoryIcon = '⚡';
+                        
+                        subCategoryNode.innerHTML = `
+                            <div class="node-icon">${subCategoryIcon}</div>
+                            <div class="node-level">${subCategoryData.title}</div>
+                        `;
+                        
+                        // Add click event to toggle sub-category
+                        subCategoryNode.addEventListener('click', () => toggleSubCategory(categoryKey, subCategoryKey));
+                        
+                        subTreeContainer.appendChild(subCategoryNode);
+                    } else {
+                        // Create a simple header for categories without sub-category nodes
+                        const subTreeHeader = document.createElement('div');
+                        subTreeHeader.className = 'sub-tree-header';
+                        subTreeHeader.textContent = subCategoryData.title;
+                        subTreeContainer.appendChild(subTreeHeader);
+                    }
                     
-                    subCategoryData.upgrades.forEach((upgrade, index) => {
+                    // Only render upgrades if sub-category is expanded (for categories with sub-category nodes)
+                    const shouldRenderUpgrades = !showSubCategoryNodes || (showSubCategoryNodes && isSubCategoryExpanded);
+                    
+                    if (shouldRenderUpgrades) {
+                        // Upgrade path
+                        const upgradePath = document.createElement('div');
+                        upgradePath.className = 'upgrade-path';
+                        
+                        subCategoryData.upgrades.forEach((upgrade, index) => {
                         // Create connection line (except for first upgrade)
                         if (index > 0) {
                             const connectionLine = document.createElement('div');
-                            connectionLine.className = 'connection-line';
+                            connectionLine.className = 'connection-line connection-animate';
+                            connectionLine.dataset.category = categoryKey;
+                            connectionLine.dataset.subCategory = subCategoryKey;
+                            
+                            // Clean animation classes
+                            connectionLine.classList.remove('animate-in', 'animate-out', 'show', 'completely-hidden', 'prepare-opening');
+                            
+                            // If this category is preparing to open, make connections invisible initially
+                            if (window.preparingToOpen === categoryKey) {
+                                connectionLine.classList.add('prepare-opening');
+                            }
+                            
+                            // If this sub-category is preparing to open, make connections invisible initially
+                            const subCategoryId = `${categoryKey}_${subCategoryKey}`;
+                            if (window.preparingToOpenSub === subCategoryId) {
+                                connectionLine.classList.add('prepare-opening');
+                            }
                             
                             // Calculate positioning based on screen size
                             const isMobile = window.innerWidth <= 768;
@@ -1643,10 +2358,24 @@
                         
                         // Create upgrade node
                         const upgradeNode = document.createElement('div');
-                        upgradeNode.className = 'upgrade-node';
+                        upgradeNode.className = 'upgrade-node skill-node-animate';
                         upgradeNode.dataset.upgradeId = upgrade.id;
                         upgradeNode.dataset.category = categoryKey;
                         upgradeNode.dataset.subCategory = subCategoryKey;
+                        
+                        // Clean animation classes
+                        upgradeNode.classList.remove('animate-in', 'animate-out', 'show', 'completely-hidden', 'prepare-opening');
+                        
+                        // If this category is preparing to open, make nodes invisible initially
+                        if (window.preparingToOpen === categoryKey) {
+                            upgradeNode.classList.add('prepare-opening');
+                        }
+                        
+                        // If this sub-category is preparing to open, make nodes invisible initially
+                        const subCategoryId = `${categoryKey}_${subCategoryKey}`;
+                        if (window.preparingToOpenSub === subCategoryId) {
+                            upgradeNode.classList.add('prepare-opening');
+                        }
                         
                         // Determine node state
                         if (upgrade.unlocked) {
@@ -1684,11 +2413,15 @@
                         upgradePath.appendChild(upgradeNode);
                     });
                     
-                    subTreeContainer.appendChild(upgradePath);
+                        subTreeContainer.appendChild(upgradePath);
+                    }
+                    
                     subCategoriesContainer.appendChild(subTreeContainer);
                 });
                 
-                mainCategoryContainer.appendChild(subCategoriesContainer);
+                    mainCategoryContainer.appendChild(subCategoriesContainer);
+                }
+                
                 treesContentWrapper.appendChild(mainCategoryContainer);
             });
         }
@@ -1697,18 +2430,169 @@
         function getIconForCategory(categoryKey) {
             const icons = {
                 buildings: '🏗️',
-                soldiers: '👥',
+                combat: '⚔️',
                 walls: '🧱',
                 farm: '🌾',
                 laboratory: '🧪',
-                expeditions: '🗺️',
-                npc: '👤',
+                support: '🤝',
                 revive: '❤️',
-                weapons: '🔫',
-                airstrike: '✈️',
                 reroll: '🔄'
             };
             return icons[categoryKey] || '⭐';
+        }
+        
+        // Toggle category expansion with animation
+        function toggleCategory(categoryKey) {
+            if (expandedCategories.has(categoryKey)) {
+                // Closing animation
+                animateNodesOut(categoryKey, () => {
+                    expandedCategories.delete(categoryKey);
+                    renderUpgradeTrees();
+                });
+            } else {
+                // Opening animation
+                expandedCategories.add(categoryKey);
+                // Mark category as preparing to open
+                window.preparingToOpen = categoryKey;
+                renderUpgradeTrees();
+                // Animate in after a brief delay to ensure DOM is ready
+                setTimeout(() => {
+                    window.preparingToOpen = null;
+                    animateNodesIn(categoryKey);
+                }, 50);
+            }
+        }
+        
+        // Toggle sub-category expansion with animation
+        function toggleSubCategory(categoryKey, subCategoryKey) {
+            const subCategoryId = `${categoryKey}_${subCategoryKey}`;
+            
+            if (expandedSubCategories.has(subCategoryId)) {
+                // Closing animation
+                animateSubCategoryOut(categoryKey, subCategoryKey, () => {
+                    expandedSubCategories.delete(subCategoryId);
+                    renderUpgradeTrees();
+                });
+            } else {
+                // Opening animation
+                expandedSubCategories.add(subCategoryId);
+                // Mark sub-category as preparing to open
+                window.preparingToOpenSub = subCategoryId;
+                renderUpgradeTrees();
+                // Animate in after a brief delay to ensure DOM is ready
+                setTimeout(() => {
+                    window.preparingToOpenSub = null;
+                    animateSubCategoryIn(categoryKey, subCategoryKey);
+                }, 50);
+            }
+        }
+        
+        // Animate nodes appearing one by one
+        function animateNodesIn(categoryKey) {
+            const categoryNodes = document.querySelectorAll(`[data-category="${categoryKey}"].skill-node-animate, [data-category="${categoryKey}"].connection-animate, [data-category="${categoryKey}"].radial-connection-animate`);
+            
+            categoryNodes.forEach((node, index) => {
+                // Staggered delay for ASMR effect
+                setTimeout(() => {
+                    // Remove prepare-opening state and prepare for animation
+                    node.classList.remove('prepare-opening', 'animate-out');
+                    node.classList.add('animate-in');
+                    
+                    // Short delay to allow the invisible state to register, then show
+                    setTimeout(() => {
+                        node.classList.add('show');
+                    }, 20);
+                    
+                }, index * 120); // 120ms delay between each node
+            });
+        }
+        
+        // Animate nodes disappearing one by one
+        function animateNodesOut(categoryKey, callback) {
+            const categoryNodes = document.querySelectorAll(`[data-category="${categoryKey}"].skill-node-animate, [data-category="${categoryKey}"].connection-animate, [data-category="${categoryKey}"].radial-connection-animate`);
+            
+            if (categoryNodes.length === 0) {
+                callback();
+                return;
+            }
+            
+            // Reverse order for closing (last to first)
+            const nodesArray = Array.from(categoryNodes).reverse();
+            
+            nodesArray.forEach((node, index) => {
+                const staggerDelay = index * 80; // 80ms delay between each node
+                
+                // Start the scale-down animation
+                setTimeout(() => {
+                    node.classList.remove('animate-in', 'show');
+                    node.classList.add('animate-out');
+                    
+                    // Completely hide this individual node after its animation completes
+                    setTimeout(() => {
+                        node.classList.add('completely-hidden');
+                    }, 400); // Animation duration
+                    
+                }, staggerDelay);
+                
+                // Call callback after the last animation completes
+                if (index === nodesArray.length - 1) {
+                    setTimeout(callback, staggerDelay + 400); // Wait for last animation to complete
+                }
+            });
+        }
+        
+        // Animate sub-category nodes appearing one by one
+        function animateSubCategoryIn(categoryKey, subCategoryKey) {
+            const subCategoryNodes = document.querySelectorAll(`[data-category="${categoryKey}"][data-sub-category="${subCategoryKey}"].skill-node-animate, [data-category="${categoryKey}"][data-sub-category="${subCategoryKey}"].connection-animate, [data-category="${categoryKey}"][data-sub-category="${subCategoryKey}"].radial-connection-animate`);
+            
+            subCategoryNodes.forEach((node, index) => {
+                // Staggered delay for ASMR effect
+                setTimeout(() => {
+                    // Remove prepare-opening state and prepare for animation
+                    node.classList.remove('prepare-opening', 'animate-out');
+                    node.classList.add('animate-in');
+                    
+                    // Short delay to allow the invisible state to register, then show
+                    setTimeout(() => {
+                        node.classList.add('show');
+                    }, 20);
+                    
+                }, index * 120); // 120ms delay between each node
+            });
+        }
+        
+        // Animate sub-category nodes disappearing one by one
+        function animateSubCategoryOut(categoryKey, subCategoryKey, callback) {
+            const subCategoryNodes = document.querySelectorAll(`[data-category="${categoryKey}"][data-sub-category="${subCategoryKey}"].skill-node-animate, [data-category="${categoryKey}"][data-sub-category="${subCategoryKey}"].connection-animate, [data-category="${categoryKey}"][data-sub-category="${subCategoryKey}"].radial-connection-animate`);
+            
+            if (subCategoryNodes.length === 0) {
+                callback();
+                return;
+            }
+            
+            // Reverse order for closing (last to first)
+            const nodesArray = Array.from(subCategoryNodes).reverse();
+            
+            nodesArray.forEach((node, index) => {
+                const staggerDelay = index * 80; // 80ms delay between each node
+                
+                // Start the scale-down animation
+                setTimeout(() => {
+                    node.classList.remove('animate-in', 'show');
+                    node.classList.add('animate-out');
+                    
+                    // Completely hide this individual node after its animation completes
+                    setTimeout(() => {
+                        node.classList.add('completely-hidden');
+                    }, 400); // Animation duration
+                    
+                }, staggerDelay);
+                
+                // Call callback after the last animation completes
+                if (index === nodesArray.length - 1) {
+                    setTimeout(callback, staggerDelay + 400); // Wait for last animation to complete
+                }
+            });
         }
 
         // Select an upgrade
@@ -1836,10 +2720,16 @@
                 }
             }
             
+            // Special formatting for building upgrades
+            let effectDisplay = upgrade.effect;
+            if (upgradeCategory === 'buildings' && upgradeSubCategory === 'levels') {
+                effectDisplay = formatBuildingEffect(upgrade.id, upgrade.effect);
+            }
+            
             tooltip.innerHTML = `
                 <div class="tooltip-icon">${upgrade.icon}</div>
                 <div class="tooltip-title">${upgrade.name}</div>
-                <div class="tooltip-effect">${upgrade.effect}</div>
+                <div class="tooltip-effect">${effectDisplay}</div>
                 <div class="tooltip-description">Level ${upgrade.id} upgrade for ${categoryData.title} - ${subCategoryData.title}</div>
                 <div class="tooltip-status ${statusClass}">${status}</div>
             `;
@@ -1859,6 +2749,75 @@
             
             tooltip.style.left = leftPos + 'px';
             tooltip.style.top = (rect.top - modalRect.top - 20) + 'px';
+        }
+        
+        // Format building upgrade effects for better readability
+        function formatBuildingEffect(upgradeId, originalEffect) {
+            const probabilityData = {
+                0: { L1: 80, L2: 19, L3: 1, L4: 0, L5: 0 },    // Default
+                1: { L1: 50, L2: 30, L3: 15, L4: 5, L5: 0 },   // Enhanced
+                2: { L1: 25, L2: 35, L3: 25, L4: 12, L5: 3 },  // Improved
+                3: { L1: 10, L2: 25, L3: 35, L4: 25, L5: 5 },  // Advanced
+                4: { L1: 5, L2: 15, L3: 30, L4: 35, L5: 15 },  // Superior
+                5: { L1: 2, L2: 8, L3: 20, L4: 40, L5: 30 }    // Master
+            };
+            
+            const beforeData = probabilityData[upgradeId - 1];
+            const afterData = probabilityData[upgradeId];
+            
+            if (beforeData && afterData) {
+                let tableRows = '';
+                
+                for (let level = 1; level <= 5; level++) {
+                    const levelKey = `L${level}`;
+                    const beforeValue = beforeData[levelKey];
+                    const afterValue = afterData[levelKey];
+                    
+                    let changeIcon = '';
+                    let changeClass = '';
+                    
+                    if (beforeValue === 0 && afterValue > 0) {
+                        changeIcon = '✨ NEW';
+                        changeClass = 'change-new';
+                    } else if (afterValue > beforeValue) {
+                        changeIcon = '⬆️ +' + (afterValue - beforeValue) + '%';
+                        changeClass = 'change-up';
+                    } else if (afterValue < beforeValue) {
+                        changeIcon = '⬇️ -' + (beforeValue - afterValue) + '%';
+                        changeClass = 'change-down';
+                    } else {
+                        changeIcon = '➡️ Same';
+                        changeClass = '';
+                    }
+                    
+                    tableRows += `
+                        <tr>
+                            <td class="level-cell">${levelKey}</td>
+                            <td class="before-cell">${beforeValue}%</td>
+                            <td class="after-cell">${afterValue}%</td>
+                            <td class="change-cell ${changeClass}">${changeIcon}</td>
+                        </tr>
+                    `;
+                }
+                
+                return `
+                    <table class="building-comparison-table">
+                        <thead>
+                            <tr>
+                                <th>Level</th>
+                                <th>Before</th>
+                                <th>After</th>
+                                <th>Change</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${tableRows}
+                        </tbody>
+                    </table>
+                `;
+            }
+            
+            return originalEffect;
         }
 
         // Hide tooltip

@@ -1226,6 +1226,685 @@
                 font-size: 2rem;
             }
         }
+
+
+
+        /* Expedition Summary Modal */
+        .expedition-summary-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(5px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+
+        .summary-modal-content {
+            background: linear-gradient(145deg, rgba(30, 35, 45, 0.95), rgba(20, 25, 35, 0.95));
+            border: 2px solid rgba(34, 197, 94, 0.6);
+            border-radius: 15px;
+            width: 90%;
+            max-width: 600px;
+            max-height: 80vh;
+            overflow-y: auto;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+        }
+
+        .summary-modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem 2rem;
+            border-bottom: 2px solid rgba(34, 197, 94, 0.3);
+            background: linear-gradient(90deg, rgba(0,0,0,0.8) 0%, rgba(20,20,20,0.6) 100%);
+            border-radius: 15px 15px 0 0;
+        }
+
+        .summary-modal-title {
+            font-family: 'Orbitron', monospace;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #22c55e;
+            letter-spacing: 2px;
+            margin: 0;
+            text-shadow: 0 0 10px rgba(34, 197, 94, 0.5);
+        }
+
+        .summary-modal-body {
+            padding: 2rem;
+            color: #ffffff;
+        }
+
+        .expedition-progress-section {
+            margin-bottom: 2rem;
+            padding: 1.5rem;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+            border: 1px solid rgba(34, 197, 94, 0.2);
+        }
+
+        .progress-header {
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .expedition-name {
+            font-family: 'Orbitron', monospace;
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #22c55e;
+            margin-bottom: 0.5rem;
+        }
+
+        .expedition-location {
+            font-size: 1rem;
+            color: #d1d5db;
+            opacity: 0.8;
+        }
+
+        .time-remaining-display {
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .time-label {
+            font-size: 0.9rem;
+            color: #9ca3af;
+            margin-bottom: 0.5rem;
+            letter-spacing: 1px;
+        }
+
+        .time-value {
+            font-family: 'Orbitron', monospace;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #22c55e;
+            text-shadow: 0 0 10px rgba(34, 197, 94, 0.5);
+        }
+
+        .progress-bar-container {
+            margin-top: 1rem;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 12px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 6px;
+            overflow: hidden;
+            margin-bottom: 0.5rem;
+        }
+
+        .progress-bar .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #22c55e 0%, #4ade80 100%);
+            border-radius: 6px;
+            transition: width 0.5s ease;
+        }
+
+        .progress-text {
+            text-align: center;
+            font-size: 0.9rem;
+            color: #d1d5db;
+        }
+
+        .expedition-team-section {
+            margin-bottom: 2rem;
+            padding: 1.5rem;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+            border: 1px solid rgba(34, 197, 94, 0.2);
+        }
+
+        .team-title {
+            font-family: 'Orbitron', monospace;
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 1rem;
+            letter-spacing: 1px;
+        }
+
+        .team-members {
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+        }
+
+        .team-member {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 0.8rem;
+            background: rgba(0, 0, 0, 0.4);
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .member-portrait {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #666, #333);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+            color: #fff;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .member-info {
+            flex: 1;
+        }
+
+        .member-name {
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 0.2rem;
+        }
+
+        .member-role {
+            color: #22c55e;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .expedition-stats-section {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 2rem;
+            padding: 1.5rem;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+            border: 1px solid rgba(34, 197, 94, 0.2);
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            color: #9ca3af;
+            margin-bottom: 0.5rem;
+            letter-spacing: 1px;
+        }
+
+        .stat-value {
+            font-family: 'Orbitron', monospace;
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: #22c55e;
+        }
+
+        .stat-value.risk-low {
+            color: #4ade80;
+        }
+
+        .stat-value.risk-medium {
+            color: #f59e0b;
+        }
+
+        .stat-value.risk-high {
+            color: #ef4444;
+        }
+
+        .expedition-actions {
+            text-align: center;
+        }
+
+        .recall-expedition-btn {
+            padding: 0.8rem 2rem;
+            background: linear-gradient(145deg, #ef4444, #dc2626);
+            border: 2px solid rgba(239, 68, 68, 0.6);
+            border-radius: 8px;
+            color: #ffffff;
+            font-family: 'Orbitron', monospace;
+            font-size: 1rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin: 0 auto;
+        }
+
+        .recall-expedition-btn:hover {
+            background: linear-gradient(145deg, #dc2626, #b91c1c);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(239, 68, 68, 0.4);
+        }
+
+        .recall-expedition-btn i {
+            font-size: 1.2rem;
+        }
+
+        /* Expedition Slots */
+        .expedition-slots-container {
+            position: absolute;
+            top: calc(48% + 70px); /* 25px below the 90px button (45px radius + 25px gap) */
+            right: calc(1% + 45px); /* Center the 170px container under the 90px button */
+            width: 170px;
+            height: 60px;
+            z-index: 500;
+        }
+
+        .expedition-slot {
+            position: absolute;
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(145deg, rgba(60, 60, 60, 0.8), rgba(40, 40, 40, 0.6));
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(5px);
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.4), 
+                        inset 0 2px 8px rgba(255, 255, 255, 0.1);
+        }
+
+        /* Individual slot positioning for staggered arc formation */
+        #expeditionSlot1 {
+            left: 0;
+            top: 0;
+        }
+
+        #expeditionSlot2 {
+            left: 60px;
+            top: 8px; /* 8px lower for the arc effect */
+        }
+
+        #expeditionSlot3 {
+            right: 0;
+            top: 0;
+        }
+
+        .expedition-slot:hover {
+            transform: scale(1.1);
+            border-color: rgba(255, 140, 66, 0.5);
+            box-shadow: 0 0 20px rgba(255, 140, 66, 0.3);
+        }
+
+        .expedition-slot.active {
+            background: linear-gradient(145deg, rgba(34, 197, 94, 0.8), rgba(22, 163, 74, 0.6));
+            border-color: #22c55e;
+            box-shadow: 0 0 20px rgba(34, 197, 94, 0.4);
+            animation: expeditionSlotPulse 2s ease-in-out infinite;
+        }
+
+        .expedition-slot.active:hover {
+            background: linear-gradient(145deg, rgba(34, 197, 94, 0.95), rgba(22, 163, 74, 0.8));
+            border-color: #4ade80;
+            box-shadow: 0 0 25px rgba(34, 197, 94, 0.6);
+            animation: none;
+        }
+
+        @keyframes expeditionSlotPulse {
+            0%, 100% { 
+                box-shadow: 0 0 20px rgba(34, 197, 94, 0.4);
+            }
+            50% { 
+                box-shadow: 0 0 30px rgba(34, 197, 94, 0.6);
+            }
+        }
+
+        .slot-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+        .slot-icon {
+            font-size: 16px;
+            margin-bottom: 2px;
+            color: rgba(255, 255, 255, 0.7);
+            text-shadow: 0 0 8px rgba(0, 0, 0, 0.8);
+        }
+
+        .expedition-slot.active .slot-icon {
+            color: #ffffff;
+            text-shadow: 0 0 10px rgba(34, 197, 94, 0.8);
+        }
+
+        .slot-text {
+            font-size: 7px;
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.7);
+            letter-spacing: 0.5px;
+            text-shadow: 0 0 6px rgba(0, 0, 0, 0.8);
+        }
+
+        .expedition-slot.active .slot-text {
+            color: #ffffff;
+            text-shadow: 0 0 8px rgba(34, 197, 94, 0.8);
+        }
+
+        .expedition-slot.empty:hover .slot-icon,
+        .expedition-slot.empty:hover .slot-text {
+            color: rgba(255, 140, 66, 0.8);
+        }
+
+        /* Completed expedition slot styling */
+        .expedition-slot.completed {
+            background: linear-gradient(145deg, rgba(34, 197, 94, 0.9), rgba(22, 163, 74, 0.7));
+            border-color: #22c55e;
+            box-shadow: 0 0 25px rgba(34, 197, 94, 0.5);
+            animation: completedSlotPulse 3s ease-in-out infinite;
+        }
+
+        .expedition-slot.completed:hover {
+            background: linear-gradient(145deg, rgba(34, 197, 94, 1), rgba(22, 163, 74, 0.9));
+            border-color: #4ade80;
+            box-shadow: 0 0 35px rgba(34, 197, 94, 0.7);
+            animation: none;
+        }
+
+        @keyframes completedSlotPulse {
+            0%, 100% { 
+                box-shadow: 0 0 25px rgba(34, 197, 94, 0.5);
+            }
+            50% { 
+                box-shadow: 0 0 35px rgba(34, 197, 94, 0.7);
+            }
+        }
+
+        .expedition-slot.completed .slot-icon {
+            color: #ffffff;
+            text-shadow: 0 0 15px rgba(34, 197, 94, 0.8);
+        }
+
+        .expedition-slot.completed .slot-text {
+            color: #ffffff;
+            text-shadow: 0 0 12px rgba(34, 197, 94, 0.8);
+        }
+
+        /* Failed expedition slot styling */
+        .expedition-slot.failed {
+            background: linear-gradient(145deg, rgba(239, 68, 68, 0.9), rgba(220, 38, 38, 0.7));
+            border-color: #ef4444;
+            box-shadow: 0 0 25px rgba(239, 68, 68, 0.5);
+            animation: failedSlotPulse 3s ease-in-out infinite;
+        }
+
+        .expedition-slot.failed:hover {
+            background: linear-gradient(145deg, rgba(239, 68, 68, 1), rgba(220, 38, 38, 0.9));
+            border-color: #f87171;
+            box-shadow: 0 0 35px rgba(239, 68, 68, 0.7);
+            animation: none;
+        }
+
+        @keyframes failedSlotPulse {
+            0%, 100% { 
+                box-shadow: 0 0 25px rgba(239, 68, 68, 0.5);
+            }
+            50% { 
+                box-shadow: 0 0 35px rgba(239, 68, 68, 0.7);
+            }
+        }
+
+        .expedition-slot.failed .slot-icon {
+            color: #ffffff;
+            text-shadow: 0 0 15px rgba(239, 68, 68, 0.8);
+        }
+
+        .expedition-slot.failed .slot-text {
+            color: #ffffff;
+            text-shadow: 0 0 12px rgba(239, 68, 68, 0.8);
+        }
+
+        /* Post-Expedition Modal Styles */
+        .post-expedition-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+            backdrop-filter: blur(5px);
+        }
+
+        .post-expedition-modal-content {
+            background: linear-gradient(145deg, rgba(20, 25, 35, 0.95), rgba(15, 20, 30, 0.9));
+            border: 2px solid rgba(34, 197, 94, 0.6);
+            border-radius: 15px;
+            padding: 0;
+            width: 90%;
+            max-width: 500px;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8), 
+                        0 0 40px rgba(34, 197, 94, 0.3);
+            backdrop-filter: blur(10px);
+        }
+
+        .post-expedition-modal-header {
+            background: linear-gradient(145deg, rgba(34, 197, 94, 0.9), rgba(22, 163, 74, 0.7));
+            padding: 20px;
+            border-radius: 15px 15px 0 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid rgba(34, 197, 94, 0.4);
+        }
+
+        .post-expedition-modal-title {
+            color: #ffffff;
+            font-size: 18px;
+            font-weight: 900;
+            margin: 0;
+            text-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
+            letter-spacing: 1px;
+        }
+
+        .post-expedition-modal-body {
+            padding: 25px;
+            color: #ffffff;
+        }
+
+        .expedition-result-section {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 25px;
+            padding: 15px;
+            background: rgba(34, 197, 94, 0.1);
+            border-radius: 10px;
+            border: 1px solid rgba(34, 197, 94, 0.3);
+        }
+
+        .expedition-success-badge {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #22c55e;
+            font-weight: 700;
+            font-size: 14px;
+        }
+
+        .expedition-success-badge i {
+            font-size: 20px;
+            color: #22c55e;
+        }
+
+        .expedition-details h3 {
+            margin: 0 0 5px 0;
+            color: #ffffff;
+            font-size: 16px;
+            font-weight: 700;
+        }
+
+        .expedition-details .expedition-location {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 12px;
+        }
+
+        .rewards-section {
+            margin-bottom: 25px;
+        }
+
+        .rewards-title {
+            color: #ffffff;
+            font-size: 14px;
+            font-weight: 700;
+            margin: 0 0 15px 0;
+            text-align: center;
+            letter-spacing: 1px;
+        }
+
+        .resources-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 10px;
+        }
+
+        .resource-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 3px;
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .resource-icon {
+            font-size: 20px;
+            width: 35px;
+            height: 35px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255, 140, 66, 0.2);
+            border-radius: 8px;
+        }
+
+        .resource-info {
+            flex: 1;
+        }
+
+        .resource-name {
+            font-size: 12px;
+            color: #ffffff;
+            font-weight: 600;
+            margin-bottom: 2px;
+        }
+
+        .resource-amount {
+            font-size: 14px;
+            color: #22c55e;
+            font-weight: 700;
+        }
+
+        .team-return-section {
+            margin-bottom: 25px;
+        }
+
+        .team-title {
+            color: #ffffff;
+            font-size: 14px;
+            font-weight: 700;
+            margin: 0 0 15px 0;
+            text-align: center;
+            letter-spacing: 1px;
+        }
+
+        .returned-team-members {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 10px;
+        }
+
+        .returned-team-member {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .returned-member-portrait {
+            width: 35px;
+            height: 35px;
+            background: rgba(0, 150, 255, 0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            color: #0096ff;
+        }
+
+        .returned-member-info {
+            flex: 1;
+        }
+
+        .returned-member-name {
+            font-size: 12px;
+            color: #ffffff;
+            font-weight: 600;
+            margin-bottom: 2px;
+        }
+
+        .returned-member-role {
+            font-size: 10px;
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .post-expedition-actions {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .claim-rewards-btn {
+            background: linear-gradient(145deg, rgba(34, 197, 94, 0.9), rgba(22, 163, 74, 0.7));
+            border: 2px solid #22c55e;
+            border-radius: 10px;
+            color: #ffffff;
+            font-size: 14px;
+            font-weight: 700;
+            padding: 15px 30px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            letter-spacing: 1px;
+            text-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            box-shadow: 0 0 20px rgba(34, 197, 94, 0.4);
+        }
+
+        .claim-rewards-btn:hover {
+            background: linear-gradient(145deg, rgba(34, 197, 94, 1), rgba(22, 163, 74, 0.9));
+            border-color: #4ade80;
+            box-shadow: 0 0 30px rgba(34, 197, 94, 0.6);
+            transform: translateY(-2px);
+        }
+
+        .claim-rewards-btn i {
+            font-size: 16px;
+        }
     </style>
 </head>
 <body>
@@ -1703,6 +2382,29 @@
         </div>
     </div>
 
+    <!-- Expedition Slots -->
+    <div class="expedition-slots-container">
+        <div class="expedition-slot" id="expeditionSlot1" onclick="showExpeditionSlotSummary(1)">
+            <div class="slot-content">
+                <i class="fas fa-plus slot-icon"></i>
+                <span class="slot-text">Empty</span>
+            </div>
+        </div>
+        <div class="expedition-slot" id="expeditionSlot2" onclick="showExpeditionSlotSummary(2)">
+            <div class="slot-content">
+                <i class="fas fa-plus slot-icon"></i>
+                <span class="slot-text">Empty</span>
+            </div>
+        </div>
+        <div class="expedition-slot" id="expeditionSlot3" onclick="showExpeditionSlotSummary(3)">
+            <div class="slot-content">
+                <i class="fas fa-plus slot-icon"></i>
+                <span class="slot-text">Empty</span>
+            </div>
+        </div>
+    </div>
+
+
 
     
     <!-- Traveler's Trade Modal (IFrame Popup) -->
@@ -1726,6 +2428,133 @@
         <div class="selection-iframe-container">
             <iframe id="npcSelectionFrame" src="npcselection.html" frameborder="0"></iframe>
             <button class="close-modal-btn" onclick="closeNPCSelectionModal()">✕</button>
+        </div>
+    </div>
+
+    <!-- Ongoing Expedition Summary Modal -->
+    <div class="expedition-summary-modal" id="expeditionSummaryModal" style="display: none;">
+        <div class="summary-modal-content">
+            <div class="summary-modal-header">
+                <h2 class="summary-modal-title">ONGOING EXPEDITION</h2>
+                <button class="close-modal-btn" onclick="closeExpeditionSummaryModal()">✕</button>
+            </div>
+            
+            <div class="summary-modal-body">
+                <div class="expedition-progress-section">
+                    <div class="progress-header">
+                        <h3 class="expedition-name" id="summaryExpeditionName">Medium Expedition</h3>
+                        <div class="expedition-location" id="summaryExpeditionLocation">Abandoned Suburbs</div>
+                    </div>
+                    
+                    <div class="time-remaining-display">
+                        <div class="time-label">TIME REMAINING</div>
+                        <div class="time-value" id="summaryTimeRemaining">3 days</div>
+                    </div>
+                    
+                    <div class="progress-bar-container">
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="expeditionProgressFill" style="width: 25%;"></div>
+                        </div>
+                        <div class="progress-text">Day 1 of 4</div>
+                    </div>
+                </div>
+                
+                <div class="expedition-team-section">
+                    <h4 class="team-title">EXPEDITION TEAM</h4>
+                    <div class="team-members" id="summaryTeamMembers">
+                        <!-- Team members will be populated here -->
+                    </div>
+                </div>
+                
+                <div class="expedition-stats-section">
+                    <div class="stat-item">
+                        <div class="stat-label">Success Chance</div>
+                        <div class="stat-value" id="summarySuccessChance">75%</div>
+                    </div>
+                   
+                </div>
+                
+                
+            </div>
+        </div>
+    </div>
+
+    <!-- Post-Expedition Rewards Modal -->
+    <div class="post-expedition-modal" id="postExpeditionModal" style="display: none;">
+        <div class="post-expedition-modal-content">
+            <div class="post-expedition-modal-header">
+                <h2 class="post-expedition-modal-title">EXPEDITION COMPLETE</h2>
+                <button class="close-modal-btn" onclick="closePostExpeditionModal()">✕</button>
+            </div>
+            
+            <div class="post-expedition-modal-body">
+                <div class="expedition-result-section">
+                    <div class="expedition-success-badge">
+                        <i class="fas fa-check-circle"></i>
+                        <span>SUCCESS</span>
+                    </div>
+                    <div class="expedition-details">
+                        <h3 class="expedition-name" id="postExpeditionName">Medium Expedition</h3>
+                        <div class="expedition-location" id="postExpeditionLocation">Abandoned Suburbs</div>
+                    </div>
+                </div>
+                
+                <div class="rewards-section">
+                    <h4 class="rewards-title">RESOURCES FOUND</h4>
+                    <div class="resources-grid" id="postExpeditionResources">
+                        <div class="resource-item">
+                            <div class="resource-icon">
+                                <i class="fas fa-flask" style="color: #4169E1;"></i>
+                            </div>
+                            <div class="resource-info">
+                                <div class="resource-name">Research Points</div>
+                                <div class="resource-amount">+25</div>
+                            </div>
+                        </div>
+                        <div class="resource-item">
+                            <div class="resource-icon">
+                                <i class="fas fa-apple-alt" style="color: #FFD700;"></i>
+                            </div>
+                            <div class="resource-info">
+                                <div class="resource-name">Food</div>
+                                <div class="resource-amount">+150</div>
+                            </div>
+                        </div>
+                        <div class="resource-item">
+                            <div class="resource-icon">
+                                <i class="fas fa-bomb" style="color: #32CD32;"></i>
+                            </div>
+                            <div class="resource-info">
+                                <div class="resource-name">Ammunition</div>
+                                <div class="resource-amount">+80</div>
+                            </div>
+                        </div>
+                        <div class="resource-item">
+                            <div class="resource-icon">
+                                <i class="fas fa-cog" style="color: #FF8C42;"></i>
+                            </div>
+                            <div class="resource-info">
+                                <div class="resource-name">Resources</div>
+                                <div class="resource-amount">+200</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="team-return-section">
+                    <h4 class="team-title">TEAM RETURNED</h4>
+                    <div class="returned-team-members" id="postExpeditionTeam">
+                        <!-- Team members will be populated here -->
+                    </div>
+                </div>
+                
+                <div class="post-expedition-actions">
+                    <button class="claim-rewards-btn" onclick="claimExpeditionRewards()">
+                        <i class="fas fa-gift"></i>
+                        CLAIM REWARDS
+                    </button>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -2402,6 +3231,11 @@
                     selectSpecialist(event.data.specialist);
                 } else if (event.data.type === 'modal-close') {
                     closeNPCSelectionModal();
+                } else if (event.data.type === 'expedition-deployed') {
+                    // Handle expedition deployment
+                    const expeditionData = event.data.data;
+                    startExpedition(expeditionData);
+                    closeExpeditionPlanningModal();
                 }
             });
 
@@ -2417,6 +3251,7 @@
                 const npcModal = document.getElementById('npcSelectionModal');
                 const expeditionModal = document.getElementById('expeditionPlanningModal');
                 const offeringsModal = document.getElementById('offeringsModal');
+                const postExpeditionModal = document.getElementById('postExpeditionModal');
                 
                 if (npcModal.style.display === 'flex') {
                     if (e.key === 'Escape') {
@@ -2439,6 +3274,14 @@
                         close3DayOfferingsModal();
                     }
                 }
+                
+                if (postExpeditionModal.style.display === 'flex') {
+                    if (e.key === 'Escape') {
+                        closePostExpeditionModal();
+                    } else if (e.key === 'Enter') {
+                        claimExpeditionRewards();
+                    }
+                }
 
                 // Demo keyboard controls for effects (remove in production)
                 if (e.key === 'b' && e.ctrlKey) {
@@ -2453,6 +3296,58 @@
                     // Toggle hunger simulation
                     hudGameState.resources.food = hudGameState.resources.food < 90 ? 120 : 30;
                     checkHUDHungerDebuff();
+                } else if (e.key === 'x' && e.ctrlKey) {
+                    // Demo: Start expedition (remove in production)
+                    const demoExpedition = {
+                        type: 'medium',
+                        team: [
+                            { id: 'marcus', name: 'Marcus Reed', role: 'Scout', icon: 'fas fa-search', power: 70 },
+                            { id: 'jackson', name: 'Sgt. Jackson', role: 'Soldier', icon: 'fas fa-user-soldier', power: 85 }
+                        ],
+                        successChance: 75
+                    };
+                    startExpedition(demoExpedition);
+                } else if (e.key === 'c' && e.ctrlKey) {
+                    // Demo: Quick completion expedition (remove in production)
+                    const quickExpedition = {
+                        type: 'small',
+                        team: [
+                            { id: 'test', name: 'Test Scout', role: 'Scout', icon: 'fas fa-eye', power: 80 }
+                        ],
+                        successChance: 95
+                    };
+                    
+                    // Start expedition and complete it immediately for testing
+                    startExpedition(quickExpedition);
+                    
+                    // Complete after 2 seconds for demonstration
+                    setTimeout(() => {
+                        const activeSlotIndex = expeditionSlots.findIndex(slot => slot.isActive);
+                        if (activeSlotIndex !== -1) {
+                            completeExpeditionInSlot(activeSlotIndex);
+                        }
+                    }, 2000);
+                } else if (e.key === 'f' && e.ctrlKey) {
+                    // Demo: Quick failed expedition (remove in production)
+                    const failedExpedition = {
+                        type: 'medium',
+                        team: [
+                            { id: 'test1', name: 'Test Soldier', role: 'Soldier', icon: 'fas fa-user-shield', power: 60 },
+                            { id: 'test2', name: 'Test Medic', role: 'Medic', icon: 'fas fa-user-md', power: 55 }
+                        ],
+                        successChance: 30
+                    };
+                    
+                    // Start expedition and fail it immediately for testing
+                    startExpedition(failedExpedition);
+                    
+                    // Fail after 2 seconds for demonstration
+                    setTimeout(() => {
+                        const activeSlotIndex = expeditionSlots.findIndex(slot => slot.isActive);
+                        if (activeSlotIndex !== -1) {
+                            completeExpeditionInSlot(activeSlotIndex, true); // Force fail
+                        }
+                    }, 2000);
                 }
             });
 
@@ -2468,7 +3363,633 @@
 
             // Initialize HUD effects system
             initializeHUDEffects();
+            
+            // Initialize expedition slots
+            initializeExpeditionSlots();
         });
+
+        // Expedition Slots System (Max 3 expeditions)
+        let expeditionSlots = [
+            { isActive: false, isCompleted: false, expedition: null },
+            { isActive: false, isCompleted: false, expedition: null },
+            { isActive: false, isCompleted: false, expedition: null }
+        ];
+
+        // Expedition type data
+        const expeditionTypes = {
+            small: {
+                name: 'Small Expedition',
+                location: 'Desert Ruins',
+                duration: 3,
+                icon: 'fas fa-home'
+            },
+            medium: {
+                name: 'Medium Expedition',
+                location: 'Abandoned Suburbs',
+                duration: 4,
+                icon: 'fas fa-city'
+            },
+            large: {
+                name: 'Large Expedition',
+                location: 'Military Lab Complex',
+                duration: 5,
+                icon: 'fas fa-industry'
+            }
+        };
+
+        function startExpedition(expeditionData) {
+            // Find available slot
+            const availableSlotIndex = expeditionSlots.findIndex(slot => !slot.isActive);
+            
+            if (availableSlotIndex === -1) {
+                showNotification('warning', 'No Available Slots', 'All expedition slots are currently occupied. Recall an expedition to free up a slot.');
+                return;
+            }
+
+            const typeData = expeditionTypes[expeditionData.type];
+            
+            const expedition = {
+                isActive: true,
+                type: expeditionData.type,
+                name: typeData.name,
+                location: typeData.location,
+                duration: typeData.duration,
+                startTime: Date.now(),
+                endTime: Date.now() + (typeData.duration * 24 * 60 * 60 * 1000), // Convert days to milliseconds
+                team: expeditionData.team || [],
+                successChance: expeditionData.successChance || 0,
+                expeditionIcon: typeData.icon,
+                slotIndex: availableSlotIndex + 1
+            };
+
+            expeditionSlots[availableSlotIndex] = {
+                isActive: true,
+                expedition: expedition
+            };
+
+            updateExpeditionSlotDisplay(availableSlotIndex + 1, expedition, 'active');
+            startExpeditionTimerForSlot(availableSlotIndex);
+            
+            console.log('Expedition started in slot', availableSlotIndex + 1, ':', expedition);
+        }
+
+        function updateExpeditionSlotDisplay(slotNumber, expedition, state = 'active', expeditionResult = null) {
+            const slot = document.getElementById(`expeditionSlot${slotNumber}`);
+            const slotIcon = slot.querySelector('.slot-icon');
+            const slotText = slot.querySelector('.slot-text');
+
+            // Remove all state classes
+            slot.classList.remove('active', 'empty', 'completed', 'failed');
+
+            if (expedition && state === 'completed') {
+                // Check if expedition was successful or failed
+                if (expeditionResult && expeditionResult.success === false) {
+                    // Failed expedition - show red X
+                    slot.classList.add('failed');
+                    slotIcon.className = 'fas fa-times slot-icon';
+                    slotText.textContent = 'Failed';
+                } else {
+                    // Successful expedition - show green checkmark
+                    slot.classList.add('completed');
+                    slotIcon.className = 'fas fa-check slot-icon';
+                    slotText.textContent = 'Complete';
+                }
+            } else if (expedition && state === 'active') {
+                // Slot is active with expedition
+                slot.classList.add('active');
+                slotIcon.className = expedition.expeditionIcon + ' slot-icon';
+                
+                const timeRemaining = getTimeRemainingForSlot(slotNumber - 1);
+                slotText.textContent = formatTimeRemainingShort(timeRemaining);
+            } else {
+                // Slot is empty
+                slot.classList.add('empty');
+                slotIcon.className = 'fas fa-plus slot-icon';
+                slotText.textContent = 'Empty';
+            }
+        }
+
+        function getTimeRemainingForSlot(slotIndex) {
+            const slot = expeditionSlots[slotIndex];
+            if (!slot.isActive || !slot.expedition) return 0;
+            
+            const now = Date.now();
+            const remaining = Math.max(0, slot.expedition.endTime - now);
+            
+            return remaining;
+        }
+
+        function formatTimeRemainingShort(milliseconds) {
+            const days = Math.floor(milliseconds / (24 * 60 * 60 * 1000));
+            const hours = Math.floor((milliseconds % (24 * 60 * 60 * 1000)) / (60 * 60 * 1000));
+            
+            if (days > 0) {
+                return `${days}d`;
+            } else if (hours > 0) {
+                return `${hours}h`;
+            } else {
+                return 'Soon';
+            }
+        }
+
+        function startExpeditionTimerForSlot(slotIndex) {
+            const timer = setInterval(() => {
+                const slot = expeditionSlots[slotIndex];
+                
+                if (!slot.isActive || !slot.expedition) {
+                    clearInterval(timer);
+                    return;
+                }
+
+                const timeRemaining = getTimeRemainingForSlot(slotIndex);
+                
+                if (timeRemaining <= 0) {
+                    // Expedition complete
+                    completeExpeditionInSlot(slotIndex);
+                    clearInterval(timer);
+                } else {
+                    // Update slot display
+                    updateExpeditionSlotDisplay(slotIndex + 1, slot.expedition, 'active');
+                }
+            }, 60000); // Update every minute
+        }
+
+        function completeExpeditionInSlot(slotIndex, forceFail = false) {
+            const slot = expeditionSlots[slotIndex];
+            if (!slot.isActive || !slot.expedition) return;
+
+            const expedition = slot.expedition;
+            
+            // Determine if expedition succeeds or fails
+            const successChance = expedition.successChance || 75;
+            const isSuccess = forceFail ? false : Math.random() * 100 < successChance;
+            
+            // Generate rewards based on expedition type and success
+            const rewards = generateExpeditionRewards(expedition, isSuccess);
+            
+            // Set the slot to completed state
+            expeditionSlots[slotIndex] = { 
+                isActive: false, 
+                isCompleted: true, 
+                expedition: expedition,
+                rewards: rewards
+            };
+            
+            // Update slot display to show completed state
+            updateExpeditionSlotDisplay(slotIndex + 1, expedition, 'completed', rewards);
+            
+            // Show completion notification
+            if (isSuccess) {
+                showNotification('success', 'Expedition Complete!', 
+                    `${expedition.name} has returned with valuable resources and intelligence. Click the slot to claim rewards!`);
+            } else {
+                showNotification('warning', 'Expedition Failed!', 
+                    `${expedition.name} has failed. Check the expedition slot for details about what happened.`);
+            }
+            
+            console.log('Expedition completed in slot', slotIndex + 1, 'Success:', isSuccess);
+        }
+
+        // Failed expedition stories
+        const failedExpeditionStories = [
+            "Our NPCs haven't returned to base. Rumors say they got bitten in the supermarket while looting for food.",
+            "Last transmission indicated they were overwhelmed by a massive horde at the old gas station. No survivors found.",
+            "The team encountered hostile survivors who ambushed them at the checkpoint. Their equipment was later discovered abandoned.",
+            "A structural collapse at the target location trapped the entire team. Search and rescue efforts have been unsuccessful.",
+            "Communication was lost during a severe storm. Their last known position was overrun by infected within hours.",
+            "The expedition triggered a security system at the military facility. Automated defenses eliminated all team members.",
+            "A rival faction intercepted our team at the extraction point. Intelligence suggests they were taken prisoner but later executed."
+        ];
+
+        function generateExpeditionRewards(expedition, isSuccess = true) {
+            if (!isSuccess) {
+                // Return failed expedition data
+                return {
+                    success: false,
+                    story: failedExpeditionStories[Math.floor(Math.random() * failedExpeditionStories.length)],
+                    casualties: expedition.team.length,
+                    resources: [] // No resources for failed expeditions
+                };
+            }
+
+            // Generate rewards based on expedition type and success
+            const baseRewards = {
+                small: {
+                    resources: [
+                        { name: 'Research Points', amount: 10 + Math.floor(Math.random() * 15), icon: 'fas fa-flask', color: '#4169E1' },
+                        { name: 'Food', amount: 80 + Math.floor(Math.random() * 40), icon: 'fas fa-apple-alt', color: '#FFD700' },
+                        { name: 'Ammunition', amount: 30 + Math.floor(Math.random() * 20), icon: 'fas fa-bomb', color: '#32CD32' },
+                        { name: 'Resources', amount: 100 + Math.floor(Math.random() * 50), icon: 'fas fa-cog', color: '#FF8C42' }
+                    ]
+                },
+                medium: {
+                    resources: [
+                        { name: 'Research Points', amount: 20 + Math.floor(Math.random() * 25), icon: 'fas fa-flask', color: '#4169E1' },
+                        { name: 'Food', amount: 120 + Math.floor(Math.random() * 60), icon: 'fas fa-apple-alt', color: '#FFD700' },
+                        { name: 'Ammunition', amount: 60 + Math.floor(Math.random() * 40), icon: 'fas fa-bomb', color: '#32CD32' },
+                        { name: 'Resources', amount: 150 + Math.floor(Math.random() * 80), icon: 'fas fa-cog', color: '#FF8C42' }
+                    ]
+                },
+                large: {
+                    resources: [
+                        { name: 'Research Points', amount: 35 + Math.floor(Math.random() * 40), icon: 'fas fa-flask', color: '#4169E1' },
+                        { name: 'Food', amount: 200 + Math.floor(Math.random() * 100), icon: 'fas fa-apple-alt', color: '#FFD700' },
+                        { name: 'Ammunition', amount: 100 + Math.floor(Math.random() * 60), icon: 'fas fa-bomb', color: '#32CD32' },
+                        { name: 'Resources', amount: 250 + Math.floor(Math.random() * 120), icon: 'fas fa-cog', color: '#FF8C42' }
+                    ]
+                }
+            };
+
+            const rewards = baseRewards[expedition.type] || baseRewards.medium;
+            return {
+                success: true,
+                ...rewards
+            };
+        }
+
+        function showExpeditionSlotSummary(slotNumber) {
+            const slotIndex = slotNumber - 1;
+            const slot = expeditionSlots[slotIndex];
+            
+            if (slot.isCompleted) {
+                // Completed expedition - show post-expedition modal
+                showPostExpeditionModal(slotIndex);
+                return;
+            }
+            
+            if (!slot.isActive || !slot.expedition) {
+                // Empty slot - show expedition planning modal
+                showExpeditionPlanningModal();
+                return;
+            }
+
+            const expedition = slot.expedition;
+            const modal = document.getElementById('expeditionSummaryModal');
+            
+            // Update modal content
+            document.getElementById('summaryExpeditionName').textContent = expedition.name;
+            document.getElementById('summaryExpeditionLocation').textContent = expedition.location;
+            document.getElementById('summaryTimeRemaining').textContent = formatTimeRemaining(getTimeRemainingForSlot(slotIndex));
+            document.getElementById('summarySuccessChance').textContent = expedition.successChance + '%';
+            
+            // Update progress bar
+            const elapsed = Date.now() - expedition.startTime;
+            const total = expedition.endTime - expedition.startTime;
+            const progress = Math.min(100, (elapsed / total) * 100);
+            
+            document.getElementById('expeditionProgressFill').style.width = progress + '%';
+            
+            const currentDay = Math.floor(elapsed / (24 * 60 * 60 * 1000)) + 1;
+            document.querySelector('.progress-text').textContent = `Day ${currentDay} of ${expedition.duration}`;
+            
+            // Update team members
+            const teamMembersContainer = document.getElementById('summaryTeamMembers');
+            teamMembersContainer.innerHTML = '';
+            
+            expedition.team.forEach(member => {
+                const memberElement = document.createElement('div');
+                memberElement.className = 'team-member';
+                memberElement.innerHTML = `
+                    <div class="member-portrait">
+                        <i class="${member.icon}"></i>
+                    </div>
+                    <div class="member-info">
+                        <div class="member-name">${member.name}</div>
+                        <div class="member-role">${member.role}</div>
+                    </div>
+                `;
+                teamMembersContainer.appendChild(memberElement);
+            });
+            
+            // Store current slot for recall function
+            modal.setAttribute('data-slot-number', slotNumber);
+            
+            modal.style.display = 'flex';
+        }
+
+        // Initialize all slots as empty
+        function initializeExpeditionSlots() {
+            // Reset expedition slots array
+            expeditionSlots = [
+                { isActive: false, isCompleted: false, expedition: null },
+                { isActive: false, isCompleted: false, expedition: null },
+                { isActive: false, isCompleted: false, expedition: null }
+            ];
+            
+            // Add a mock-up successful expedition in slot 1 for demonstration
+            const mockCompletedExpedition = {
+                type: 'medium',
+                name: 'Medium Expedition',
+                location: 'Abandoned Suburbs',
+                duration: 4,
+                startTime: Date.now() - (4 * 24 * 60 * 60 * 1000), // Started 4 days ago
+                endTime: Date.now() - (60 * 60 * 1000), // Ended 1 hour ago
+                team: [
+                    { id: 'sarah', name: 'Sarah Chen', role: 'Medic', icon: 'fas fa-user-md', power: 85 },
+                    { id: 'marcus', name: 'Marcus Daniels', role: 'Soldier', icon: 'fas fa-user-shield', power: 78 },
+                    { id: 'alex', name: 'Alex Rivera', role: 'Engineer', icon: 'fas fa-wrench', power: 82 }
+                ],
+                successChance: 85,
+                expeditionIcon: 'fas fa-city',
+                slotIndex: 1
+            };
+            
+            const mockSuccessRewards = {
+                success: true,
+                resources: [
+                    { name: 'Research Points', amount: 32, icon: 'fas fa-flask', color: '#4169E1' },
+                    { name: 'Food', amount: 167, icon: 'fas fa-apple-alt', color: '#FFD700' },
+                    { name: 'Ammunition', amount: 84, icon: 'fas fa-bomb', color: '#32CD32' },
+                    { name: 'Resources', amount: 198, icon: 'fas fa-cog', color: '#FF8C42' }
+                ]
+            };
+            
+            // Add a mock-up failed expedition in slot 2 for demonstration
+            const mockFailedExpedition = {
+                type: 'small',
+                name: 'Small Expedition',
+                location: 'Desert Ruins',
+                duration: 3,
+                startTime: Date.now() - (3 * 24 * 60 * 60 * 1000), // Started 3 days ago
+                endTime: Date.now() - (2 * 60 * 60 * 1000), // Ended 2 hours ago
+                team: [
+                    { id: 'james', name: 'James Parker', role: 'Scout', icon: 'fas fa-search', power: 70 },
+                    { id: 'lisa', name: 'Lisa Wong', role: 'Soldier', icon: 'fas fa-user-shield', power: 65 }
+                ],
+                successChance: 60,
+                expeditionIcon: 'fas fa-home',
+                slotIndex: 2
+            };
+            
+            const mockFailedRewards = {
+                success: false,
+                story: "Our NPCs haven't returned to base. Rumors say they got bitten in the supermarket while looting for food.",
+                casualties: 2,
+                resources: []
+            };
+            
+            // Set slot 1 as completed with successful expedition
+            expeditionSlots[0] = {
+                isActive: false,
+                isCompleted: true,
+                expedition: mockCompletedExpedition,
+                rewards: mockSuccessRewards
+            };
+            
+            // Set slot 2 as completed with failed expedition
+            expeditionSlots[1] = {
+                isActive: false,
+                isCompleted: true,
+                expedition: mockFailedExpedition,
+                rewards: mockFailedRewards
+            };
+            
+            // Update display for all slots
+            for (let i = 1; i <= 3; i++) {
+                if (i === 1) {
+                    // Show successful expedition in slot 1
+                    updateExpeditionSlotDisplay(i, mockCompletedExpedition, 'completed', mockSuccessRewards);
+                } else if (i === 2) {
+                    // Show failed expedition in slot 2
+                    updateExpeditionSlotDisplay(i, mockFailedExpedition, 'completed', mockFailedRewards);
+                } else {
+                    // Show empty slot
+                    updateExpeditionSlotDisplay(i, null);
+                }
+            }
+        }
+
+        function formatTimeRemaining(milliseconds) {
+            const days = Math.floor(milliseconds / (24 * 60 * 60 * 1000));
+            const hours = Math.floor((milliseconds % (24 * 60 * 60 * 1000)) / (60 * 60 * 1000));
+            
+            if (days > 0) {
+                return `${days} day${days > 1 ? 's' : ''} remaining`;
+            } else if (hours > 0) {
+                return `${hours} hour${hours > 1 ? 's' : ''} remaining`;
+            } else {
+                return 'Returning soon';
+            }
+        }
+
+
+
+        function closeExpeditionSummaryModal() {
+            const modal = document.getElementById('expeditionSummaryModal');
+            modal.style.display = 'none';
+        }
+
+        function recallExpedition() {
+            const modal = document.getElementById('expeditionSummaryModal');
+            const slotNumber = parseInt(modal.getAttribute('data-slot-number'));
+            
+            if (!slotNumber || slotNumber < 1 || slotNumber > 3) return;
+            
+            const slotIndex = slotNumber - 1;
+            const slot = expeditionSlots[slotIndex];
+            
+            if (!slot.isActive || !slot.expedition) return;
+            
+            const confirmRecall = confirm('Are you sure you want to recall the expedition early? This may result in reduced rewards.');
+            
+            if (confirmRecall) {
+                const expedition = slot.expedition;
+                
+                showNotification('warning', 'Expedition Recalled', 
+                    `${expedition.name} has been recalled early and is returning to base.`);
+                
+                // Clear the slot
+                expeditionSlots[slotIndex] = { isActive: false, isCompleted: false, expedition: null };
+                
+                // Update slot display
+                updateExpeditionSlotDisplay(slotNumber, null);
+                
+                // Close modal
+                closeExpeditionSummaryModal();
+                
+                console.log('Expedition recalled from slot', slotNumber);
+            }
+        }
+
+        // Post-Expedition Modal Functions
+        function showPostExpeditionModal(slotIndex) {
+            const slot = expeditionSlots[slotIndex];
+            if (!slot.isCompleted || !slot.expedition) return;
+
+            const expedition = slot.expedition;
+            const rewards = slot.rewards;
+            const modal = document.getElementById('postExpeditionModal');
+            
+            // Update modal content
+            document.getElementById('postExpeditionName').textContent = expedition.name;
+            document.getElementById('postExpeditionLocation').textContent = expedition.location;
+            
+            // Update success/failure badge and title
+            const successBadge = document.querySelector('.expedition-success-badge');
+            const modalTitle = document.querySelector('.post-expedition-modal-title');
+            
+            if (rewards.success) {
+                // Success case
+                successBadge.innerHTML = '<i class="fas fa-check-circle"></i><span>SUCCESS</span>';
+                successBadge.style.color = '#22c55e';
+                modalTitle.textContent = 'EXPEDITION COMPLETE';
+                
+                // Update resources
+                const resourcesContainer = document.getElementById('postExpeditionResources');
+                resourcesContainer.innerHTML = '';
+                
+                rewards.resources.forEach(resource => {
+                    const resourceElement = document.createElement('div');
+                    resourceElement.className = 'resource-item';
+                    resourceElement.innerHTML = `
+                        <div class="resource-icon">
+                            <i class="${resource.icon}" style="color: ${resource.color};"></i>
+                        </div>
+                        <div class="resource-info">
+                            <div class="resource-name">${resource.name}</div>
+                            <div class="resource-amount">+${resource.amount}</div>
+                        </div>
+                    `;
+                    resourcesContainer.appendChild(resourceElement);
+                });
+                
+                // Update team members (survivors)
+                const teamContainer = document.getElementById('postExpeditionTeam');
+                teamContainer.innerHTML = '';
+                
+                expedition.team.forEach(member => {
+                    const memberElement = document.createElement('div');
+                    memberElement.className = 'returned-team-member';
+                    memberElement.innerHTML = `
+                        <div class="returned-member-portrait">
+                            <i class="${member.icon}"></i>
+                        </div>
+                        <div class="returned-member-info">
+                            <div class="returned-member-name">${member.name}</div>
+                            <div class="returned-member-role">${member.role}</div>
+                        </div>
+                    `;
+                    teamContainer.appendChild(memberElement);
+                });
+                
+                // Show rewards section
+                document.querySelector('.rewards-section').style.display = 'block';
+                document.querySelector('.team-return-section h4').textContent = 'TEAM RETURNED';
+                
+            } else {
+                // Failure case
+                successBadge.innerHTML = '<i class="fas fa-times-circle"></i><span>FAILED</span>';
+                successBadge.style.color = '#ef4444';
+                modalTitle.textContent = 'EXPEDITION FAILED';
+                
+                // Hide rewards section and show failure story
+                document.querySelector('.rewards-section').style.display = 'none';
+                
+                // Update team section to show casualties
+                const teamContainer = document.getElementById('postExpeditionTeam');
+                teamContainer.innerHTML = '';
+                
+                // Show failure story
+                const failureStory = document.createElement('div');
+                failureStory.className = 'failure-story';
+                failureStory.style.cssText = `
+                    background: rgba(239, 68, 68, 0.1);
+                    border: 1px solid rgba(239, 68, 68, 0.3);
+                    border-radius: 8px;
+                    padding: 1rem;
+                    margin-bottom: 1rem;
+                    color: #ffffff;
+                    font-size: 13px;
+                    line-height: 1.4;
+                    font-style: italic;
+                `;
+                failureStory.innerHTML = `
+                    <div style="color: #ef4444; font-weight: 700; margin-bottom: 0.5rem; font-size: 12px; letter-spacing: 1px;">
+                        MISSION REPORT
+                    </div>
+                    ${rewards.story}
+                `;
+                teamContainer.appendChild(failureStory);
+                
+                // Show dead team members
+                expedition.team.forEach(member => {
+                    const memberElement = document.createElement('div');
+                    memberElement.className = 'returned-team-member';
+                    memberElement.style.cssText = `
+                        opacity: 0.5;
+                        background: rgba(239, 68, 68, 0.1);
+                        border: 1px solid rgba(239, 68, 68, 0.2);
+                    `;
+                    memberElement.innerHTML = `
+                        <div class="returned-member-portrait" style="background: rgba(239, 68, 68, 0.3); border-color: #ef4444;">
+                            <i class="${member.icon}" style="color: #ef4444;"></i>
+                        </div>
+                        <div class="returned-member-info">
+                            <div class="returned-member-name" style="color: #ef4444; text-decoration: line-through;">${member.name}</div>
+                            <div class="returned-member-role" style="color: #ef4444; opacity: 0.7;">KIA - ${member.role}</div>
+                        </div>
+                    `;
+                    teamContainer.appendChild(memberElement);
+                });
+                
+                document.querySelector('.team-return-section h4').textContent = 'CASUALTIES';
+            }
+            
+            // Update claim button
+            const claimButton = document.querySelector('.claim-rewards-btn');
+            if (rewards.success) {
+                claimButton.innerHTML = '<i class="fas fa-gift"></i>CLAIM REWARDS';
+                claimButton.style.background = 'linear-gradient(145deg, rgba(34, 197, 94, 0.9), rgba(22, 163, 74, 0.7))';
+                claimButton.style.borderColor = '#22c55e';
+            } else {
+                claimButton.innerHTML = '<i class="fas fa-times"></i>ACKNOWLEDGE';
+                claimButton.style.background = 'linear-gradient(145deg, rgba(239, 68, 68, 0.9), rgba(220, 38, 38, 0.7))';
+                claimButton.style.borderColor = '#ef4444';
+            }
+            
+            // Store current slot for claim function
+            modal.setAttribute('data-slot-index', slotIndex);
+            
+            modal.style.display = 'flex';
+        }
+
+        function closePostExpeditionModal() {
+            const modal = document.getElementById('postExpeditionModal');
+            modal.style.display = 'none';
+        }
+
+        function claimExpeditionRewards() {
+            const modal = document.getElementById('postExpeditionModal');
+            const slotIndex = parseInt(modal.getAttribute('data-slot-index'));
+            
+            if (slotIndex < 0 || slotIndex >= expeditionSlots.length) return;
+            
+            const slot = expeditionSlots[slotIndex];
+            if (!slot.isCompleted || !slot.expedition) return;
+            
+            const expedition = slot.expedition;
+            const rewards = slot.rewards;
+            
+            // Show appropriate notification based on success/failure
+            if (rewards.success) {
+                showNotification('success', 'Rewards Claimed!', 
+                    `Successfully claimed rewards from ${expedition.name}!`);
+            } else {
+                showNotification('warning', 'Failure Acknowledged', 
+                    `Mission failure acknowledged. The fallen will be remembered.`);
+            }
+            
+            // Clear the slot
+            expeditionSlots[slotIndex] = { isActive: false, isCompleted: false, expedition: null };
+            
+            // Update slot display
+            updateExpeditionSlotDisplay(slotIndex + 1, null);
+            
+            // Close modal
+            closePostExpeditionModal();
+            
+            console.log('Expedition processed from slot', slotIndex + 1, 'Success:', rewards.success);
+        }
     </script>
 </body>
 </html> 
