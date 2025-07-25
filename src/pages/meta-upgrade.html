@@ -1278,20 +1278,6 @@
                             { id: 3, name: "High Damage", cost: 250, effect: "+50% soldier damage", unlocked: false, icon: "💥" }
                         ]
                     },
-                    airstrike: {
-                        title: "Airstrike",
-                        description: "Improves aerial support through cost reduction, new weapons, and increased effectiveness.",
-                        upgrades: [
-                            { id: 1, name: "Cheap Strikes", cost: 125, effect: "Airstrikes 50% cheaper", unlocked: false, icon: "💰" },
-                            { id: 2, name: "Triple Bomber", cost: 200, effect: "3-bomb launcher plane", unlocked: false, icon: "💣" },
-                            { id: 3, name: "Wide Bombardment", cost: 300, effect: "+50% airstrike radius", unlocked: false, icon: "💥" }
-                        ]
-                    }
-                }
-            },
-            military: {
-                title: "Military Arsenal",
-                subCategories: {
                     heavyWeapons: {
                         title: "Heavy Weapons",
                         description: "Unlocks specialized heavy weapons for advanced tactical options.",
@@ -1307,6 +1293,15 @@
                         upgrades: [
                             { id: 1, name: "Wall Engineering", cost: 100, effect: "Unlocks Defense Walls", unlocked: false, icon: "🧱" },
                             { id: 2, name: "Tower Engineering", cost: 175, effect: "Unlocks Outpost Towers", unlocked: false, icon: "🗼" }
+                        ]
+                    },
+                    airstrike: {
+                        title: "Airstrike",
+                        description: "Improves aerial support through cost reduction, new weapons, and increased effectiveness.",
+                        upgrades: [
+                            { id: 1, name: "Cheap Strikes", cost: 125, effect: "Airstrikes 50% cheaper", unlocked: false, icon: "💰" },
+                            { id: 2, name: "Triple Bomber", cost: 200, effect: "3-bomb launcher plane", unlocked: false, icon: "💣" },
+                            { id: 3, name: "Wide Bombardment", cost: 300, effect: "+50% airstrike radius", unlocked: false, icon: "💥" }
                         ]
                     }
                 }
@@ -1836,7 +1831,7 @@
                 const upgradeRadius = 100; // Distance between upgrade levels (increased for more space)
                 
                 // Only show sub-category nodes for categories that truly have distinct sub-categories
-                const showSubCategoryNodes = (categoryKey === 'combat' || categoryKey === 'support' || categoryKey === 'military') && subCategoryKeys.length > 1;
+                const showSubCategoryNodes = (categoryKey === 'combat' || categoryKey === 'support') && subCategoryKeys.length > 1;
                 
                 if (showSubCategoryNodes) {
                     // Multiple sub-categories: render each as a separate branch
@@ -2275,7 +2270,7 @@
                     subTreeContainer.dataset.subCategory = subCategoryKey;
                     
                     // Only show sub-category nodes for categories that truly have distinct sub-categories
-                    const showSubCategoryNodes = (categoryKey === 'combat' || categoryKey === 'support' || categoryKey === 'military');
+                    const showSubCategoryNodes = (categoryKey === 'combat' || categoryKey === 'support');
                     
                     if (showSubCategoryNodes) {
                         // Sub-category node (styled like other nodes)
@@ -2457,7 +2452,6 @@
             const icons = {
                 buildings: '🏗️',
                 combat: '⚔️',
-                military: '🎖️',
                 walls: '🧱',
                 farm: '🌾',
                 laboratory: '🧪',
