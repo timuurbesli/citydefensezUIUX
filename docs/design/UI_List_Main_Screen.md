@@ -71,13 +71,6 @@ This document lists all UI elements present in the main menu screen (`src/pages/
 - [ ] Discord link opening (Discord button)
 - [ ] Steam page opening (Steam button)
 
-### Keyboard Support
-- [ ] Enter/1 key - Start game
-- [ ] 2 key - New game
-- [ ] 3 key - Settings
-- [ ] Escape key - Exit
-- [ ] Keyboard accessibility
-
 ### Context Menu
 - [ ] Right-click prevention
 
@@ -103,30 +96,6 @@ This document lists all UI elements present in the main menu screen (`src/pages/
 - [ ] Loading overlay fade
 - [ ] Page navigation transitions
 
-## RESPONSIVE DESIGN
-- [ ] Mobile layout (full-width panel)
-- [ ] Tablet considerations
-- [ ] Desktop full feature set
-- [ ] Logo size adjustments
-- [ ] Text size adjustments
-
-## AUDIO SYSTEM (Placeholders)
-- [ ] Hover sound effects
-- [ ] Click sound effects
-- [ ] Background music capability
-
-## EXTERNAL LINKS
-- [ ] Discord community invite
-- [ ] Steam review/store page
-- [ ] New tab opening behavior
-
-## ACCESSIBILITY FEATURES
-- [ ] High contrast ratios
-- [ ] Keyboard navigation
-- [ ] Clear focus indicators
-- [ ] Reasonable target sizes
-- [ ] Alt text for images
-- [ ] Screen reader compatibility
 
 ---
 

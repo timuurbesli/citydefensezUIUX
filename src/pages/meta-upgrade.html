@@ -1289,6 +1289,28 @@
                     }
                 }
             },
+            military: {
+                title: "Military Arsenal",
+                subCategories: {
+                    heavyWeapons: {
+                        title: "Heavy Weapons",
+                        description: "Unlocks specialized heavy weapons for advanced tactical options.",
+                        upgrades: [
+                            { id: 1, name: "Machine Gun Arsenal", cost: 150, effect: "Unlocks Machine Gun (Bixi)", unlocked: false, icon: "🔫" },
+                            { id: 2, name: "Rocket Arsenal", cost: 200, effect: "Unlocks Rocket Launcher", unlocked: false, icon: "🚀" },
+                            { id: 3, name: "Artillery Arsenal", cost: 250, effect: "Unlocks Mortar", unlocked: false, icon: "💥" }
+                        ]
+                    },
+                    defensiveStructures: {
+                        title: "Defensive Structures",
+                        description: "Unlocks advanced defensive structures for enhanced base protection.",
+                        upgrades: [
+                            { id: 1, name: "Wall Engineering", cost: 100, effect: "Unlocks Defense Walls", unlocked: false, icon: "🧱" },
+                            { id: 2, name: "Tower Engineering", cost: 175, effect: "Unlocks Outpost Towers", unlocked: false, icon: "🗼" }
+                        ]
+                    }
+                }
+            },
             walls: {
                 title: "Walls",
                 subCategories: {
@@ -1814,7 +1836,7 @@
                 const upgradeRadius = 100; // Distance between upgrade levels (increased for more space)
                 
                 // Only show sub-category nodes for categories that truly have distinct sub-categories
-                const showSubCategoryNodes = (categoryKey === 'combat' || categoryKey === 'support') && subCategoryKeys.length > 1;
+                const showSubCategoryNodes = (categoryKey === 'combat' || categoryKey === 'support' || categoryKey === 'military') && subCategoryKeys.length > 1;
                 
                 if (showSubCategoryNodes) {
                     // Multiple sub-categories: render each as a separate branch
@@ -1880,6 +1902,8 @@
                         else if (subCategoryKey === 'airstrike') subCategoryIcon = '✈️';
                         else if (subCategoryKey === 'expeditions') subCategoryIcon = '🗺️';
                         else if (subCategoryKey === 'npc') subCategoryIcon = '👤';
+                        else if (subCategoryKey === 'heavyWeapons') subCategoryIcon = '🔫';
+                        else if (subCategoryKey === 'defensiveStructures') subCategoryIcon = '🏗️';
                         else subCategoryIcon = '⚡';
                         
                         subCategoryNode.innerHTML = `
@@ -2251,7 +2275,7 @@
                     subTreeContainer.dataset.subCategory = subCategoryKey;
                     
                     // Only show sub-category nodes for categories that truly have distinct sub-categories
-                    const showSubCategoryNodes = (categoryKey === 'combat' || categoryKey === 'support');
+                    const showSubCategoryNodes = (categoryKey === 'combat' || categoryKey === 'support' || categoryKey === 'military');
                     
                     if (showSubCategoryNodes) {
                         // Sub-category node (styled like other nodes)
@@ -2285,6 +2309,8 @@
                         else if (subCategoryKey === 'airstrike') subCategoryIcon = '✈️';
                         else if (subCategoryKey === 'expeditions') subCategoryIcon = '🗺️';
                         else if (subCategoryKey === 'npc') subCategoryIcon = '👤';
+                        else if (subCategoryKey === 'heavyWeapons') subCategoryIcon = '🔫';
+                        else if (subCategoryKey === 'defensiveStructures') subCategoryIcon = '🏗️';
                         else subCategoryIcon = '⚡';
                         
                         subCategoryNode.innerHTML = `
@@ -2431,6 +2457,7 @@
             const icons = {
                 buildings: '🏗️',
                 combat: '⚔️',
+                military: '🎖️',
                 walls: '🧱',
                 farm: '🌾',
                 laboratory: '🧪',
