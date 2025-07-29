@@ -2117,6 +2117,9 @@
                     <button class="settings-btn">
                         <i class="fas fa-cog"></i>
                     </button>
+                    <button class="settings-btn" onclick="testEndGame()" style="background: rgba(255, 0, 0, 0.3); border-color: #ff0000;" title="Test End Game">
+                        <i class="fas fa-skull"></i>
+                    </button>
                 </div>
             </div>
         </div>
@@ -3989,6 +3992,17 @@
             closePostExpeditionModal();
             
             console.log('Expedition processed from slot', slotIndex + 1, 'Success:', rewards.success);
+        }
+
+        // Test function to trigger end game screen
+        function testEndGame() {
+            // Set base health to 0 to trigger game over
+            if (window.uiManager) {
+                window.uiManager.updateBaseHealth(0);
+            } else {
+                // Fallback: redirect directly to end game screen
+                window.location.href = 'end-game.html';
+            }
         }
     </script>
 </body>

@@ -856,41 +856,105 @@
             margin-bottom: 10px;
         }
 
-        /* Unlock Button */
-        .unlock-button {
+        /* Unlock Interface */
+        .unlock-interface {
             position: absolute;
-            bottom: 20px;
-            right: 30px;
-            padding: 12px 25px;
-            font-size: 14px;
-            font-weight: bold;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            z-index: 10;
+            background: #2C2C2C;
+            border: 2px solid #FF8C00;
+            border-radius: 12px;
+            padding: 20px;
+            width: 300px;
+            text-align: center;
+            box-shadow: 0 0 30px rgba(255, 140, 0, 0.4);
+            z-index: 2000;
+            display: none;
+            animation: slideIn 0.3s ease-out;
         }
 
-        .unlock-button.can-afford {
+        .unlock-interface::after {
+            content: '';
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 0;
+            border-left: 10px solid transparent;
+            border-right: 10px solid transparent;
+            border-top: 10px solid #FF8C00;
+        }
+
+        .unlock-interface-icon {
+            font-size: 32px;
+            margin-bottom: 10px;
+        }
+
+        .unlock-interface-title {
+            font-size: 16px;
+            font-weight: bold;
+            color: #FF8C00;
+            margin-bottom: 8px;
+        }
+
+        .unlock-interface-effect {
+            font-size: 14px;
+            color: #FFA500;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        .unlock-interface-cost {
+            font-size: 16px;
+            font-weight: bold;
+            color: #4169E1;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+
+        .unlock-interface-buttons {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+        }
+
+        .unlock-interface-button {
+            padding: 8px 16px;
+            font-size: 12px;
+            font-weight: bold;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            min-width: 80px;
+        }
+
+        .unlock-interface-button.confirm {
             background: #32CD32;
             color: white;
         }
 
-        .unlock-button.can-afford:hover {
+        .unlock-interface-button.confirm:hover {
             background: #228B22;
             transform: scale(1.05);
         }
 
-        .unlock-button.cannot-afford {
+        .unlock-interface-button.confirm:disabled {
             background: #DC143C;
-            color: white;
             cursor: not-allowed;
+            transform: none;
         }
 
-        .unlock-button.no-selection {
+        .unlock-interface-button.cancel {
             background: #666;
-            color: #CCC;
-            cursor: not-allowed;
+            color: white;
+        }
+
+        .unlock-interface-button.cancel:hover {
+            background: #555;
+            transform: scale(1.05);
         }
 
         /* Unlock Animation */
@@ -1206,10 +1270,24 @@
                 </div>
             </div>
 
-            <!-- Unlock Button -->
-            <button class="unlock-button no-selection" id="unlockButton" onclick="unlockUpgrade()">
-                SELECT UPGRADE
-            </button>
+            <!-- Unlock Interface -->
+            <div class="unlock-interface" id="unlockInterface">
+                <div class="unlock-interface-icon" id="unlockInterfaceIcon">🔫</div>
+                <div class="unlock-interface-title" id="unlockInterfaceTitle">Upgrade Name</div>
+                <div class="unlock-interface-effect" id="unlockInterfaceEffect">Upgrade Effect</div>
+                <div class="unlock-interface-cost" id="unlockInterfaceCost">
+                    <i class="fas fa-flask"></i>
+                    <span id="unlockInterfaceCostAmount">0 RP</span>
+                </div>
+                <div class="unlock-interface-buttons">
+                    <button class="unlock-interface-button confirm" id="unlockInterfaceConfirm" onclick="confirmUnlock()">
+                        UNLOCK
+                    </button>
+                    <button class="unlock-interface-button cancel" onclick="closeUnlockInterface()">
+                        CANCEL
+                    </button>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -2066,7 +2144,7 @@
                             
                             // Add click event
                             if (!upgrade.unlocked && (upgradeIndex === 0 || subCategoryData.upgrades[upgradeIndex - 1].unlocked)) {
-                                upgradeNode.addEventListener('click', () => selectUpgrade(upgrade, categoryKey, subCategoryKey));
+                                upgradeNode.addEventListener('click', (event) => selectUpgrade(upgrade, categoryKey, subCategoryKey, event));
                             }
                             
                             // Add hover tooltip
@@ -2154,7 +2232,7 @@
                             
                             // Add click event
                             if (!upgrade.unlocked && (upgradeIndex === 0 || subCategoryData.upgrades[upgradeIndex - 1].unlocked)) {
-                                upgradeNode.addEventListener('click', () => selectUpgrade(upgrade, categoryKey, subCategoryKey));
+                                upgradeNode.addEventListener('click', (event) => selectUpgrade(upgrade, categoryKey, subCategoryKey, event));
                             }
                             
                             // Add hover tooltip
@@ -2260,7 +2338,7 @@
                                 
                                 // Add click event
                                 if (!upgrade.unlocked && (upgradeIndex === 0 || subCategoryData.upgrades[upgradeIndex - 1].unlocked)) {
-                                    upgradeNode.addEventListener('click', () => selectUpgrade(upgrade, categoryKey, subCategoryKey));
+                                    upgradeNode.addEventListener('click', (event) => selectUpgrade(upgrade, categoryKey, subCategoryKey, event));
                                 }
                                 
                                 // Add hover tooltip
@@ -2473,7 +2551,7 @@
                         
                         // Add click event
                         if (!upgrade.unlocked && (index === 0 || subCategoryData.upgrades[index - 1].unlocked)) {
-                            upgradeNode.addEventListener('click', () => selectUpgrade(upgrade, categoryKey, subCategoryKey));
+                            upgradeNode.addEventListener('click', (event) => selectUpgrade(upgrade, categoryKey, subCategoryKey, event));
                         }
                         
                         // Add hover tooltip
@@ -2667,7 +2745,7 @@
         }
 
         // Select an upgrade
-        function selectUpgrade(upgrade, category, subCategory) {
+        function selectUpgrade(upgrade, category, subCategory, event) {
             selectedUpgrade = upgrade;
             selectedUpgrade.category = category;
             selectedUpgrade.subCategory = subCategory;
@@ -2681,8 +2759,8 @@
             // Show upgrade details
             showUpgradeDetails(upgrade);
             
-            // Update unlock button
-            updateUnlockButton();
+            // Show unlock interface
+            showUnlockInterface(upgrade, category, subCategory, event);
         }
 
         // Show upgrade details
@@ -2703,27 +2781,80 @@
             document.querySelector('.meta-upgrade-modal').appendChild(detailsPanel);
         }
 
-        // Update unlock button
-        function updateUnlockButton() {
-            const button = document.getElementById('unlockButton');
+        // Show unlock interface
+        function showUnlockInterface(upgrade, category, subCategory, event) {
+            const interface = document.getElementById('unlockInterface');
+            const icon = document.getElementById('unlockInterfaceIcon');
+            const title = document.getElementById('unlockInterfaceTitle');
+            const effect = document.getElementById('unlockInterfaceEffect');
+            const costAmount = document.getElementById('unlockInterfaceCostAmount');
+            const confirmButton = document.getElementById('unlockInterfaceConfirm');
             
-            if (!selectedUpgrade) {
-                button.className = 'unlock-button no-selection';
-                button.textContent = 'SELECT UPGRADE';
-                return;
+            // Get category data for description
+            const categoryData = upgradeData[category];
+            const subCategoryData = categoryData.subCategories[subCategory];
+            
+            // Update interface content
+            icon.textContent = upgrade.icon;
+            title.textContent = upgrade.name;
+            effect.textContent = upgrade.effect;
+            costAmount.textContent = `${upgrade.cost} RP`;
+            
+            // Update button state
+            if (currentRP >= upgrade.cost) {
+                confirmButton.disabled = false;
+                confirmButton.textContent = 'UNLOCK';
+            } else {
+                confirmButton.disabled = true;
+                confirmButton.textContent = 'INSUFFICIENT RP';
             }
             
-            if (currentRP >= selectedUpgrade.cost) {
-                button.className = 'unlock-button can-afford';
-                button.textContent = `UNLOCK (${selectedUpgrade.cost} RP)`;
-            } else {
-                button.className = 'unlock-button cannot-afford';
-                button.textContent = `INSUFFICIENT RP (${selectedUpgrade.cost} RP)`;
+            // Position interface above the clicked skill
+            const rect = event.target.getBoundingClientRect();
+            const modalRect = document.querySelector('.meta-upgrade-modal').getBoundingClientRect();
+            
+            // Calculate position (above the skill node)
+            const left = rect.left - modalRect.left + (rect.width / 2) - 150; // Center the interface
+            const top = rect.top - modalRect.top - 200; // Position above the skill
+            
+            // Ensure interface stays within modal bounds
+            const interfaceWidth = 300;
+            const interfaceHeight = 150;
+            const modalWidth = modalRect.width;
+            const modalHeight = modalRect.height;
+            
+            let finalLeft = Math.max(10, Math.min(left, modalWidth - interfaceWidth - 10));
+            let finalTop = Math.max(10, Math.min(top, modalHeight - interfaceHeight - 10));
+            
+            // If interface would go off the top, position it below the skill instead
+            if (top < 10) {
+                finalTop = rect.bottom - modalRect.top + 20;
+            }
+            
+            interface.style.left = finalLeft + 'px';
+            interface.style.top = finalTop + 'px';
+            
+            // Show interface
+            interface.style.display = 'block';
+        }
+
+        // Close unlock interface
+        function closeUnlockInterface() {
+            const interface = document.getElementById('unlockInterface');
+            interface.style.display = 'none';
+            
+            // Clear selection
+            selectedUpgrade = null;
+            
+            // Remove details panel
+            const detailsPanel = document.querySelector('.upgrade-details');
+            if (detailsPanel) {
+                detailsPanel.remove();
             }
         }
 
-        // Unlock selected upgrade
-        function unlockUpgrade() {
+        // Confirm unlock
+        function confirmUnlock() {
             if (!selectedUpgrade || currentRP < selectedUpgrade.cost) {
                 return;
             }
@@ -2739,20 +2870,14 @@
             const nodeElement = document.querySelector(`[data-upgrade-id="${selectedUpgrade.id}"][data-category="${selectedUpgrade.category}"][data-sub-category="${selectedUpgrade.subCategory}"]`);
             nodeElement.classList.add('unlock-animation');
             
+            // Close interface
+            closeUnlockInterface();
+            
             setTimeout(() => {
                 nodeElement.classList.remove('unlock-animation');
                 // Re-render all trees to update visuals
                 renderUpgradeTrees();
             }, 600);
-            
-            // Clear selection
-            selectedUpgrade = null;
-            
-            // Remove details panel
-            const detailsPanel = document.querySelector('.upgrade-details');
-            if (detailsPanel) {
-                detailsPanel.remove();
-            }
         }
 
         // Update RP display

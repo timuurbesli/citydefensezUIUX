@@ -795,6 +795,11 @@ class UIManager {
     }
     
     startGameLoop() {
+        // Set game start time if not already set
+        if (!localStorage.getItem('cityDefenseZ_gameStartTime')) {
+            localStorage.setItem('cityDefenseZ_gameStartTime', Date.now().toString());
+        }
+
         // Simple game loop for progress bar and other time-based updates
         setInterval(() => {
             if (!gameState.isPaused && !gameState.isNight) {
@@ -890,6 +895,12 @@ class UIManager {
         gameState.baseHealth = Math.max(0, Math.min(100, newHealth));
         this.updateHealthBarVisuals();
         
+        // Check for game over condition
+        if (gameState.baseHealth <= 0) {
+            this.triggerGameOver();
+            return;
+        }
+        
         // Show floating text for health changes
         const healthSection = document.querySelector('.health-section');
         if (healthSection) {
@@ -898,6 +909,83 @@ class UIManager {
             const text = healthChange > 0 ? `+${healthChange}%` : `${healthChange}%`;
             this.showFloatingText(healthSection, text, color);
         }
+    }
+
+    triggerGameOver() {
+        // Calculate game statistics
+        const gameStats = {
+            daysSurvived: gameState.currentDay,
+            zombiesKilled: this.calculateZombiesKilled(),
+            researchReward: this.calculateResearchReward(),
+            playTimeMinutes: this.calculatePlayTime()
+        };
+
+        // Save game stats to localStorage
+        localStorage.setItem('cityDefenseZ_endGameStats', JSON.stringify(gameStats));
+        
+        // Reset claimed status for new game
+        localStorage.removeItem('cityDefenseZ_researchClaimed');
+        
+        // Redirect to end game screen
+        window.location.href = 'end-game.html';
+    }
+
+    calculateZombiesKilled() {
+        // Calculate based on defense units and days survived
+        let totalKilled = 0;
+        
+        // Base kills per day
+        const baseKillsPerDay = 50;
+        
+        // Additional kills from defense units
+        const unitKills = {
+            soldier: 10,
+            mg: 25,
+            rocket: 50,
+            mortar: 75,
+            mine: 15,
+            wall: 5,
+            outpost: 20
+        };
+        
+        Object.keys(gameState.defenseUnits).forEach(unit => {
+            totalKilled += gameState.defenseUnits[unit] * unitKills[unit] * gameState.currentDay;
+        });
+        
+        // Add base kills
+        totalKilled += baseKillsPerDay * gameState.currentDay;
+        
+        return Math.floor(totalKilled);
+    }
+
+    calculateResearchReward() {
+        // Calculate research points based on performance
+        let researchPoints = 0;
+        
+        // Base points per day survived
+        researchPoints += gameState.currentDay * 5;
+        
+        // Bonus for high health
+        if (gameState.baseHealth > 50) {
+            researchPoints += Math.floor(gameState.baseHealth / 10);
+        }
+        
+        // Bonus for defense units
+        const totalUnits = Object.values(gameState.defenseUnits).reduce((sum, count) => sum + count, 0);
+        researchPoints += totalUnits * 2;
+        
+        // Minimum reward
+        return Math.max(10, researchPoints);
+    }
+
+    calculatePlayTime() {
+        // Get game start time from localStorage or use current time as fallback
+        const gameStartTime = localStorage.getItem('cityDefenseZ_gameStartTime') || Date.now();
+        const currentTime = Date.now();
+        const playTimeMs = currentTime - gameStartTime;
+        
+        // Convert to minutes
+        return Math.floor(playTimeMs / (1000 * 60));
     }
 
     // NPC Dialogue System
