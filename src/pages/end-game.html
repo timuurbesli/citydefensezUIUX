@@ -62,8 +62,8 @@
             border: 3px solid transparent;
             border-radius: 25px;
             padding: 50px 40px;
-            max-width: 700px;
-            width: 90%;
+            max-width: 1000px;
+            width: 95%;
             text-align: center;
             box-shadow: 
                 0 10px 40px rgba(0, 0, 0, 0.6),
@@ -146,7 +146,7 @@
 
         .stats-container {
             display: grid;
-            grid-template-columns: 1fr 1fr 1fr;
+            grid-template-columns: 1fr 1fr 1fr 1fr;
             gap: 20px;
             margin-bottom: 40px;
         }
@@ -761,6 +761,19 @@
             }
         }
 
+        .button-container {
+            margin-top: 30px;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .button-container.show {
+            opacity: 1 !important;
+            transform: translateY(0) !important;
+        }
+
         /* Floating particles */
         .floating-particles {
             position: fixed;
@@ -912,7 +925,7 @@ SURVIVED</div>
                         <i class="fas fa-skull"></i>
                     </div>
                     <div class="stat-value" id="zombies-killed">0</div>
-                    <div class="stat-label">Zombies Killed</div>
+                    <div class="stat-label">ZOMBIES KILLED</div>
                 </div>
 
                 <div class="stat-card">
@@ -920,7 +933,16 @@ SURVIVED</div>
                         <i class="fas fa-clock"></i>
                     </div>
                     <div class="stat-value" id="play-time">0</div>
-                    <div class="stat-label">Minutes Played</div>
+                    <div class="stat-label">MINUTES PLAYED</div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-flag-checkered"></i>
+                    </div>
+                    <div class="stat-value" id="mission-complete">0%</div>
+                    <div class="stat-label">MISSION
+COMPLETE</div>
                 </div>
             </div>
 
@@ -972,15 +994,17 @@ SURVIVED</div>
                 </div>
             </div>
 
-            <button class="claim-button" id="claim-button">
-                <i class="fas fa-gift"></i>
-                Claim Research Points
-            </button>
+            <div class="button-container" id="button-container" style="opacity: 0; transform: translateY(20px); transition: all 0.6s ease;">
+                <button class="claim-button" id="claim-button">
+                    <i class="fas fa-gift"></i>
+                    Claim Research Points
+                </button>
 
-            <button class="continue-button" id="continue-button" style="display: none;">
-                <i class="fas fa-play"></i>
-                Continue to Meta Upgrades
-            </button>
+                <button class="continue-button" id="continue-button" style="display: none;">
+                    <i class="fas fa-play"></i>
+                    Continue to Meta Upgrades
+                </button>
+            </div>
         </div>
     </div>
 
@@ -1039,22 +1063,17 @@ SURVIVED</div>
             }
 
             loadGameStats() {
-                // Load stats from localStorage or use default values
-                const savedStats = localStorage.getItem('cityDefenseZ_endGameStats');
-                if (savedStats) {
-                    this.gameStats = JSON.parse(savedStats);
-                } else {
-                    // Default values for testing
-                    this.gameStats = {
-                        daysSurvived: 15,
-                        zombiesKilled: 2347,
-                        researchReward: 150,
-                        playTimeMinutes: 127
-                    };
-                }
+                // Always use default values for testing (no localStorage persistence)
+                this.gameStats = {
+                    daysSurvived: 15,
+                    zombiesKilled: 2347,
+                    researchReward: 150,
+                    playTimeMinutes: 127,
+                    missionComplete: 100
+                };
 
-                // Check if already claimed
-                this.isClaimed = localStorage.getItem('cityDefenseZ_researchClaimed') === 'true';
+                // Always start as not claimed
+                this.isClaimed = false;
             }
 
             updateDisplay() {
@@ -1081,6 +1100,7 @@ SURVIVED</div>
                 const daysValue = document.getElementById('days-survived');
                 const zombiesValue = document.getElementById('zombies-killed');
                 const playTimeValue = document.getElementById('play-time');
+                const missionCompleteValue = document.getElementById('mission-complete');
 
                 // Hide research section initially
                 researchSection.classList.remove('show');
@@ -1096,6 +1116,8 @@ SURVIVED</div>
                     daysCard.classList.add('show');
                     zombiesCard.classList.add('show');
                     playTimeCard.classList.add('show');
+                    const missionCard = document.querySelector('.stat-card:nth-child(4)');
+                    missionCard.classList.add('show');
                     
                     // Start number animations with different durations
                     this.animateNumber(daysValue, 0, this.gameStats.daysSurvived, 1500, (value) => {
@@ -1108,6 +1130,10 @@ SURVIVED</div>
                     
                     this.animateNumber(playTimeValue, 0, this.gameStats.playTimeMinutes, 1200, (value) => {
                         playTimeValue.textContent = value;
+                    });
+                    
+                    this.animateNumber(missionCompleteValue, 0, this.gameStats.missionComplete || 100, 1000, (value) => {
+                        missionCompleteValue.textContent = value + '%';
                     });
 
 
@@ -1128,7 +1154,12 @@ SURVIVED</div>
                         setTimeout(() => playTimeCard.classList.remove('animating'), 800);
                     }, 1200);
 
-                    this.animationState.timeouts.push(pulseTimeout1, pulseTimeout2, pulseTimeout3);
+                    const pulseTimeout4 = setTimeout(() => {
+                        missionCard.classList.add('animating');
+                        setTimeout(() => missionCard.classList.remove('animating'), 800);
+                    }, 1000);
+
+                    this.animationState.timeouts.push(pulseTimeout1, pulseTimeout2, pulseTimeout3, pulseTimeout4);
                 }, 500);
                 this.animationState.timeouts.push(step1Timeout);
 
@@ -1149,15 +1180,10 @@ SURVIVED</div>
                 // 3. Update claim button state
                 const finalTimeout = setTimeout(() => {
                     this.animationState.isAnimating = false;
-                    const claimButton = document.getElementById('claim-button');
-                    const continueButton = document.getElementById('continue-button');
-
-                    if (this.isClaimed) {
-                        claimButton.textContent = 'Research Points Claimed';
-                        claimButton.classList.add('claimed');
-                        claimButton.disabled = true;
-                        continueButton.style.display = 'inline-block';
-                    }
+                    
+                    // Show button container
+                    const buttonContainer = document.getElementById('button-container');
+                    buttonContainer.classList.add('show');
                 }, 4000);
                 this.animationState.timeouts.push(finalTimeout);
             }
@@ -1232,10 +1258,12 @@ SURVIVED</div>
                 const daysCard = document.querySelector('.stat-card:nth-child(1)');
                 const zombiesCard = document.querySelector('.stat-card:nth-child(2)');
                 const playTimeCard = document.querySelector('.stat-card:nth-child(3)');
+                const missionCard = document.querySelector('.stat-card:nth-child(4)');
                 const researchSection = document.querySelector('.research-reward-section');
                 const daysValue = document.getElementById('days-survived');
                 const zombiesValue = document.getElementById('zombies-killed');
                 const playTimeValue = document.getElementById('play-time');
+                const missionCompleteValue = document.getElementById('mission-complete');
 
                 // Play skip sound
                 this.playSound('cardhover');
@@ -1249,20 +1277,24 @@ SURVIVED</div>
                         daysCard.classList.add('show');
                         zombiesCard.classList.add('show');
                         playTimeCard.classList.add('show');
+                        missionCard.classList.add('show');
                         
                         daysValue.textContent = this.gameStats.daysSurvived;
                         zombiesValue.textContent = this.gameStats.zombiesKilled.toLocaleString();
                         playTimeValue.textContent = this.gameStats.playTimeMinutes;
+                        missionCompleteValue.textContent = (this.gameStats.missionComplete || 100) + '%';
                         
                         // Add pulse animations
                         daysCard.classList.add('animating');
                         zombiesCard.classList.add('animating');
                         playTimeCard.classList.add('animating');
+                        missionCard.classList.add('animating');
                         
                         setTimeout(() => {
                             daysCard.classList.remove('animating');
                             zombiesCard.classList.remove('animating');
                             playTimeCard.classList.remove('animating');
+                            missionCard.classList.remove('animating');
                         }, 800);
                         break;
 
@@ -1272,15 +1304,9 @@ SURVIVED</div>
                         this.animateResearchPoints();
                         this.animationState.isAnimating = false;
                         
-                        // Update button states
-                        const claimButton = document.getElementById('claim-button');
-                        const continueButton = document.getElementById('continue-button');
-                        if (this.isClaimed) {
-                            claimButton.textContent = 'Research Points Claimed';
-                            claimButton.classList.add('claimed');
-                            claimButton.disabled = true;
-                            continueButton.style.display = 'inline-block';
-                        }
+                        // Show button container
+                        const buttonContainer = document.getElementById('button-container');
+                        buttonContainer.classList.add('show');
                         break;
 
                     default:
@@ -1291,8 +1317,6 @@ SURVIVED</div>
             }
 
             claimResearchPoints() {
-                if (this.isClaimed) return;
-
                 // Play claim sound
                 this.playSound('merge');
 
@@ -1302,7 +1326,6 @@ SURVIVED</div>
                 localStorage.setItem('cityDefenseZ_researchPoints', newTotal.toString());
 
                 // Mark as claimed
-                localStorage.setItem('cityDefenseZ_researchClaimed', 'true');
                 this.isClaimed = true;
 
                 // Update UI
