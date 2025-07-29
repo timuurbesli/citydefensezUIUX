@@ -2114,7 +2114,7 @@
                         </button>
                     </div>
                     
-                    <button class="settings-btn">
+                    <button class="settings-btn" onclick="openSettings()">
                         <i class="fas fa-cog"></i>
                     </button>
                     <button class="settings-btn" onclick="testEndGame()" style="background: rgba(255, 0, 0, 0.3); border-color: #ff0000;" title="Test End Game">
@@ -3992,6 +3992,13 @@
             closePostExpeditionModal();
             
             console.log('Expedition processed from slot', slotIndex + 1, 'Success:', rewards.success);
+        }
+
+        // Open settings panel
+        function openSettings() {
+            // Save current game state if needed
+            // For now, just redirect to settings page
+            window.location.href = 'settings.html';
         }
 
         // Test function to trigger end game screen

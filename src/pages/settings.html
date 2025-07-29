@@ -1,0 +1,1390 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>City Defense Z - Settings</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Roboto+Condensed:wght@300;400;700&display=swap" rel="stylesheet">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Roboto Condensed', sans-serif;
+            background: #000;
+            overflow: hidden;
+            cursor: none;
+            height: 100vh;
+        }
+
+        /* Custom Cursor */
+        .custom-cursor {
+            position: fixed;
+            width: 20px;
+            height: 20px;
+            border: 2px solid #00ffff;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 10000;
+            transition: all 0.1s ease;
+            mix-blend-mode: difference;
+        }
+
+        .custom-cursor.hover {
+            width: 40px;
+            height: 40px;
+            border-color: #ffdd00;
+            background: rgba(255, 221, 0, 0.1);
+        }
+
+        /* Background Video */
+        .video-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: -2;
+            object-fit: cover;
+        }
+
+        /* Video Overlay */
+        .video-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: linear-gradient(135deg, 
+                rgba(0,0,0,0.7) 0%, 
+                rgba(10,25,35,0.8) 50%, 
+                rgba(0,0,0,0.9) 100%);
+            z-index: -1;
+        }
+
+        /* Main Container */
+        .settings-container {
+            display: flex;
+            height: 100vh;
+            width: 100vw;
+            position: relative;
+        }
+
+        /* Left Panel */
+        .left-panel {
+            width: 400px;
+            height: 100vh;
+            background: linear-gradient(145deg, 
+                rgba(20,25,35,0.95) 0%, 
+                rgba(10,15,25,0.98) 50%, 
+                rgba(5,10,20,0.99) 100%);
+            backdrop-filter: blur(15px);
+            border-right: 3px solid rgba(0,255,255,0.3);
+            box-shadow: 0 0 50px rgba(0,255,255,0.2);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Animated Background Elements */
+        .left-panel::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(0,255,255,0.1) 0%, transparent 70%);
+            animation: rotate 20s linear infinite;
+            z-index: -1;
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        /* Logo Section */
+        .logo-section {
+            text-align: center;
+            margin-bottom: 3rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        .logo-section img {
+            width: 200px;
+            height: auto;
+            filter: drop-shadow(0 0 20px rgba(0,255,255,0.5));
+            animation: logoGlow 3s ease-in-out infinite alternate;
+        }
+
+        @keyframes logoGlow {
+            from { filter: drop-shadow(0 0 20px rgba(0,255,255,0.5)); }
+            to { filter: drop-shadow(0 0 30px rgba(0,255,255,0.8)); }
+        }
+
+        .logo-section h1 {
+            color: #00ffff;
+            font-family: 'Orbitron', monospace;
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-top: 1rem;
+            text-shadow: 0 0 10px rgba(0,255,255,0.5);
+        }
+
+        /* Navigation Buttons */
+        .nav-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            width: 100%;
+            position: relative;
+            z-index: 2;
+        }
+
+        .nav-btn {
+            background: linear-gradient(135deg, 
+                rgba(0,255,255,0.1) 0%, 
+                rgba(0,255,255,0.05) 100%);
+            border: 2px solid rgba(0,255,255,0.3);
+            border-radius: 10px;
+            padding: 1rem 1.5rem;
+            color: #00ffff;
+            font-family: 'Orbitron', monospace;
+            font-size: 1rem;
+            font-weight: 400;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .nav-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, 
+                transparent, 
+                rgba(0,255,255,0.2), 
+                transparent);
+            transition: left 0.5s ease;
+        }
+
+        .nav-btn:hover::before {
+            left: 100%;
+        }
+
+        .nav-btn:hover {
+            background: linear-gradient(135deg, 
+                rgba(0,255,255,0.2) 0%, 
+                rgba(0,255,255,0.1) 100%);
+            border-color: rgba(0,255,255,0.6);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(0,255,255,0.3);
+        }
+
+        .nav-btn.active {
+            background: linear-gradient(135deg, 
+                rgba(0,255,255,0.3) 0%, 
+                rgba(0,255,255,0.15) 100%);
+            border-color: rgba(0,255,255,0.8);
+            box-shadow: 0 0 20px rgba(0,255,255,0.4);
+        }
+
+        /* Right Panel - Settings Content */
+        .right-panel {
+            flex: 1;
+            padding: 3rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            overflow-y: auto;
+            position: relative;
+        }
+
+        /* Settings Header */
+        .settings-header {
+            text-align: center;
+            margin-bottom: 3rem;
+            position: relative;
+        }
+
+        .settings-header h2 {
+            color: #00ffff;
+            font-family: 'Orbitron', monospace;
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            text-shadow: 0 0 20px rgba(0,255,255,0.5);
+        }
+
+        .settings-header p {
+            color: #ffffff;
+            font-size: 1.1rem;
+            opacity: 0.8;
+        }
+
+        /* Settings Sections */
+        .settings-sections {
+            width: 100%;
+            max-width: 800px;
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .settings-section {
+            background: linear-gradient(135deg, 
+                rgba(20,25,35,0.9) 0%, 
+                rgba(10,15,25,0.95) 100%);
+            border: 2px solid rgba(0,255,255,0.3);
+            border-radius: 15px;
+            padding: 2rem;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            transition: all 0.3s ease;
+        }
+
+        .settings-section:hover {
+            border-color: rgba(0,255,255,0.5);
+            box-shadow: 0 15px 40px rgba(0,255,255,0.2);
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid rgba(0,255,255,0.2);
+        }
+
+        .section-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #00ffff, #0080ff);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #000;
+            font-size: 1.2rem;
+        }
+
+        .section-title {
+            color: #00ffff;
+            font-family: 'Orbitron', monospace;
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        /* Settings Items */
+        .settings-items {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .setting-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1rem;
+            background: rgba(0,0,0,0.3);
+            border-radius: 10px;
+            border: 1px solid rgba(255,255,255,0.1);
+            transition: all 0.3s ease;
+        }
+
+        .setting-item:hover {
+            background: rgba(0,255,255,0.1);
+            border-color: rgba(0,255,255,0.3);
+        }
+
+        .setting-info {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            flex: 1;
+        }
+
+        .setting-icon {
+            color: #00ffff;
+            font-size: 1.1rem;
+            width: 20px;
+            text-align: center;
+            filter: drop-shadow(0 0 5px rgba(0,255,255,0.5));
+            transition: all 0.3s ease;
+        }
+
+        .setting-item:hover .setting-icon {
+            transform: scale(1.1);
+            filter: drop-shadow(0 0 8px rgba(0,255,255,0.8));
+        }
+
+        .setting-label {
+            color: #ffffff;
+            font-size: 1.1rem;
+            font-weight: 500;
+        }
+
+        .setting-control {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        /* Toggle Switch */
+        .toggle-switch {
+            position: relative;
+            width: 60px;
+            height: 30px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .toggle-switch.active {
+            background: #00ffff;
+        }
+
+        .toggle-switch::after {
+            content: '';
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            width: 26px;
+            height: 26px;
+            background: #ffffff;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+        }
+
+        .toggle-switch.active::after {
+            transform: translateX(30px);
+        }
+
+        /* Volume Slider */
+        .volume-slider {
+            width: 150px;
+            height: 6px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 3px;
+            outline: none;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .volume-slider::-webkit-slider-thumb {
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            background: #00ffff;
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0 0 10px rgba(0,255,255,0.5);
+        }
+
+        .volume-slider::-moz-range-thumb {
+            width: 20px;
+            height: 20px;
+            background: #00ffff;
+            border-radius: 50%;
+            cursor: pointer;
+            border: none;
+            box-shadow: 0 0 10px rgba(0,255,255,0.5);
+        }
+
+        .volume-value {
+            color: #00ffff;
+            font-weight: 600;
+            min-width: 40px;
+            text-align: center;
+        }
+
+        /* Dropdown Select */
+        .settings-select {
+            background: rgba(0,0,0,0.5);
+            border: 2px solid rgba(0,255,255,0.3);
+            border-radius: 8px;
+            color: #ffffff;
+            padding: 0.5rem 1rem;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            min-width: 200px;
+        }
+
+        .settings-select:hover {
+            border-color: rgba(0,255,255,0.6);
+        }
+
+        .settings-select:focus {
+            outline: none;
+            border-color: #00ffff;
+            box-shadow: 0 0 10px rgba(0,255,255,0.3);
+        }
+
+        .settings-select option {
+            background: #1a1a1a;
+            color: #ffffff;
+        }
+
+        /* Custom Language Dropdown with Colored Flags */
+        .language-select-container {
+            position: relative;
+            min-width: 280px;
+        }
+
+        .language-select-display {
+            background: rgba(0,0,0,0.5);
+            border: 2px solid rgba(0,255,255,0.3);
+            border-radius: 8px;
+            padding: 0.75rem 1rem;
+            color: #ffffff;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            user-select: none;
+        }
+
+        .language-select-display:hover {
+            border-color: rgba(0,255,255,0.6);
+            background: rgba(0,255,255,0.1);
+        }
+
+        .language-select-display.active {
+            border-color: #00ffff;
+            background: rgba(0,255,255,0.15);
+            box-shadow: 0 0 15px rgba(0,255,255,0.3);
+        }
+
+        .flag-container {
+            width: 24px;
+            height: 16px;
+            border-radius: 2px;
+            overflow: hidden;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+            flex-shrink: 0;
+        }
+
+        .flag-icon {
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+            border-radius: 2px;
+        }
+
+        /* Colored Flag Icons */
+        .flag-us {
+            background: linear-gradient(to bottom, #B22234 0%, #B22234 46%, #FFFFFF 46%, #FFFFFF 54%, #B22234 54%, #B22234 100%);
+            position: relative;
+        }
+        .flag-us::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 40%;
+            height: 54%;
+            background: #3C3B6E;
+            background-image: 
+                repeating-linear-gradient(0deg, transparent, transparent 1px, #FFFFFF 1px, #FFFFFF 2px),
+                repeating-linear-gradient(90deg, transparent, transparent 1px, #FFFFFF 1px, #FFFFFF 2px);
+            background-size: 2px 2px;
+        }
+
+        .flag-cn {
+            background: linear-gradient(to bottom, #DE2910 0%, #DE2910 100%);
+            position: relative;
+        }
+        .flag-cn::before {
+            content: '★';
+            position: absolute;
+            top: 1px;
+            left: 2px;
+            color: #FFDE00;
+            font-size: 8px;
+            line-height: 1;
+        }
+
+        .flag-fr {
+            background: linear-gradient(to right, #002395 0%, #002395 33%, #FFFFFF 33%, #FFFFFF 66%, #ED2939 66%, #ED2939 100%);
+        }
+
+        .flag-de {
+            background: linear-gradient(to bottom, #000000 0%, #000000 33%, #DD0000 33%, #DD0000 66%, #FFCE00 66%, #FFCE00 100%);
+        }
+
+        .flag-ru {
+            background: linear-gradient(to bottom, #FFFFFF 0%, #FFFFFF 33%, #0039A6 33%, #0039A6 66%, #D52B1E 66%, #D52B1E 100%);
+        }
+
+        .flag-es {
+            background: linear-gradient(to bottom, #AA151B 0%, #AA151B 25%, #F1BF00 25%, #F1BF00 75%, #AA151B 75%, #AA151B 100%);
+            position: relative;
+        }
+        .flag-es::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to right, #AA151B 0%, #AA151B 25%, #F1BF00 25%, #F1BF00 75%, #AA151B 75%, #AA151B 100%);
+            clip-path: polygon(0 0, 30% 50%, 0 100%);
+        }
+
+        .flag-tr {
+            background: linear-gradient(to bottom, #E30A17 0%, #E30A17 100%);
+            position: relative;
+        }
+        .flag-tr::before {
+            content: '☪';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: #FFFFFF;
+            font-size: 8px;
+            line-height: 1;
+        }
+
+        .language-info {
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+            gap: 2px;
+        }
+
+        .language-text {
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+
+        .language-native {
+            font-size: 0.8rem;
+            opacity: 0.8;
+            font-style: italic;
+        }
+
+        .language-select-display i {
+            color: #00ffff;
+            transition: transform 0.3s ease;
+            margin-left: auto;
+        }
+
+        .language-select-display.active i {
+            transform: rotate(180deg);
+        }
+
+        .language-dropdown {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: rgba(10,15,25,0.95);
+            border: 2px solid rgba(0,255,255,0.3);
+            border-top: none;
+            border-radius: 0 0 8px 8px;
+            max-height: 0;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.5);
+        }
+
+        .language-dropdown.active {
+            max-height: 400px;
+            border-color: #00ffff;
+        }
+
+        .language-option {
+            padding: 0.75rem 1rem;
+            color: #ffffff;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .language-option:last-child {
+            border-bottom: none;
+        }
+
+        .language-option:hover {
+            background: rgba(0,255,255,0.2);
+            color: #00ffff;
+        }
+
+        .language-option.selected {
+            background: rgba(0,255,255,0.3);
+            color: #00ffff;
+            font-weight: 600;
+        }
+
+        .language-option .flag-container {
+            width: 20px;
+            height: 14px;
+        }
+
+        /* Responsive design for language dropdown */
+        @media (max-width: 768px) {
+            .language-select-container {
+                min-width: 220px;
+            }
+            
+            .language-text {
+                font-size: 0.85rem;
+            }
+            
+            .language-native {
+                font-size: 0.75rem;
+            }
+            
+            .flag-container {
+                width: 20px;
+                height: 14px;
+            }
+        }
+
+        /* Hover effect for flag containers */
+        .flag-container {
+            transition: transform 0.2s ease;
+        }
+
+        .language-option:hover .flag-container {
+            transform: scale(1.1);
+        }
+
+        /* Action Buttons */
+        .action-buttons {
+            display: flex;
+            gap: 1rem;
+            margin-top: 3rem;
+            justify-content: center;
+        }
+
+        .action-btn {
+            background: linear-gradient(135deg, 
+                rgba(0,255,255,0.2) 0%, 
+                rgba(0,255,255,0.1) 100%);
+            border: 2px solid rgba(0,255,255,0.4);
+            border-radius: 10px;
+            padding: 1rem 2rem;
+            color: #00ffff;
+            font-family: 'Orbitron', monospace;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .action-btn:hover {
+            background: linear-gradient(135deg, 
+                rgba(0,255,255,0.3) 0%, 
+                rgba(0,255,255,0.2) 100%);
+            border-color: rgba(0,255,255,0.7);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(0,255,255,0.3);
+        }
+
+        .action-btn.secondary {
+            background: linear-gradient(135deg, 
+                rgba(255,255,255,0.1) 0%, 
+                rgba(255,255,255,0.05) 100%);
+            border-color: rgba(255,255,255,0.3);
+            color: #ffffff;
+        }
+
+        .action-btn.secondary:hover {
+            background: linear-gradient(135deg, 
+                rgba(255,255,255,0.2) 0%, 
+                rgba(255,255,255,0.1) 100%);
+            border-color: rgba(255,255,255,0.5);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .settings-container {
+                flex-direction: column;
+            }
+
+            .left-panel {
+                width: 100%;
+                height: auto;
+                min-height: 200px;
+            }
+
+            .right-panel {
+                padding: 2rem 1rem;
+            }
+
+            .settings-header h2 {
+                font-size: 2rem;
+            }
+
+            .setting-item {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+            }
+
+            .setting-info {
+                width: 100%;
+            }
+
+            .setting-control {
+                width: 100%;
+                justify-content: space-between;
+            }
+
+            .setting-icon {
+                font-size: 1rem;
+            }
+        }
+
+        /* Scrollbar Styling */
+        .right-panel::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .right-panel::-webkit-scrollbar-track {
+            background: rgba(0,0,0,0.3);
+            border-radius: 4px;
+        }
+
+        .right-panel::-webkit-scrollbar-thumb {
+            background: rgba(0,255,255,0.5);
+            border-radius: 4px;
+        }
+
+        .right-panel::-webkit-scrollbar-thumb:hover {
+            background: rgba(0,255,255,0.7);
+        }
+    </style>
+</head>
+<body>
+    <!-- Custom Cursor -->
+    <div class="custom-cursor"></div>
+
+    <!-- Background Video -->
+    <video class="video-background" autoplay muted loop>
+        <source src="../assets/videos/mainmenuvideo.mp4" type="video/mp4">
+    </video>
+
+    <!-- Video Overlay -->
+    <div class="video-overlay"></div>
+
+    <!-- Main Container -->
+    <div class="settings-container">
+        <!-- Left Panel -->
+        <div class="left-panel">
+            <!-- Logo Section -->
+            <div class="logo-section">
+                <img src="../assets/images/CDZLogoNew.png" alt="City Defense Z Logo">
+                <h1>SETTINGS</h1>
+            </div>
+
+            <!-- Navigation Buttons -->
+            <div class="nav-buttons">
+                <a href="index.html" class="nav-btn">
+                    <i class="fas fa-home"></i>
+                    Main Menu
+                </a>
+                <a href="game.html" class="nav-btn">
+                    <i class="fas fa-play"></i>
+                    Resume Game
+                </a>
+                <a href="save-selection.html" class="nav-btn">
+                    <i class="fas fa-save"></i>
+                    Load Game
+                </a>
+                <a href="settings.html" class="nav-btn active">
+                    <i class="fas fa-cog"></i>
+                    Settings
+                </a>
+            </div>
+        </div>
+
+        <!-- Right Panel -->
+        <div class="right-panel">
+            <!-- Settings Header -->
+            <div class="settings-header">
+                <h2>GAME SETTINGS</h2>
+                <p>Customize your gaming experience</p>
+            </div>
+
+            <!-- Settings Sections -->
+            <div class="settings-sections">
+                <!-- Graphics Section -->
+                <div class="settings-section">
+                    <div class="section-header">
+                        <div class="section-icon">
+                            <i class="fas fa-desktop"></i>
+                        </div>
+                        <h3 class="section-title">Graphics</h3>
+                    </div>
+                    <div class="settings-items">
+                        <div class="setting-item">
+                            <div class="setting-info">
+                                <i class="fas fa-expand setting-icon"></i>
+                                <span class="setting-label">Full Screen</span>
+                            </div>
+                            <div class="setting-control">
+                                <div class="toggle-switch" id="fullscreen-toggle">
+                                    <div class="toggle-switch::after"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="setting-item">
+                            <div class="setting-info">
+                                <i class="fas fa-sync setting-icon"></i>
+                                <span class="setting-label">V-Sync</span>
+                            </div>
+                            <div class="setting-control">
+                                <div class="toggle-switch" id="vsync-toggle">
+                                    <div class="toggle-switch::after"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="setting-item">
+                            <div class="setting-info">
+                                <i class="fas fa-tv setting-icon"></i>
+                                <span class="setting-label">Resolution</span>
+                            </div>
+                            <div class="setting-control">
+                                <select class="settings-select" id="resolution-select">
+                                    <option value="1920x1080">1920x1080 (Full HD)</option>
+                                    <option value="2560x1440">2560x1440 (2K)</option>
+                                    <option value="3840x2160">3840x2160 (4K)</option>
+                                    <option value="1366x768">1366x768 (HD)</option>
+                                    <option value="1280x720">1280x720 (HD)</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sounds Section -->
+                <div class="settings-section">
+                    <div class="section-header">
+                        <div class="section-icon">
+                            <i class="fas fa-volume-up"></i>
+                        </div>
+                        <h3 class="section-title">Sounds</h3>
+                    </div>
+                    <div class="settings-items">
+                        <div class="setting-item">
+                            <div class="setting-info">
+                                <i class="fas fa-volume-up setting-icon"></i>
+                                <span class="setting-label">Master Volume</span>
+                            </div>
+                            <div class="setting-control">
+                                <input type="range" class="volume-slider" id="master-volume" min="0" max="100" value="80">
+                                <span class="volume-value" id="master-volume-value">80%</span>
+                            </div>
+                        </div>
+                        <div class="setting-item">
+                            <div class="setting-info">
+                                <i class="fas fa-music setting-icon"></i>
+                                <span class="setting-label">Music Volume</span>
+                            </div>
+                            <div class="setting-control">
+                                <input type="range" class="volume-slider" id="music-volume" min="0" max="100" value="70">
+                                <span class="volume-value" id="music-volume-value">70%</span>
+                            </div>
+                        </div>
+                        <div class="setting-item">
+                            <div class="setting-info">
+                                <i class="fas fa-bolt setting-icon"></i>
+                                <span class="setting-label">SFX Volume</span>
+                            </div>
+                            <div class="setting-control">
+                                <input type="range" class="volume-slider" id="sfx-volume" min="0" max="100" value="90">
+                                <span class="volume-value" id="sfx-volume-value">90%</span>
+                            </div>
+                        </div>
+                        <div class="setting-item">
+                            <div class="setting-info">
+                                <i class="fas fa-comments setting-icon"></i>
+                                <span class="setting-label">Dialogue Volume</span>
+                            </div>
+                            <div class="setting-control">
+                                <input type="range" class="volume-slider" id="dialogue-volume" min="0" max="100" value="85">
+                                <span class="volume-value" id="dialogue-volume-value">85%</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Languages Section -->
+                <div class="settings-section">
+                    <div class="section-header">
+                        <div class="section-icon">
+                            <i class="fas fa-globe"></i>
+                        </div>
+                        <h3 class="section-title">Languages</h3>
+                    </div>
+                    <div class="settings-items">
+                        <div class="setting-item">
+                            <div class="setting-info">
+                                <i class="fas fa-language setting-icon"></i>
+                                <span class="setting-label">Language</span>
+                            </div>
+                            <div class="setting-control">
+                                <div class="language-select-container">
+                                    <div class="language-select-display" id="language-display">
+                                        <div class="flag-container">
+                                            <div class="flag-icon flag-us"></div>
+                                        </div>
+                                        <span class="language-text">English</span>
+                                        <span class="language-native">English</span>
+                                        <i class="fas fa-chevron-down"></i>
+                                    </div>
+                                    <div class="language-dropdown" id="language-dropdown">
+                                        <div class="language-option" data-value="en">
+                                            <div class="flag-container">
+                                                <div class="flag-icon flag-us"></div>
+                                            </div>
+                                            <div class="language-info">
+                                                <span class="language-text">English</span>
+                                                <span class="language-native">English</span>
+                                            </div>
+                                        </div>
+                                        <div class="language-option" data-value="zh">
+                                            <div class="flag-container">
+                                                <div class="flag-icon flag-cn"></div>
+                                            </div>
+                                            <div class="language-info">
+                                                <span class="language-text">Chinese (Simplified)</span>
+                                                <span class="language-native">中文 (简体)</span>
+                                            </div>
+                                        </div>
+                                        <div class="language-option" data-value="fr">
+                                            <div class="flag-container">
+                                                <div class="flag-icon flag-fr"></div>
+                                            </div>
+                                            <div class="language-info">
+                                                <span class="language-text">French</span>
+                                                <span class="language-native">Français</span>
+                                            </div>
+                                        </div>
+                                        <div class="language-option" data-value="de">
+                                            <div class="flag-container">
+                                                <div class="flag-icon flag-de"></div>
+                                            </div>
+                                            <div class="language-info">
+                                                <span class="language-text">German</span>
+                                                <span class="language-native">Deutsch</span>
+                                            </div>
+                                        </div>
+                                        <div class="language-option" data-value="ru">
+                                            <div class="flag-container">
+                                                <div class="flag-icon flag-ru"></div>
+                                            </div>
+                                            <div class="language-info">
+                                                <span class="language-text">Russian</span>
+                                                <span class="language-native">Русский</span>
+                                            </div>
+                                        </div>
+                                        <div class="language-option" data-value="es">
+                                            <div class="flag-container">
+                                                <div class="flag-icon flag-es"></div>
+                                            </div>
+                                            <div class="language-info">
+                                                <span class="language-text">Spanish</span>
+                                                <span class="language-native">Español</span>
+                                            </div>
+                                        </div>
+                                        <div class="language-option" data-value="tr">
+                                            <div class="flag-container">
+                                                <div class="flag-icon flag-tr"></div>
+                                            </div>
+                                            <div class="language-info">
+                                                <span class="language-text">Turkish</span>
+                                                <span class="language-native">Türkçe</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="action-buttons">
+                <button class="action-btn" id="apply-settings">
+                    <i class="fas fa-check"></i>
+                    Apply Settings
+                </button>
+                <button class="action-btn secondary" id="reset-settings">
+                    <i class="fas fa-undo"></i>
+                    Reset to Default
+                </button>
+                <button class="action-btn secondary" onclick="goBack()">
+                    <i class="fas fa-times"></i>
+                    Cancel
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Custom cursor functionality
+        const cursor = document.querySelector('.custom-cursor');
+        
+        document.addEventListener('mousemove', (e) => {
+            cursor.style.left = e.clientX + 'px';
+            cursor.style.top = e.clientY + 'px';
+        });
+
+        document.addEventListener('mouseenter', () => {
+            cursor.style.display = 'block';
+        });
+
+        document.addEventListener('mouseleave', () => {
+            cursor.style.display = 'none';
+        });
+
+        // Add hover effect to interactive elements
+        const interactiveElements = document.querySelectorAll('button, a, .toggle-switch, .volume-slider, .settings-select');
+        interactiveElements.forEach(element => {
+            element.addEventListener('mouseenter', () => {
+                cursor.classList.add('hover');
+            });
+            element.addEventListener('mouseleave', () => {
+                cursor.classList.remove('hover');
+            });
+        });
+
+        // Toggle switch functionality
+        const toggleSwitches = document.querySelectorAll('.toggle-switch');
+        toggleSwitches.forEach(toggle => {
+            toggle.addEventListener('click', () => {
+                toggle.classList.toggle('active');
+            });
+        });
+
+        // Volume slider functionality
+        const volumeSliders = document.querySelectorAll('.volume-slider');
+        volumeSliders.forEach(slider => {
+            const valueDisplay = document.getElementById(slider.id + '-value');
+            slider.addEventListener('input', () => {
+                valueDisplay.textContent = slider.value + '%';
+                
+                // Add visual feedback
+                valueDisplay.style.color = slider.value > 80 ? '#00ff00' : 
+                                         slider.value > 50 ? '#ffff00' : 
+                                         slider.value > 20 ? '#ff8800' : '#ff0000';
+            });
+        });
+
+        // Settings management
+        let currentSettings = {
+            graphics: {
+                fullscreen: false,
+                vsync: true,
+                resolution: '1920x1080'
+            },
+            sounds: {
+                master: 80,
+                music: 70,
+                sfx: 90,
+                dialogue: 85
+            },
+            language: 'en'
+        };
+
+        // Load settings from localStorage
+        function loadSettings() {
+            const savedSettings = localStorage.getItem('cityDefenseZSettings');
+            if (savedSettings) {
+                currentSettings = { ...currentSettings, ...JSON.parse(savedSettings) };
+            }
+            applySettingsToUI();
+        }
+
+        // Apply settings to UI
+        function applySettingsToUI() {
+            // Graphics
+            document.getElementById('fullscreen-toggle').classList.toggle('active', currentSettings.graphics.fullscreen);
+            document.getElementById('vsync-toggle').classList.toggle('active', currentSettings.graphics.vsync);
+            document.getElementById('resolution-select').value = currentSettings.graphics.resolution;
+
+            // Sounds
+            document.getElementById('master-volume').value = currentSettings.sounds.master;
+            document.getElementById('master-volume-value').textContent = currentSettings.sounds.master + '%';
+            document.getElementById('music-volume').value = currentSettings.sounds.music;
+            document.getElementById('music-volume-value').textContent = currentSettings.sounds.music + '%';
+            document.getElementById('sfx-volume').value = currentSettings.sounds.sfx;
+            document.getElementById('sfx-volume-value').textContent = currentSettings.sounds.sfx + '%';
+            document.getElementById('dialogue-volume').value = currentSettings.sounds.dialogue;
+            document.getElementById('dialogue-volume-value').textContent = currentSettings.sounds.dialogue + '%';
+
+            // Language
+            updateLanguageDisplay(currentSettings.language);
+        }
+
+        // Save settings to localStorage
+        function saveSettings() {
+            // Update current settings from UI
+            currentSettings.graphics.fullscreen = document.getElementById('fullscreen-toggle').classList.contains('active');
+            currentSettings.graphics.vsync = document.getElementById('vsync-toggle').classList.contains('active');
+            currentSettings.graphics.resolution = document.getElementById('resolution-select').value;
+            
+            currentSettings.sounds.master = parseInt(document.getElementById('master-volume').value);
+            currentSettings.sounds.music = parseInt(document.getElementById('music-volume').value);
+            currentSettings.sounds.sfx = parseInt(document.getElementById('sfx-volume').value);
+            currentSettings.sounds.dialogue = parseInt(document.getElementById('dialogue-volume').value);
+            
+            // Language is already updated in currentSettings when selected
+
+            // Save to localStorage
+            localStorage.setItem('cityDefenseZSettings', JSON.stringify(currentSettings));
+            
+            // Show success message
+            showNotification('Settings saved successfully!', 'success');
+        }
+
+        // Reset settings to default
+        function resetSettings() {
+            currentSettings = {
+                graphics: {
+                    fullscreen: false,
+                    vsync: true,
+                    resolution: '1920x1080'
+                },
+                sounds: {
+                    master: 80,
+                    music: 70,
+                    sfx: 90,
+                    dialogue: 85
+                },
+                language: 'en'
+            };
+            applySettingsToUI();
+            saveSettings();
+            showNotification('Settings reset to default!', 'info');
+        }
+
+        // Go back to previous page
+        function goBack() {
+            // Check if we came from the game or main menu
+            const referrer = document.referrer;
+            if (referrer.includes('game.html')) {
+                window.location.href = 'game.html';
+            } else {
+                window.location.href = 'index.html';
+            }
+        }
+
+        // Show notification
+        function showNotification(message, type = 'info') {
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: ${type === 'success' ? '#00ff00' : '#00ffff'};
+                color: #000;
+                padding: 1rem 2rem;
+                border-radius: 10px;
+                font-weight: 600;
+                z-index: 10001;
+                transform: translateX(100%);
+                transition: transform 0.3s ease;
+                box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+            `;
+            notification.textContent = message;
+            document.body.appendChild(notification);
+
+            // Animate in
+            setTimeout(() => {
+                notification.style.transform = 'translateX(0)';
+            }, 100);
+
+            // Remove after 3 seconds
+            setTimeout(() => {
+                notification.style.transform = 'translateX(100%)';
+                setTimeout(() => {
+                    document.body.removeChild(notification);
+                }, 300);
+            }, 3000);
+        }
+
+        // Event listeners
+        document.getElementById('apply-settings').addEventListener('click', saveSettings);
+        document.getElementById('reset-settings').addEventListener('click', resetSettings);
+
+        // Add back button functionality
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                goBack();
+            }
+            // Keyboard shortcuts for quick access
+            if (e.ctrlKey || e.metaKey) {
+                switch(e.key) {
+                    case 's':
+                        e.preventDefault();
+                        saveSettings();
+                        break;
+                    case 'r':
+                        e.preventDefault();
+                        resetSettings();
+                        break;
+                }
+            }
+        });
+
+
+
+        // Add confirmation for reset
+        document.getElementById('reset-settings').addEventListener('click', function(e) {
+            if (!confirm('Are you sure you want to reset all settings to default?')) {
+                e.preventDefault();
+                return false;
+            }
+        });
+
+        // Language dropdown functionality
+        const languageDisplay = document.getElementById('language-display');
+        const languageDropdown = document.getElementById('language-dropdown');
+        const languageOptions = document.querySelectorAll('.language-option');
+
+        // Language data with flags and native names
+        const languageData = {
+            'en': { 
+                flag: '🇺🇸', 
+                text: 'English',
+                native: 'English'
+            },
+            'zh': { 
+                flag: '🇨🇳', 
+                text: 'Chinese (Simplified)',
+                native: '中文 (简体)'
+            },
+            'fr': { 
+                flag: '🇫🇷', 
+                text: 'French',
+                native: 'Français'
+            },
+            'de': { 
+                flag: '🇩🇪', 
+                text: 'German',
+                native: 'Deutsch'
+            },
+            'ru': { 
+                flag: '🇷🇺', 
+                text: 'Russian',
+                native: 'Русский'
+            },
+            'es': { 
+                flag: '🇪🇸', 
+                text: 'Spanish',
+                native: 'Español'
+            },
+            'tr': { 
+                flag: '🇹🇷', 
+                text: 'Turkish',
+                native: 'Türkçe'
+            }
+        };
+
+        // Toggle dropdown
+        languageDisplay.addEventListener('click', function(e) {
+            e.stopPropagation();
+            languageDropdown.classList.toggle('active');
+            languageDisplay.classList.toggle('active');
+        });
+
+        // Handle language selection
+        languageOptions.forEach(option => {
+            option.addEventListener('click', function() {
+                const value = this.getAttribute('data-value');
+                const language = languageData[value];
+                
+                // Update display - target the flag icon inside the flag container
+                const flagIcon = languageDisplay.querySelector('.flag-container .flag-icon');
+                flagIcon.className = `flag-icon flag-${value}`;
+                languageDisplay.querySelector('.language-text').textContent = language.text;
+                languageDisplay.querySelector('.language-native').textContent = language.native;
+                
+                // Update selected state
+                languageOptions.forEach(opt => opt.classList.remove('selected'));
+                this.classList.add('selected');
+                
+                // Close dropdown
+                languageDropdown.classList.remove('active');
+                languageDisplay.classList.remove('active');
+                
+                // Update current settings
+                currentSettings.language = value;
+            });
+        });
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', function(e) {
+            if (!languageDisplay.contains(e.target) && !languageDropdown.contains(e.target)) {
+                languageDropdown.classList.remove('active');
+                languageDisplay.classList.remove('active');
+            }
+        });
+
+        // Update language display function
+        function updateLanguageDisplay(languageCode) {
+            const language = languageData[languageCode];
+            if (language) {
+                const flagIcon = languageDisplay.querySelector('.flag-container .flag-icon');
+                flagIcon.className = `flag-icon flag-${languageCode}`;
+                languageDisplay.querySelector('.language-text').textContent = language.text;
+                languageDisplay.querySelector('.language-native').textContent = language.native;
+                
+                // Update selected option
+                languageOptions.forEach(opt => {
+                    opt.classList.remove('selected');
+                    if (opt.getAttribute('data-value') === languageCode) {
+                        opt.classList.add('selected');
+                    }
+                });
+            }
+        }
+
+        // Load settings on page load
+        document.addEventListener('DOMContentLoaded', loadSettings);
+    </script>
+</body>
+</html> 

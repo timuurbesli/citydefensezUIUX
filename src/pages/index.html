@@ -550,7 +550,10 @@
         }
 
         function showSettings() {
-            alert('Settings panel will be implemented in the full version!');
+            showLoading();
+            setTimeout(() => {
+                window.location.href = 'settings.html';
+            }, 1000);
         }
 
         function exitGame() {
