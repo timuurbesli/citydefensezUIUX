@@ -1341,6 +1341,55 @@
                     }
                 }
             },
+            garrison: {
+                title: "Garrison",
+                subCategories: {
+                    deployment: {
+                        title: "Bixi Deployment",
+                        description: "Adds automated Bixi machine guns to wall positions for permanent defense.",
+                        upgrades: [
+                            { id: 1, name: "Basic Garrison", cost: 150, effect: "Adds 1 bixi to left wall + 1 bixi to right wall", unlocked: false, icon: "🔫" },
+                            { id: 2, name: "Enhanced Garrison", cost: 250, effect: "Adds 2 more bixis (2L + 2R total)", unlocked: false, icon: "🔫" },
+                            { id: 3, name: "Advanced Garrison", cost: 350, effect: "Adds 2 more bixis (3L + 3R total)", unlocked: false, icon: "🔫" },
+                            { id: 4, name: "Superior Garrison", cost: 450, effect: "Adds 2 more bixis (4L + 4R total)", unlocked: false, icon: "🔫" },
+                            { id: 5, name: "Master Garrison", cost: 550, effect: "Adds 2 more bixis (5L + 5R total)", unlocked: false, icon: "🔫" }
+                        ]
+                    },
+                    damage: {
+                        title: "Bixi Damage",
+                        description: "Increases the damage output of all deployed Bixi machine guns.",
+                        upgrades: [
+                            { id: 1, name: "Enhanced Ammunition", cost: 200, effect: "+25% bixi damage", unlocked: false, icon: "💥" },
+                            { id: 2, name: "High-Explosive Rounds", cost: 300, effect: "+50% bixi damage", unlocked: false, icon: "💥" },
+                            { id: 3, name: "Armor-Piercing Shells", cost: 400, effect: "+75% bixi damage", unlocked: false, icon: "💥" },
+                            { id: 4, name: "Plasma Rounds", cost: 500, effect: "+100% bixi damage", unlocked: false, icon: "💥" },
+                            { id: 5, name: "Quantum Ammunition", cost: 600, effect: "+150% bixi damage", unlocked: false, icon: "💥" }
+                        ]
+                    },
+                    fireRate: {
+                        title: "Bixi Fire Rate",
+                        description: "Increases the firing speed of all deployed Bixi machine guns.",
+                        upgrades: [
+                            { id: 1, name: "Rapid Fire", cost: 175, effect: "+20% bixi fire rate", unlocked: false, icon: "⚡" },
+                            { id: 2, name: "Hyper Fire", cost: 275, effect: "+40% bixi fire rate", unlocked: false, icon: "⚡" },
+                            { id: 3, name: "Lightning Fire", cost: 375, effect: "+60% bixi fire rate", unlocked: false, icon: "⚡" },
+                            { id: 4, name: "Storm Fire", cost: 475, effect: "+80% bixi fire rate", unlocked: false, icon: "⚡" },
+                            { id: 5, name: "Blitz Fire", cost: 575, effect: "+100% bixi fire rate", unlocked: false, icon: "⚡" }
+                        ]
+                    },
+                    range: {
+                        title: "Bixi Range",
+                        description: "Increases the effective range of all deployed Bixi machine guns.",
+                        upgrades: [
+                            { id: 1, name: "Extended Range", cost: 125, effect: "+25% bixi range", unlocked: false, icon: "🎯" },
+                            { id: 2, name: "Long Range", cost: 225, effect: "+50% bixi range", unlocked: false, icon: "🎯" },
+                            { id: 3, name: "Sniper Range", cost: 325, effect: "+75% bixi range", unlocked: false, icon: "🎯" },
+                            { id: 4, name: "Maximum Range", cost: 425, effect: "+100% bixi range", unlocked: false, icon: "🎯" },
+                            { id: 5, name: "Infinite Range", cost: 525, effect: "+150% bixi range", unlocked: false, icon: "🎯" }
+                        ]
+                    }
+                }
+            },
             farm: {
                 title: "Farm",
                 subCategories: {
@@ -2453,6 +2502,7 @@
                 buildings: '🏗️',
                 combat: '⚔️',
                 walls: '🧱',
+                garrison: '🏰',
                 farm: '🌾',
                 laboratory: '🧪',
                 support: '🤝',
@@ -2840,6 +2890,8 @@
             
             return originalEffect;
         }
+
+
 
         // Hide tooltip
         function hideTooltip() {
