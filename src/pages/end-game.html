@@ -230,6 +230,8 @@
             font-weight: 500;
             letter-spacing: 0.5px;
             text-transform: uppercase;
+            white-space: pre-line;
+            line-height: 1.2;
         }
 
         .stat-bonus {
@@ -279,17 +281,16 @@
         }
 
         .research-reward-section {
-            background: linear-gradient(145deg, rgba(65, 105, 225, 0.4), rgba(123, 104, 238, 0.3));
-            border: 3px solid transparent;
+            background: linear-gradient(145deg, rgba(0, 0, 0, 0.8), rgba(20, 20, 20, 0.6));
+            border: 2px solid rgba(255, 255, 255, 0.1);
             border-radius: 20px;
             padding: 35px 30px;
             margin-bottom: 40px;
             position: relative;
-            backdrop-filter: blur(10px);
+            backdrop-filter: blur(5px);
             box-shadow: 
-                0 10px 30px rgba(65, 105, 225, 0.3),
+                0 10px 30px rgba(0, 0, 0, 0.3),
                 inset 0 1px 0 rgba(255, 255, 255, 0.1);
-            animation: researchGlow 3s ease-in-out infinite alternate;
             opacity: 0;
             transform: scale(0.8) translateY(30px);
             transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
@@ -303,26 +304,28 @@
         .research-reward-section::before {
             content: '';
             position: absolute;
-            top: -2px;
-            left: -2px;
-            right: -2px;
-            bottom: -2px;
-            background: linear-gradient(45deg, #4169E1, #6A5ACD, #9370DB, #4169E1);
-            border-radius: 20px;
-            z-index: -1;
-            opacity: 0.7;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 140, 0, 0.1), transparent);
+            transition: left 0.6s;
+        }
+
+        .research-reward-section:hover::before {
+            left: 100%;
         }
 
         .research-reward-title {
             font-size: 1.8rem;
-            color: #4169E1;
+            color: #FF8C00;
             margin-bottom: 20px;
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 12px;
             font-weight: 700;
-            text-shadow: 0 0 20px rgba(65, 105, 225, 0.3);
+            text-shadow: 0 0 20px rgba(255, 140, 0, 0.3);
         }
 
         .research-reward-amount {
@@ -566,17 +569,12 @@
             line-height: 1.4;
         }
 
-        @keyframes researchGlow {
-            from { 
-                box-shadow: 
-                    0 10px 30px rgba(65, 105, 225, 0.3),
-                    inset 0 1px 0 rgba(255, 255, 255, 0.1);
-            }
-            to { 
-                box-shadow: 
-                    0 15px 40px rgba(65, 105, 225, 0.5),
-                    inset 0 1px 0 rgba(255, 255, 255, 0.2);
-            }
+        .research-reward-section:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 
+                0 15px 35px rgba(255, 140, 0, 0.3),
+                0 5px 15px rgba(0, 0, 0, 0.3);
+            border-color: #FF8C00;
         }
 
         @keyframes researchPulse {
@@ -905,8 +903,8 @@
                         <i class="fas fa-calendar-day"></i>
                     </div>
                     <div class="stat-value" id="days-survived">0</div>
-                    <div class="stat-label">Days Survived</div>
-                    <div class="stat-bonus" id="days-bonus">+0% Research Bonus</div>
+                    <div class="stat-label">DAYS
+SURVIVED</div>
                 </div>
 
                 <div class="stat-card">
@@ -1074,7 +1072,7 @@
                 // Animation state tracking
                 this.animationState = {
                     currentStep: 0,
-                    totalSteps: 4,
+                    totalSteps: 2,
                     isAnimating: true,
                     timeouts: []
                 };
@@ -1083,7 +1081,6 @@
                 const daysValue = document.getElementById('days-survived');
                 const zombiesValue = document.getElementById('zombies-killed');
                 const playTimeValue = document.getElementById('play-time');
-                const daysBonus = document.getElementById('days-bonus');
 
                 // Hide research section initially
                 researchSection.classList.remove('show');
@@ -1091,73 +1088,53 @@
                 // Add click listener to skip animations
                 this.addSkipAnimationListener();
 
-                // 1. Animate Days Survived (first card)
+                // 1. Show all stat cards simultaneously
                 const step1Timeout = setTimeout(() => {
                     this.animationState.currentStep = 1;
-                    daysCard.classList.add('show');
                     
-                    // Animate the number counting
+                    // Show all cards at once
+                    daysCard.classList.add('show');
+                    zombiesCard.classList.add('show');
+                    playTimeCard.classList.add('show');
+                    
+                    // Start number animations with different durations
                     this.animateNumber(daysValue, 0, this.gameStats.daysSurvived, 1500, (value) => {
                         daysValue.textContent = value;
                     });
-
-                    // Add pulse animation
-                    const pulseTimeout = setTimeout(() => {
-                        daysCard.classList.add('animating');
-                        setTimeout(() => daysCard.classList.remove('animating'), 800);
-                    }, 800);
-
-                    // Update bonus text
-                    const bonus = this.gameStats.daysSurvived * 5;
-                    daysBonus.textContent = `+${bonus}% Research Bonus`;
-
-                    this.animationState.timeouts.push(pulseTimeout);
-                }, 500);
-                this.animationState.timeouts.push(step1Timeout);
-
-                // 2. Animate Zombies Killed (second card)
-                const step2Timeout = setTimeout(() => {
-                    this.animationState.currentStep = 2;
-                    zombiesCard.classList.add('show');
                     
-                    // Animate the number counting
                     this.animateNumber(zombiesValue, 0, this.gameStats.zombiesKilled, 2000, (value) => {
                         zombiesValue.textContent = value.toLocaleString();
                     });
-
-                    // Add pulse animation
-                    const pulseTimeout = setTimeout(() => {
-                        zombiesCard.classList.add('animating');
-                        setTimeout(() => zombiesCard.classList.remove('animating'), 800);
-                    }, 1000);
-
-                    this.animationState.timeouts.push(pulseTimeout);
-                }, 2500);
-                this.animationState.timeouts.push(step2Timeout);
-
-                // 3. Animate Minutes Played (third card)
-                const step3Timeout = setTimeout(() => {
-                    this.animationState.currentStep = 3;
-                    playTimeCard.classList.add('show');
                     
-                    // Animate the number counting
                     this.animateNumber(playTimeValue, 0, this.gameStats.playTimeMinutes, 1200, (value) => {
                         playTimeValue.textContent = value;
                     });
 
-                    // Add pulse animation
-                    const pulseTimeout = setTimeout(() => {
+
+
+                    // Add pulse animations after counting completes
+                    const pulseTimeout1 = setTimeout(() => {
+                        daysCard.classList.add('animating');
+                        setTimeout(() => daysCard.classList.remove('animating'), 800);
+                    }, 1500);
+
+                    const pulseTimeout2 = setTimeout(() => {
+                        zombiesCard.classList.add('animating');
+                        setTimeout(() => zombiesCard.classList.remove('animating'), 800);
+                    }, 2000);
+
+                    const pulseTimeout3 = setTimeout(() => {
                         playTimeCard.classList.add('animating');
                         setTimeout(() => playTimeCard.classList.remove('animating'), 800);
-                    }, 600);
+                    }, 1200);
 
-                    this.animationState.timeouts.push(pulseTimeout);
-                }, 5000);
-                this.animationState.timeouts.push(step3Timeout);
+                    this.animationState.timeouts.push(pulseTimeout1, pulseTimeout2, pulseTimeout3);
+                }, 500);
+                this.animationState.timeouts.push(step1Timeout);
 
-                // 4. Show Research Points Section
-                const step4Timeout = setTimeout(() => {
-                    this.animationState.currentStep = 4;
+                // 2. Show Research Points Section after all number animations complete
+                const step2Timeout = setTimeout(() => {
+                    this.animationState.currentStep = 2;
                     researchSection.classList.add('show');
                     
                     // Start research points animation after a short delay
@@ -1166,10 +1143,10 @@
                     }, 800);
 
                     this.animationState.timeouts.push(researchTimeout);
-                }, 7000);
-                this.animationState.timeouts.push(step4Timeout);
+                }, 3000); // Wait for longest number animation (2000ms) + buffer
+                this.animationState.timeouts.push(step2Timeout);
 
-                // 5. Update claim button state
+                // 3. Update claim button state
                 const finalTimeout = setTimeout(() => {
                     this.animationState.isAnimating = false;
                     const claimButton = document.getElementById('claim-button');
@@ -1181,7 +1158,7 @@
                         claimButton.disabled = true;
                         continueButton.style.display = 'inline-block';
                     }
-                }, 8000);
+                }, 4000);
                 this.animationState.timeouts.push(finalTimeout);
             }
 
@@ -1259,7 +1236,6 @@
                 const daysValue = document.getElementById('days-survived');
                 const zombiesValue = document.getElementById('zombies-killed');
                 const playTimeValue = document.getElementById('play-time');
-                const daysBonus = document.getElementById('days-bonus');
 
                 // Play skip sound
                 this.playSound('cardhover');
@@ -1269,32 +1245,28 @@
 
                 switch (this.animationState.currentStep) {
                     case 1:
-                        // Show Days Survived immediately
+                        // Show all stat cards immediately with final values
                         daysCard.classList.add('show');
+                        zombiesCard.classList.add('show');
+                        playTimeCard.classList.add('show');
+                        
                         daysValue.textContent = this.gameStats.daysSurvived;
-                        const bonus = this.gameStats.daysSurvived * 5;
-                        daysBonus.textContent = `+${bonus}% Research Bonus`;
+                        zombiesValue.textContent = this.gameStats.zombiesKilled.toLocaleString();
+                        playTimeValue.textContent = this.gameStats.playTimeMinutes;
+                        
+                        // Add pulse animations
                         daysCard.classList.add('animating');
-                        setTimeout(() => daysCard.classList.remove('animating'), 800);
+                        zombiesCard.classList.add('animating');
+                        playTimeCard.classList.add('animating');
+                        
+                        setTimeout(() => {
+                            daysCard.classList.remove('animating');
+                            zombiesCard.classList.remove('animating');
+                            playTimeCard.classList.remove('animating');
+                        }, 800);
                         break;
 
                     case 2:
-                        // Show Zombies Killed immediately
-                        zombiesCard.classList.add('show');
-                        zombiesValue.textContent = this.gameStats.zombiesKilled.toLocaleString();
-                        zombiesCard.classList.add('animating');
-                        setTimeout(() => zombiesCard.classList.remove('animating'), 800);
-                        break;
-
-                    case 3:
-                        // Show Minutes Played immediately
-                        playTimeCard.classList.add('show');
-                        playTimeValue.textContent = this.gameStats.playTimeMinutes;
-                        playTimeCard.classList.add('animating');
-                        setTimeout(() => playTimeCard.classList.remove('animating'), 800);
-                        break;
-
-                    case 4:
                         // Show Research Points immediately
                         researchSection.classList.add('show');
                         this.animateResearchPoints();
