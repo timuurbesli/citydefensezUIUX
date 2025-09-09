@@ -757,6 +757,87 @@
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
         }
 
+        /* New Upgrade Styles */
+        .upgrade-node.new-upgrade {
+            border: 3px solid #32CD32;
+            box-shadow: 0 0 20px rgba(50, 205, 50, 0.6);
+            background: linear-gradient(135deg, #228B22, #32CD32);
+        }
+
+        .upgrade-node.new-upgrade.available {
+            background: linear-gradient(135deg, #90EE90, #98FB98);
+            border-color: #32CD32;
+            color: #333;
+            animation: newUpgradePulse 2s infinite;
+        }
+
+        .upgrade-node.new-upgrade.unlocked {
+            background: linear-gradient(135deg, #32CD32, #90EE90);
+            border-color: #228B22;
+        }
+
+        @keyframes newUpgradePulse {
+            0%, 100% { 
+                border-color: #32CD32;
+                box-shadow: 0 0 20px rgba(50, 205, 50, 0.6);
+            }
+            50% { 
+                border-color: #90EE90;
+                box-shadow: 0 0 30px rgba(50, 205, 50, 0.8);
+            }
+        }
+
+        /* New Upgrade Badge */
+        .new-badge {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background: linear-gradient(135deg, #FF4500, #FF6347);
+            color: white;
+            border-radius: 10px;
+            padding: 2px 6px;
+            font-size: 8px;
+            font-weight: bold;
+            z-index: 15;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+            animation: badgePulse 3s infinite;
+        }
+
+        @keyframes badgePulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        /* New Category Styles */
+        .main-category-node.new-category {
+            border: 4px solid #32CD32;
+            box-shadow: 0 0 30px rgba(50, 205, 50, 0.8);
+        }
+
+        .main-category-node.new-category.expanded {
+            background: linear-gradient(135deg, #32CD32, #90EE90);
+            border-color: #228B22;
+        }
+
+        .sub-category-node.new-subcategory,
+        .sub-category-node-horizontal.new-subcategory {
+            border: 3px solid #32CD32;
+            box-shadow: 0 0 20px rgba(50, 205, 50, 0.6);
+        }
+
+        .sub-category-node.new-subcategory.expanded,
+        .sub-category-node-horizontal.new-subcategory.expanded {
+            background: linear-gradient(135deg, #32CD32, #90EE90);
+            border-color: #228B22;
+        }
+
+        /* New Category Header Styles */
+        .horizontal .main-category-header.new-category {
+            background: linear-gradient(135deg, #32CD32, #90EE90) !important;
+            border: 3px solid #228B22 !important;
+            box-shadow: 0 0 20px rgba(50, 205, 50, 0.6) !important;
+        }
+
         .upgrade-node:hover {
             transform: scale(1.1);
         }
@@ -1233,7 +1314,7 @@
                         <i class="fas fa-flask"></i>
                     </div>
                     <div class="rp-content">
-                        <div class="rp-amount" id="rpAmount">300</div>
+                        <div class="rp-amount" id="rpAmount">1000</div>
                         <div class="rp-label">Research Points</div>
                     </div>
                 </div>
@@ -1293,7 +1374,7 @@
 
     <script>
         // Game State
-        let currentRP = 300;
+        let currentRP = 1000;
         let selectedUpgrade = null;
         let currentCategory = 'buildings';
 
@@ -1315,20 +1396,29 @@
         let expandedCategories = new Set(); // Track which categories are expanded
         let expandedSubCategories = new Set(); // Track which sub-categories are expanded
 
-        // Upgrade Data with Sub-Categories
+        // Upgrade Data with Sub-Categories - Updated to match Wiki Research System
         const upgradeData = {
-            buildings: {
-                title: "Buildings",
+            economy: {
+                title: "Economy Boost",
+                isNew: true,
                 subCategories: {
-                    levels: {
-                        title: "Building Card Levels",
-                        description: "Improves building card level probabilities through RNG enhancement. Affects all building types - Factory, Ammunition, Barracks, Laboratory, and House cards.",
+                    starting: {
+                        title: "Starting Resources",
+                        description: "Begin each run with additional resources to accelerate early game development.",
+                        isNew: true,
                         upgrades: [
-                            { id: 1, name: "Enhanced Buildings", cost: 50, effect: "L1: 50%, L2: 30%, L3: 15%, L4: 5%", unlocked: true, icon: "🏠" },
-                            { id: 2, name: "Improved Buildings", cost: 100, effect: "L1: 25%, L2: 35%, L3: 25%, L4: 12%, L5: 3%", unlocked: true, icon: "🏢" },
-                            { id: 3, name: "Advanced Buildings", cost: 150, effect: "L1: 10%, L2: 25%, L3: 35%, L4: 25%, L5: 5%", unlocked: false, icon: "🏭" },
-                            { id: 4, name: "Superior Buildings", cost: 200, effect: "L1: 5%, L2: 15%, L3: 30%, L4: 35%, L5: 15%", unlocked: false, icon: "🏗️" },
-                            { id: 5, name: "Master Buildings", cost: 300, effect: "L1: 2%, L2: 8%, L3: 20%, L4: 40%, L5: 30%", unlocked: false, icon: "🏛️" }
+                            { id: 1, name: "Starting Resources I", cost: 100, effect: "Start with 500 of each resource", unlocked: false, icon: "💰", isNew: true },
+                            { id: 2, name: "Starting Resources II", cost: 300, effect: "Start with 1000 of each resource", unlocked: false, icon: "💎", isNew: true },
+                            { id: 3, name: "Starting Resources III", cost: 900, effect: "Start with 1500 of each resource", unlocked: false, icon: "👑", isNew: true }
+                        ]
+                    },
+                    generation: {
+                        title: "Resource Generation",
+                        description: "Increases passive resource generation across all systems.",
+                        isNew: true,
+                        upgrades: [
+                            { id: 1, name: "Resource Generation", cost: 100, effect: "+10% passive resource generation", unlocked: false, icon: "⚙️", isNew: true },
+                            { id: 2, name: "Economic Foundation", cost: 300, effect: "+20% passive resource generation", unlocked: false, icon: "🏭", isNew: true }
                         ]
                     }
                 }
@@ -1336,50 +1426,80 @@
             combat: {
                 title: "Combat",
                 subCategories: {
-                    training: {
-                        title: "Training",
-                        description: "Enhances the default effectiveness and level of all trained soldiers.",
-                        upgrades: [
-                            { id: 1, name: "Basic Training", cost: 75, effect: "+1 Default Soldier Level", unlocked: true, icon: "🥉" },
-                            { id: 2, name: "Advanced Training", cost: 125, effect: "+1 Default Soldier Level", unlocked: false, icon: "🥈" },
-                            { id: 3, name: "Elite Training", cost: 175, effect: "+1 Default Soldier Level", unlocked: false, icon: "🥇" },
-                            { id: 4, name: "Special Forces", cost: 250, effect: "+1 Default Soldier Level", unlocked: false, icon: "🎖️" },
-                            { id: 5, name: "Legendary Warriors", cost: 350, effect: "+1 Default Soldier Level", unlocked: false, icon: "⭐" }
-                        ]
-                    },
-                    weapons: {
-                        title: "Weapons",
-                        description: "Enhances combat effectiveness through improved fire rate, reload speed, and damage.",
-                        upgrades: [
-                            { id: 1, name: "Rapid Fire", cost: 100, effect: "Soldiers attack faster", unlocked: false, icon: "🔫" },
-                            { id: 2, name: "Quick Reload", cost: 175, effect: "-50% reload time", unlocked: false, icon: "🔄" },
-                            { id: 3, name: "High Damage", cost: 250, effect: "+50% soldier damage", unlocked: false, icon: "💥" }
-                        ]
-                    },
                     heavyWeapons: {
                         title: "Heavy Weapons",
                         description: "Unlocks specialized heavy weapons for advanced tactical options.",
                         upgrades: [
-                            { id: 1, name: "Machine Gun Arsenal", cost: 150, effect: "Unlocks Machine Gun (Bixi)", unlocked: false, icon: "🔫" },
-                            { id: 2, name: "Rocket Arsenal", cost: 200, effect: "Unlocks Rocket Launcher", unlocked: false, icon: "🚀" },
-                            { id: 3, name: "Artillery Arsenal", cost: 250, effect: "Unlocks Mortar", unlocked: false, icon: "💥" }
-                        ]
-                    },
-                    defensiveStructures: {
-                        title: "Defensive Structures",
-                        description: "Unlocks advanced defensive structures for enhanced base protection.",
-                        upgrades: [
-                            { id: 1, name: "Wall Engineering", cost: 100, effect: "Unlocks Defense Walls", unlocked: false, icon: "🧱" },
-                            { id: 2, name: "Tower Engineering", cost: 175, effect: "Unlocks Outpost Towers", unlocked: false, icon: "🗼" }
+                            { id: 1, name: "Machine Gun Arsenal", cost: 100, effect: "Unlocks Machine Gun", unlocked: false, icon: "🔫" },
+                            { id: 2, name: "Rocket Arsenal", cost: 300, effect: "Unlocks Rocket Launcher", unlocked: false, icon: "🚀" },
+                            { id: 3, name: "Artillery Arsenal", cost: 900, effect: "Unlocks Mortar", unlocked: false, icon: "💥" },
+                            { id: 4, name: "Turret Arsenal", cost: 1800, effect: "Unlocks Turret", unlocked: false, icon: "🗼" }
                         ]
                     },
                     airstrike: {
                         title: "Airstrike",
-                        description: "Improves aerial support through cost reduction, new weapons, and increased effectiveness.",
+                        description: "Improves aerial support through cost reduction, damage enhancement, and new aircraft.",
                         upgrades: [
-                            { id: 1, name: "Cheap Strikes", cost: 125, effect: "Airstrikes 50% cheaper", unlocked: false, icon: "💰" },
-                            { id: 2, name: "Triple Bomber", cost: 200, effect: "3-bomb launcher plane", unlocked: false, icon: "💣" },
-                            { id: 3, name: "Wide Bombardment", cost: 300, effect: "+50% airstrike radius", unlocked: false, icon: "💥" }
+                            { id: 1, name: "Cheap Strikes", cost: 100, effect: "Airstrikes 20% cheaper", unlocked: false, icon: "💰" },
+                            { id: 2, name: "Enhanced Ordinance", cost: 300, effect: "+50 airstrike damage", unlocked: false, icon: "💣" },
+                            { id: 3, name: "New Horizons", cost: 900, effect: "New aircraft for night use", unlocked: false, icon: "✈️" }
+                        ]
+                    },
+                    weapons: {
+                        title: "Weapons",
+                        description: "Enhances combat effectiveness through improved fire rate, magazine capacity, and damage.",
+                        upgrades: [
+                            { id: 1, name: "Rapid Fire", cost: 100, effect: "Soldiers attack faster", unlocked: false, icon: "🔫" },
+                            { id: 2, name: "Magazine Capacity", cost: 300, effect: "Magazine capacity -20%", unlocked: false, icon: "📦" },
+                            { id: 3, name: "High Damage", cost: 900, effect: "+25% soldier damage", unlocked: false, icon: "💥" }
+                        ]
+                    },
+                    training: {
+                        title: "Training",
+                        description: "Enhances soldier level probabilities through RNG improvement when placing soldiers into combat positions.",
+                        upgrades: [
+                            { id: 1, name: "Basic Training", cost: 100, effect: "Increase chance of spawning higher level soldier", unlocked: false, icon: "🥉" },
+                            { id: 2, name: "Advanced Training", cost: 300, effect: "Increase chance of spawning higher level soldier", unlocked: false, icon: "🥈" },
+                            { id: 3, name: "Elite Training", cost: 900, effect: "Increase chance of spawning higher level soldier", unlocked: false, icon: "🥇" },
+                            { id: 4, name: "Special Forces", cost: 1800, effect: "Increase chance of spawning higher level soldier", unlocked: false, icon: "🎖️" },
+                            { id: 5, name: "Legendary Warriors", cost: 3600, effect: "Increase chance of spawning higher level soldier", unlocked: false, icon: "⭐" }
+                        ]
+                    }
+                }
+            },
+            laboratory: {
+                title: "Laboratory",
+                subCategories: {
+                    speed: {
+                        title: "Research Speed",
+                        description: "Reduces research completion time and accelerates discoveries.",
+                        upgrades: [
+                            { id: 1, name: "Rapid Research", cost: 100, effect: "Research 1 day faster", unlocked: false, icon: "⚡" },
+                            { id: 2, name: "Accelerated Research", cost: 300, effect: "Research 2 days faster", unlocked: false, icon: "🚀" },
+                            { id: 3, name: "Lightning Research", cost: 900, effect: "Research 3 days faster", unlocked: false, icon: "⚡" },
+                            { id: 4, name: "Instant Research", cost: 1800, effect: "Research 4 days faster", unlocked: false, icon: "💫" }
+                        ]
+                    },
+                    efficiency: {
+                        title: "Research Efficiency",
+                        description: "Increases research point generation and resource efficiency.",
+                        upgrades: [
+                            { id: 1, name: "Efficient Research", cost: 100, effect: "+2% RP generation", unlocked: false, icon: "🔬" },
+                            { id: 2, name: "Optimized Research", cost: 300, effect: "+3% RP generation", unlocked: false, icon: "⚗️" },
+                            { id: 3, name: "Advanced Research", cost: 900, effect: "+4% RP generation", unlocked: false, icon: "🧬" },
+                            { id: 4, name: "Quantum Research", cost: 1800, effect: "+5% RP generation", unlocked: false, icon: "🔮" }
+                        ]
+                    },
+                    costReduction: {
+                        title: "Cost Reduction",
+                        description: "Reduces the research point cost of all meta upgrades through advanced methodologies.",
+                        isNew: true,
+                        upgrades: [
+                            { id: 1, name: "Efficient Research", cost: 100, effect: "5% reduction in all meta upgrade costs", unlocked: false, icon: "💰", isNew: true },
+                            { id: 2, name: "Optimized Studies", cost: 300, effect: "10% reduction in all meta upgrade costs", unlocked: false, icon: "📊", isNew: true },
+                            { id: 3, name: "Advanced Methods", cost: 900, effect: "15% reduction in all meta upgrade costs", unlocked: false, icon: "🧪", isNew: true },
+                            { id: 4, name: "Research Mastery", cost: 1800, effect: "20% reduction in all meta upgrade costs", unlocked: false, icon: "🎓", isNew: true },
+                            { id: 5, name: "Ultimate Efficiency", cost: 3600, effect: "25% reduction in all meta upgrade costs", unlocked: false, icon: "⚡", isNew: true }
                         ]
                     }
                 }
@@ -1387,83 +1507,67 @@
             walls: {
                 title: "Walls",
                 subCategories: {
-                    capacity: {
-                        title: "Wall Capacity",
-                        description: "Increases the maximum number of wall segments that can be built.",
+                    offense: {
+                        title: "Wall Offense",
+                        description: "Adds damage and special effects to walls when attacked.",
                         upgrades: [
-                            { id: 1, name: "Extended Walls", cost: 80, effect: "Wall capacity +20", unlocked: false, icon: "🧱" },
-                            { id: 2, name: "Expanded Walls", cost: 160, effect: "Wall capacity +25", unlocked: false, icon: "🏗️" },
-                            { id: 3, name: "Fortified Walls", cost: 240, effect: "Wall capacity +30", unlocked: false, icon: "⛩️" },
-                            { id: 4, name: "Massive Walls", cost: 320, effect: "Wall capacity +35", unlocked: false, icon: "🏰" }
+                            { id: 1, name: "Spiked Walls", cost: 100, effect: "Walls deal damage when attacked", unlocked: false, icon: "🔺" },
+                            { id: 2, name: "Enhanced Electric Walls", cost: 300, effect: "Increases electrical damage to attackers by +20%", unlocked: false, icon: "⚡" },
+                            { id: 3, name: "Extended Electric Walls", cost: 900, effect: "+30% electrical damage", unlocked: false, icon: "⚡" },
+                            { id: 4, name: "Maximum Electric Walls", cost: 1800, effect: "Increases electrical damage to attackers by +40%", unlocked: false, icon: "⚡" }
                         ]
                     },
                     durability: {
                         title: "Wall Durability",
                         description: "Increases the health and resilience of all wall segments.",
                         upgrades: [
-                            { id: 1, name: "Reinforced Walls", cost: 90, effect: "+25% wall HP", unlocked: false, icon: "🛡️" },
-                            { id: 2, name: "Hardened Walls", cost: 180, effect: "+50% wall HP", unlocked: false, icon: "🔒" },
-                            { id: 3, name: "Armored Walls", cost: 270, effect: "+75% wall HP", unlocked: false, icon: "⚔️" },
-                            { id: 4, name: "Impenetrable Walls", cost: 360, effect: "+100% wall HP", unlocked: false, icon: "🛡️" }
+                            { id: 1, name: "Reinforced Walls", cost: 100, effect: "+20% wall HP", unlocked: false, icon: "🛡️" },
+                            { id: 2, name: "Hardened Walls", cost: 300, effect: "+25% wall HP", unlocked: false, icon: "🔒" },
+                            { id: 3, name: "Armored Walls", cost: 900, effect: "+30% wall HP", unlocked: false, icon: "⚔️" },
+                            { id: 4, name: "Impenetrable Walls", cost: 1800, effect: "+50% wall HP", unlocked: false, icon: "🛡️" }
                         ]
                     },
-                    offense: {
-                        title: "Wall Offense",
-                        description: "Adds damage and special effects to walls when attacked.",
+                    regeneration: {
+                        title: "Regeneration",
+                        description: "Enables automatic wall repair and health recovery over time.",
+                        isNew: true,
                         upgrades: [
-                            { id: 1, name: "Spiked Walls", cost: 100, effect: "Walls deal damage when attacked", unlocked: false, icon: "🔺" },
-                            { id: 2, name: "Electrified Walls", cost: 200, effect: "Electric damage to attackers", unlocked: false, icon: "⚡" },
-                            { id: 3, name: "Toxic Walls", cost: 300, effect: "Poison damage over time", unlocked: false, icon: "☠️" },
-                            { id: 4, name: "Explosive Walls", cost: 400, effect: "Area damage when destroyed", unlocked: false, icon: "💥" }
+                            { id: 1, name: "Self Repair I", cost: 100, effect: "Main wall regenerates 1% HP each day", unlocked: false, icon: "🔧", isNew: true },
+                            { id: 2, name: "Self Repair II", cost: 300, effect: "Main wall regenerates 2% HP each day", unlocked: false, icon: "🔧", isNew: true },
+                            { id: 3, name: "Self Repair III", cost: 900, effect: "Main wall regenerates 3% HP each day", unlocked: false, icon: "🔧", isNew: true },
+                            { id: 4, name: "Rapid Recovery", cost: 1800, effect: "Main wall regenerates 5% HP each day", unlocked: false, icon: "💚", isNew: true }
                         ]
                     }
                 }
             },
-            garrison: {
-                title: "Garrison",
+            support: {
+                title: "Support",
                 subCategories: {
-                    deployment: {
-                        title: "Bixi Deployment",
-                        description: "Adds automated Bixi machine guns to wall positions for permanent defense.",
+                    phoenix: {
+                        title: "Phoenix",
+                        description: "Provides multiple chances to recover from defeat.",
                         upgrades: [
-                            { id: 1, name: "Basic Garrison", cost: 150, effect: "Adds 1 bixi to left wall + 1 bixi to right wall", unlocked: false, icon: "🔫" },
-                            { id: 2, name: "Enhanced Garrison", cost: 250, effect: "Adds 2 more bixis (2L + 2R total)", unlocked: false, icon: "🔫" },
-                            { id: 3, name: "Advanced Garrison", cost: 350, effect: "Adds 2 more bixis (3L + 3R total)", unlocked: false, icon: "🔫" },
-                            { id: 4, name: "Superior Garrison", cost: 450, effect: "Adds 2 more bixis (4L + 4R total)", unlocked: false, icon: "🔫" },
-                            { id: 5, name: "Master Garrison", cost: 550, effect: "Adds 2 more bixis (5L + 5R total)", unlocked: false, icon: "🔫" }
+                            { id: 1, name: "Phoenix Rising", cost: 100, effect: "Revive ability (1 use per run)", unlocked: false, icon: "❤️" },
+                            { id: 2, name: "Double Phoenix", cost: 300, effect: "Revive ability (2 uses per run)", unlocked: false, icon: "💖" },
+                            { id: 3, name: "Eternal Phoenix", cost: 900, effect: "Revive ability (3 uses per run)", unlocked: false, icon: "💝" }
                         ]
                     },
-                    damage: {
-                        title: "Bixi Damage",
-                        description: "Increases the damage output of all deployed Bixi machine guns.",
+                    expeditions: {
+                        title: "Expeditions",
+                        description: "Improves expedition success rates, rewards, and completion time.",
                         upgrades: [
-                            { id: 1, name: "Enhanced Ammunition", cost: 200, effect: "+25% bixi damage", unlocked: false, icon: "💥" },
-                            { id: 2, name: "High-Explosive Rounds", cost: 300, effect: "+50% bixi damage", unlocked: false, icon: "💥" },
-                            { id: 3, name: "Armor-Piercing Shells", cost: 400, effect: "+75% bixi damage", unlocked: false, icon: "💥" },
-                            { id: 4, name: "Plasma Rounds", cost: 500, effect: "+100% bixi damage", unlocked: false, icon: "💥" },
-                            { id: 5, name: "Quantum Ammunition", cost: 600, effect: "+150% bixi damage", unlocked: false, icon: "💥" }
+                            { id: 1, name: "Safe Expeditions", cost: 100, effect: "+20% survival rate", unlocked: false, icon: "🛡️" },
+                            { id: 2, name: "Rich Rewards", cost: 300, effect: "+50% expedition rewards", unlocked: false, icon: "💰" },
+                            { id: 3, name: "Swift Expeditions", cost: 900, effect: "Expeditions 1 day faster", unlocked: false, icon: "💨" }
                         ]
                     },
-                    fireRate: {
-                        title: "Bixi Fire Rate",
-                        description: "Increases the firing speed of all deployed Bixi machine guns.",
+                    specialists: {
+                        title: "Specialists",
+                        description: "Amplifies the beneficial effects provided by recruited specialists.",
                         upgrades: [
-                            { id: 1, name: "Rapid Fire", cost: 175, effect: "+20% bixi fire rate", unlocked: false, icon: "⚡" },
-                            { id: 2, name: "Hyper Fire", cost: 275, effect: "+40% bixi fire rate", unlocked: false, icon: "⚡" },
-                            { id: 3, name: "Lightning Fire", cost: 375, effect: "+60% bixi fire rate", unlocked: false, icon: "⚡" },
-                            { id: 4, name: "Storm Fire", cost: 475, effect: "+80% bixi fire rate", unlocked: false, icon: "⚡" },
-                            { id: 5, name: "Blitz Fire", cost: 575, effect: "+100% bixi fire rate", unlocked: false, icon: "⚡" }
-                        ]
-                    },
-                    range: {
-                        title: "Bixi Range",
-                        description: "Increases the effective range of all deployed Bixi machine guns.",
-                        upgrades: [
-                            { id: 1, name: "Extended Range", cost: 125, effect: "+25% bixi range", unlocked: false, icon: "🎯" },
-                            { id: 2, name: "Long Range", cost: 225, effect: "+50% bixi range", unlocked: false, icon: "🎯" },
-                            { id: 3, name: "Sniper Range", cost: 325, effect: "+75% bixi range", unlocked: false, icon: "🎯" },
-                            { id: 4, name: "Maximum Range", cost: 425, effect: "+100% bixi range", unlocked: false, icon: "🎯" },
-                            { id: 5, name: "Infinite Range", cost: 525, effect: "+150% bixi range", unlocked: false, icon: "🎯" }
+                            { id: 1, name: "Enhanced Specialists", cost: 100, effect: "Specialists buff effects +20%", unlocked: false, icon: "👤" },
+                            { id: 2, name: "Empowered Specialists", cost: 300, effect: "Specialist buff effects +25%", unlocked: false, icon: "✨" },
+                            { id: 3, name: "Legendary Specialists", cost: 900, effect: "Specialists buff effects +30%", unlocked: false, icon: "⭐" }
                         ]
                     }
                 }
@@ -1475,108 +1579,256 @@
                         title: "Harvest Speed",
                         description: "Reduces the time needed for crop harvests.",
                         upgrades: [
-                            { id: 1, name: "Quick Harvest", cost: 60, effect: "Crops grow 1 day faster", unlocked: false, icon: "⏰" },
-                            { id: 2, name: "Rapid Growth", cost: 120, effect: "Crops grow 1 day faster", unlocked: false, icon: "💨" },
-                            { id: 3, name: "Super Growth", cost: 180, effect: "Crops grow 1 day faster", unlocked: false, icon: "⚡" },
-                            { id: 4, name: "Instant Harvest", cost: 240, effect: "Crops grow 1 day faster", unlocked: false, icon: "🌟" }
+                            { id: 1, name: "Quick Harvest", cost: 100, effect: "Crops grow 1 day faster", unlocked: false, icon: "⏰" },
+                            { id: 2, name: "Rapid Growth", cost: 300, effect: "Crops grow 1 day faster", unlocked: false, icon: "💨" },
+                            { id: 3, name: "Super Growth", cost: 900, effect: "Crops grow 1 day faster", unlocked: false, icon: "⚡" },
+                            { id: 4, name: "Instant Harvest", cost: 1800, effect: "Crops grow 1 day faster", unlocked: false, icon: "🌟" }
                         ]
                     },
                     grid: {
                         title: "Grid Expansion",
                         description: "Adds more grid spaces to the farm for additional crops.",
                         upgrades: [
-                            { id: 1, name: "Small Expansion", cost: 80, effect: "+1 crop grid expansion", unlocked: false, icon: "🚜" },
-                            { id: 2, name: "Medium Expansion", cost: 160, effect: "+2 crop grid expansion", unlocked: false, icon: "🏞️" },
-                            { id: 3, name: "Large Expansion", cost: 240, effect: "+3 crop grid expansion", unlocked: false, icon: "🌾" },
-                            { id: 4, name: "Massive Expansion", cost: 320, effect: "+4 crop grid expansion", unlocked: false, icon: "🌿" }
+                            { id: 1, name: "Small Expansion", cost: 100, effect: "+1 crop grid expansion", unlocked: false, icon: "🚜" },
+                            { id: 2, name: "Medium Expansion", cost: 300, effect: "+2 crop grid expansion", unlocked: false, icon: "🏞️" },
+                            { id: 3, name: "Large Expansion", cost: 900, effect: "+3 crop grid expansion", unlocked: false, icon: "🌾" },
+                            { id: 4, name: "Massive Expansion", cost: 1800, effect: "+4 crop grid expansion", unlocked: false, icon: "🌿" }
                         ]
                     },
                     yield: {
                         title: "Harvest Yield",
                         description: "Increases the amount of crops harvested from each plot.",
                         upgrades: [
-                            { id: 1, name: "Better Harvest", cost: 70, effect: "+25% crop harvest", unlocked: false, icon: "🌾" },
-                            { id: 2, name: "Rich Harvest", cost: 140, effect: "+50% crop harvest", unlocked: false, icon: "🌻" },
-                            { id: 3, name: "Abundant Harvest", cost: 210, effect: "+75% crop harvest", unlocked: false, icon: "🌽" },
-                            { id: 4, name: "Golden Harvest", cost: 280, effect: "+100% crop harvest", unlocked: false, icon: "🌼" }
+                            { id: 1, name: "Better Harvest", cost: 100, effect: "+10% crop harvest", unlocked: false, icon: "🌾" },
+                            { id: 2, name: "Rich Harvest", cost: 300, effect: "+15% crop harvest", unlocked: false, icon: "🌻" },
+                            { id: 3, name: "Abundant Harvest", cost: 900, effect: "+20% crop harvest", unlocked: false, icon: "🌽" },
+                            { id: 4, name: "Golden Harvest", cost: 1800, effect: "+25% crop harvest", unlocked: false, icon: "🌼" }
                         ]
                     }
                 }
             },
-            laboratory: {
-                title: "Laboratory",
+            deck: {
+                title: "Deck",
                 subCategories: {
-                    efficiency: {
-                        title: "Research Efficiency",
-                        description: "Increases research point generation and resource efficiency.",
+                    buildings: {
+                        title: "Enhanced Buildings",
+                        description: "Improves building card level probabilities through RNG enhancement.",
                         upgrades: [
-                            { id: 1, name: "Efficient Research", cost: 100, effect: "+50% RP generation", unlocked: false, icon: "🔬" },
-                            { id: 2, name: "Optimized Research", cost: 200, effect: "+75% RP generation", unlocked: false, icon: "⚗️" },
-                            { id: 3, name: "Advanced Research", cost: 300, effect: "+100% RP generation", unlocked: false, icon: "🧬" },
-                            { id: 4, name: "Quantum Research", cost: 400, effect: "+150% RP generation", unlocked: false, icon: "🔮" }
+                            { id: 1, name: "Enhanced Buildings", cost: 100, effect: "Chance to come to higher level building", unlocked: false, icon: "🏠" },
+                            { id: 2, name: "Improved Buildings", cost: 300, effect: "Chance to come to higher level building", unlocked: false, icon: "🏢" },
+                            { id: 3, name: "Advanced Buildings", cost: 900, effect: "Chance to come to higher level building", unlocked: false, icon: "🏭" },
+                            { id: 4, name: "Superior Buildings", cost: 1800, effect: "Chance to come to higher level building", unlocked: false, icon: "🏗️" },
+                            { id: 5, name: "Master Buildings", cost: 3600, effect: "Chance to come to higher level building", unlocked: false, icon: "🏛️" }
                         ]
                     },
-                    speed: {
-                        title: "Research Speed",
-                        description: "Reduces research completion time and accelerates discoveries.",
-                        upgrades: [
-                            { id: 1, name: "Rapid Research", cost: 120, effect: "Research 1 day faster", unlocked: false, icon: "⚡" },
-                            { id: 2, name: "Accelerated Research", cost: 240, effect: "Research 2 days faster", unlocked: false, icon: "🚀" },
-                            { id: 3, name: "Lightning Research", cost: 360, effect: "Research 3 days faster", unlocked: false, icon: "⚡" },
-                            { id: 4, name: "Instant Research", cost: 480, effect: "Research 4 days faster", unlocked: false, icon: "💫" }
-                        ]
-                    }
-                }
-            },
-            support: {
-                title: "Support",
-                subCategories: {
-                    expeditions: {
-                        title: "Expeditions",
-                        description: "Improves expedition success rates, rewards, and completion time.",
-                        upgrades: [
-                            { id: 1, name: "Safe Expeditions", cost: 120, effect: "+20% survival rate", unlocked: false, icon: "🛡️" },
-                            { id: 2, name: "Rich Rewards", cost: 180, effect: "+50% expedition rewards", unlocked: false, icon: "💰" },
-                            { id: 3, name: "Swift Expeditions", cost: 250, effect: "Expeditions 1 day faster", unlocked: false, icon: "💨" }
-                        ]
-                    },
-                    npc: {
-                        title: "NPC Buffs",
-                        description: "Amplifies the beneficial effects provided by recruited NPCs.",
-                        upgrades: [
-                            { id: 1, name: "Enhanced NPCs", cost: 150, effect: "+50% NPC buff effects", unlocked: false, icon: "👤" },
-                            { id: 2, name: "Empowered NPCs", cost: 250, effect: "+75% NPC buff effects", unlocked: false, icon: "✨" },
-                            { id: 3, name: "Legendary NPCs", cost: 400, effect: "+100% NPC buff effects", unlocked: false, icon: "⭐" }
-                        ]
-                    }
-                }
-            },
-            revive: {
-                title: "Revive",
-                subCategories: {
-                    phoenix: {
-                        title: "Phoenix",
-                        description: "Provides multiple chances to recover from defeat.",
-                        upgrades: [
-                            { id: 1, name: "Phoenix Rising", cost: 500, effect: "Revive ability (1 use per run)", unlocked: false, icon: "❤️" },
-                            { id: 2, name: "Double Phoenix", cost: 750, effect: "Revive ability (2 uses per run)", unlocked: false, icon: "💖" },
-                            { id: 3, name: "Eternal Phoenix", cost: 1000, effect: "Revive ability (3 uses per run)", unlocked: false, icon: "💝" }
-                        ]
-                    }
-                }
-            },
-
-            reroll: {
-                title: "Reroll Cards",
-                subCategories: {
-                    cards: {
-                        title: "Cards",
+                    reroll: {
+                        title: "Reroll Cards",
                         description: "Adds flexibility to building selection with reroll functionality.",
                         upgrades: [
-                            { id: 1, name: "Basic Reroll", cost: 75, effect: "Unlocks reroll function", unlocked: false, icon: "🔄" },
-                            { id: 2, name: "Extra Reroll", cost: 125, effect: "+1 reroll count", unlocked: false, icon: "🔄" },
-                            { id: 3, name: "More Rerolls", cost: 175, effect: "+1 reroll count", unlocked: false, icon: "🔄" },
-                            { id: 4, name: "Maximum Rerolls", cost: 250, effect: "+1 reroll count", unlocked: false, icon: "🔄" }
+                            { id: 1, name: "Basic Reroll", cost: 100, effect: "Total reroll count 2", unlocked: false, icon: "🔄" },
+                            { id: 2, name: "Extra Reroll", cost: 300, effect: "Total reroll count 3", unlocked: false, icon: "🔄" },
+                            { id: 3, name: "More Rerolls", cost: 900, effect: "Total reroll count 4", unlocked: false, icon: "🔄" },
+                            { id: 4, name: "Maximum Rerolls", cost: 1800, effect: "Total reroll count 5", unlocked: false, icon: "🔄" }
+                        ]
+                    },
+                    joker: {
+                        title: "Joker Card",
+                        description: "Unlocks special transformation and swap cards for advanced deck manipulation.",
+                        isNew: true,
+                        upgrades: [
+                            { id: 1, name: "Joker Card", cost: 100, effect: "Unlocks JOKER card that transforms existing buildings into selected type", unlocked: false, icon: "🃏", isNew: true },
+                            { id: 2, name: "Swap Card", cost: 300, effect: "Unlocks Swap Card that swaps selected buildings", unlocked: false, icon: "🔄", isNew: true }
+                        ]
+                    },
+                    management: {
+                        title: "Card Management",
+                        description: "Enhances card selection interface with additional slots and lock functionality.",
+                        isNew: true,
+                        upgrades: [
+                            { id: 1, name: "Card Lock I", cost: 100, effect: "Increase card lock count to 2", unlocked: false, icon: "🔒", isNew: true },
+                            { id: 2, name: "Extra Cards I", cost: 300, effect: "Building card count increases from 3 to 4", unlocked: false, icon: "🃏", isNew: true },
+                            { id: 3, name: "Card Lock II", cost: 900, effect: "Increase card lock count to 3", unlocked: false, icon: "🔒", isNew: true },
+                            { id: 4, name: "Extra Cards II", cost: 1800, effect: "Building card count increases from 4 to 5", unlocked: false, icon: "🃏", isNew: true },
+                            { id: 5, name: "Card Lock III", cost: 3600, effect: "Increase card lock count to 4", unlocked: false, icon: "🔒", isNew: true }
+                        ]
+                    }
+                }
+            },
+            garrison: {
+                title: "Garrison",
+                subCategories: {
+                    deployment: {
+                        title: "Basic Garrison",
+                        description: "Adds turrets to the left and right sides of walls.",
+                        upgrades: [
+                            { id: 1, name: "Basic Garrison", cost: 100, effect: "Adds 1 turret to the right and left sides of wall", unlocked: false, icon: "🔫" },
+                            { id: 2, name: "Enhanced Garrison", cost: 300, effect: "Adds 1 turret to each side", unlocked: false, icon: "🔫" },
+                            { id: 3, name: "Advanced Garrison", cost: 900, effect: "Adds 1 turret to each side", unlocked: false, icon: "🔫" },
+                            { id: 4, name: "Master Garrison", cost: 1800, effect: "Adds 1 turret to each side", unlocked: false, icon: "🔫" }
+                        ]
+                    },
+                    damage: {
+                        title: "Turret Damage",
+                        description: "Increases the damage output of wall-mounted turrets.",
+                        upgrades: [
+                            { id: 1, name: "Enhanced Turret Damage", cost: 100, effect: "+5% wall turret damage", unlocked: false, icon: "💥" },
+                            { id: 2, name: "Upgraded Turret Damage", cost: 300, effect: "+10% wall turret damage", unlocked: false, icon: "💥" },
+                            { id: 3, name: "Devastating Turret Damage", cost: 900, effect: "+15% wall turret damage", unlocked: false, icon: "💥" }
+                        ]
+                    },
+                    fireRate: {
+                        title: "Fire Rate",
+                        description: "Increases the firing speed of wall-mounted turrets.",
+                        upgrades: [
+                            { id: 1, name: "Fast Turret", cost: 100, effect: "+10% wall turret fire rate", unlocked: false, icon: "⚡" },
+                            { id: 2, name: "Swift Turret", cost: 300, effect: "+20% wall turret fire rate", unlocked: false, icon: "⚡" },
+                            { id: 3, name: "Frenzied Turret", cost: 900, effect: "+30% wall turret fire rate", unlocked: false, icon: "⚡" }
+                        ]
+                    },
+                    range: {
+                        title: "Range",
+                        description: "Extends the firing range of wall-mounted turrets.",
+                        upgrades: [
+                            { id: 1, name: "Extended Range", cost: 100, effect: "+5% wall turret range", unlocked: false, icon: "🎯" },
+                            { id: 2, name: "Enhanced Range", cost: 300, effect: "+10% wall turret range", unlocked: false, icon: "🎯" },
+                            { id: 3, name: "Maximum Range", cost: 900, effect: "+15% wall turret range", unlocked: false, icon: "🎯" }
+                        ]
+                    }
+                }
+            },
+            arsenal: {
+                title: "Arsenal Mastery",
+                isNew: true,
+                subCategories: {
+                    machineGun: {
+                        title: "Machine Gun Path",
+                        description: "Specialized enhancements for Machine Gun weapons focusing on fire rate, damage, and range.",
+                        isNew: true,
+                        upgrades: [
+                            { id: 1, name: "Machine Gun Unlock", cost: 100, effect: "Unlocks Machine Gun weapon", unlocked: false, icon: "🔫", isNew: true },
+                            { id: 2, name: "Rapid Fire", cost: 300, effect: "+25% Machine Gun fire rate", unlocked: false, icon: "⚡", isNew: true },
+                            { id: 3, name: "High Caliber", cost: 900, effect: "+30% Machine Gun damage", unlocked: false, icon: "💥", isNew: true },
+                            { id: 4, name: "Extended Barrel", cost: 1800, effect: "+20% Machine Gun range", unlocked: false, icon: "🎯", isNew: true }
+                        ]
+                    },
+                    rocketLauncher: {
+                        title: "Rocket Launcher Path",
+                        description: "Specialized enhancements for Rocket Launcher weapons focusing on explosive power and range.",
+                        isNew: true,
+                        upgrades: [
+                            { id: 1, name: "Rocket Arsenal", cost: 100, effect: "Unlocks Rocket Launcher weapon", unlocked: false, icon: "🚀", isNew: true },
+                            { id: 2, name: "Fast Reload", cost: 300, effect: "+25% Rocket Launcher fire rate", unlocked: false, icon: "🔄", isNew: true },
+                            { id: 3, name: "Explosive Warheads", cost: 900, effect: "+40% Rocket Launcher damage", unlocked: false, icon: "💣", isNew: true },
+                            { id: 4, name: "Long Range", cost: 1800, effect: "+25% Rocket Launcher range", unlocked: false, icon: "🎯", isNew: true }
+                        ]
+                    },
+                    mortar: {
+                        title: "Mortar Path",
+                        description: "Specialized enhancements for Mortar weapons focusing on area damage and range.",
+                        isNew: true,
+                        upgrades: [
+                            { id: 1, name: "Artillery Support", cost: 100, effect: "Unlocks Mortar weapon", unlocked: false, icon: "💥", isNew: true },
+                            { id: 2, name: "Quick Loading", cost: 300, effect: "+20% Mortar fire rate", unlocked: false, icon: "⚡", isNew: true },
+                            { id: 3, name: "Heavy Shells", cost: 900, effect: "+50% Mortar damage", unlocked: false, icon: "💣", isNew: true },
+                            { id: 4, name: "Extended Range", cost: 1800, effect: "+30% Mortar range", unlocked: false, icon: "🎯", isNew: true }
+                        ]
+                    },
+                    turret: {
+                        title: "Turret Path",
+                        description: "Specialized enhancements for Turret weapons focusing on precision and damage.",
+                        isNew: true,
+                        upgrades: [
+                            { id: 1, name: "Precision Weapons", cost: 100, effect: "Unlocks Turret", unlocked: false, icon: "🗼", isNew: true },
+                            { id: 2, name: "Steady Aim", cost: 300, effect: "+15% Turret fire rate", unlocked: false, icon: "🎯", isNew: true },
+                            { id: 3, name: "Armor Piercing", cost: 900, effect: "+60% Turret damage", unlocked: false, icon: "💥", isNew: true },
+                            { id: 4, name: "Scope Enhancement", cost: 1800, effect: "+40% Turret range", unlocked: false, icon: "🔍", isNew: true }
+                        ]
+                    }
+                }
+            },
+            zombieWeakness: {
+                title: "Zombie Weakness",
+                isNew: true,
+                subCategories: {
+                    speed: {
+                        title: "Speed Reduction",
+                        description: "Reduces zombie movement speed through various debilitating effects.",
+                        isNew: true,
+                        upgrades: [
+                            { id: 1, name: "Slow Plague", cost: 100, effect: "Zombies move 10% slower", unlocked: false, icon: "🐌", isNew: true },
+                            { id: 2, name: "Heavy Limbs", cost: 300, effect: "Zombies move 15% slower", unlocked: false, icon: "⚖️", isNew: true },
+                            { id: 3, name: "Paralysis", cost: 900, effect: "Zombies move 20% slower", unlocked: false, icon: "🧊", isNew: true }
+                        ]
+                    },
+                    health: {
+                        title: "Health Reduction",
+                        description: "Reduces zombie health through viral and cellular damage.",
+                        isNew: true,
+                        upgrades: [
+                            { id: 1, name: "Viral Decay", cost: 100, effect: "Zombies have 15% less HP", unlocked: false, icon: "🦠", isNew: true },
+                            { id: 2, name: "Cellular Breakdown", cost: 300, effect: "Zombies have 25% less HP", unlocked: false, icon: "💀", isNew: true },
+                            { id: 3, name: "Complete Deterioration", cost: 900, effect: "Zombies have 35% less HP", unlocked: false, icon: "☠️", isNew: true }
+                        ]
+                    },
+                    damage: {
+                        title: "Damage Reduction",
+                        description: "Reduces zombie attack damage through physical weakness effects.",
+                        isNew: true,
+                        upgrades: [
+                            { id: 1, name: "Weakened Claws", cost: 100, effect: "Zombies deal 15% less damage", unlocked: false, icon: "🩹", isNew: true },
+                            { id: 2, name: "Muscle Atrophy", cost: 300, effect: "Zombies deal 25% less damage", unlocked: false, icon: "💪", isNew: true },
+                            { id: 3, name: "Complete Weakness", cost: 900, effect: "Zombies deal 35% less damage", unlocked: false, icon: "🤕", isNew: true }
+                        ]
+                    }
+                }
+            },
+            landmine: {
+                title: "Landmine Enhancement",
+                isNew: true,
+                subCategories: {
+                    damage: {
+                        title: "Damage Path",
+                        description: "Increases the explosive power of landmines for maximum destruction.",
+                        isNew: true,
+                        upgrades: [
+                            { id: 1, name: "Improved Explosives", cost: 100, effect: "+25% landmine damage", unlocked: false, icon: "💥", isNew: true },
+                            { id: 2, name: "High Yield", cost: 300, effect: "+50% landmine damage", unlocked: false, icon: "💣", isNew: true },
+                            { id: 3, name: "Devastation", cost: 900, effect: "+75% landmine damage", unlocked: false, icon: "🔥", isNew: true }
+                        ]
+                    },
+                    aoe: {
+                        title: "Area of Effect",
+                        description: "Expands the blast radius of landmines to affect more enemies.",
+                        isNew: true,
+                        upgrades: [
+                            { id: 1, name: "Wider Blast", cost: 100, effect: "+20% landmine AoE", unlocked: false, icon: "💨", isNew: true },
+                            { id: 2, name: "Extended Range", cost: 300, effect: "+35% landmine AoE", unlocked: false, icon: "🌊", isNew: true },
+                            { id: 3, name: "Massive Explosion", cost: 900, effect: "+50% landmine AoE", unlocked: false, icon: "🌋", isNew: true }
+                        ]
+                    }
+                }
+            },
+            critical: {
+                title: "Critical Strike",
+                isNew: true,
+                subCategories: {
+                    chance: {
+                        title: "Critical Chance",
+                        description: "Increases the probability of critical hits for all units and weapons.",
+                        isNew: true,
+                        upgrades: [
+                            { id: 1, name: "Lucky Strikes", cost: 100, effect: "+1% critical hit chance for all units", unlocked: false, icon: "🍀", isNew: true },
+                            { id: 2, name: "Precision Training", cost: 300, effect: "+2% critical hit chance for all units", unlocked: false, icon: "🎯", isNew: true },
+                            { id: 3, name: "Master Marksman", cost: 900, effect: "+3% critical hit chance for all units", unlocked: false, icon: "🏹", isNew: true },
+                            { id: 4, name: "Lethal Force", cost: 1800, effect: "+5% critical hit chance for all units", unlocked: false, icon: "💀", isNew: true }
+                        ]
+                    },
+                    power: {
+                        title: "Critical Power",
+                        description: "Enhances the damage multiplier of critical strikes.",
+                        isNew: true,
+                        upgrades: [
+                            { id: 1, name: "Critical Mastery", cost: 100, effect: "+2x critical damage multiplier", unlocked: false, icon: "⚡", isNew: true }
                         ]
                     }
                 }
@@ -1943,6 +2195,12 @@
                 // Add toggle functionality
                 const isExpanded = expandedCategories.has(categoryKey);
                 mainCategoryNode.classList.add(isExpanded ? 'expanded' : 'collapsed');
+                
+                // Add new category styling
+                if (categoryData.isNew) {
+                    mainCategoryNode.classList.add('new-category');
+                }
+                
                 mainCategoryNode.addEventListener('click', () => toggleCategory(categoryKey));
                 
                 treesContentWrapper.appendChild(mainCategoryNode);
@@ -1958,7 +2216,7 @@
                 const upgradeRadius = 100; // Distance between upgrade levels (increased for more space)
                 
                 // Only show sub-category nodes for categories that truly have distinct sub-categories
-                const showSubCategoryNodes = (categoryKey === 'combat' || categoryKey === 'support') && subCategoryKeys.length > 1;
+                const showSubCategoryNodes = (categoryKey === 'economy' || categoryKey === 'combat' || categoryKey === 'support' || categoryKey === 'laboratory' || categoryKey === 'walls' || categoryKey === 'farm' || categoryKey === 'deck' || categoryKey === 'garrison' || categoryKey === 'arsenal' || categoryKey === 'zombieWeakness' || categoryKey === 'landmine' || categoryKey === 'critical') && subCategoryKeys.length > 1;
                 
                 if (showSubCategoryNodes) {
                     // Multiple sub-categories: render each as a separate branch
@@ -2017,20 +2275,52 @@
                         const isSubCategoryExpanded = expandedSubCategories.has(subCategoryId);
                         subCategoryNode.classList.add(isSubCategoryExpanded ? 'expanded' : 'collapsed');
                         
+                        // Add new sub-category styling
+                        if (subCategoryData.isNew) {
+                            subCategoryNode.classList.add('new-subcategory');
+                        }
+                        
                         // Sub-category node content
                         let subCategoryIcon = '';
-                        if (subCategoryKey === 'training') subCategoryIcon = '🎖️';
+                        if (subCategoryKey === 'starting') subCategoryIcon = '💰';
+                        else if (subCategoryKey === 'generation') subCategoryIcon = '⚙️';
+                        else if (subCategoryKey === 'training') subCategoryIcon = '🎖️';
                         else if (subCategoryKey === 'weapons') subCategoryIcon = '🔫';
                         else if (subCategoryKey === 'airstrike') subCategoryIcon = '✈️';
                         else if (subCategoryKey === 'expeditions') subCategoryIcon = '🗺️';
-                        else if (subCategoryKey === 'npc') subCategoryIcon = '👤';
+                        else if (subCategoryKey === 'specialists') subCategoryIcon = '👤';
                         else if (subCategoryKey === 'heavyWeapons') subCategoryIcon = '🔫';
-                        else if (subCategoryKey === 'defensiveStructures') subCategoryIcon = '🏗️';
+                        else if (subCategoryKey === 'phoenix') subCategoryIcon = '❤️';
+                        else if (subCategoryKey === 'speed') subCategoryIcon = '⚡';
+                        else if (subCategoryKey === 'efficiency') subCategoryIcon = '🔬';
+                        else if (subCategoryKey === 'offense') subCategoryIcon = '⚡';
+                        else if (subCategoryKey === 'durability') subCategoryIcon = '🛡️';
+                        else if (subCategoryKey === 'regeneration') subCategoryIcon = '🔧';
+                        else if (subCategoryKey === 'grid') subCategoryIcon = '🏞️';
+                        else if (subCategoryKey === 'yield') subCategoryIcon = '🌾';
+                        else if (subCategoryKey === 'buildings') subCategoryIcon = '🏠';
+                        else if (subCategoryKey === 'reroll') subCategoryIcon = '🔄';
+                        else if (subCategoryKey === 'joker') subCategoryIcon = '🃏';
+                        else if (subCategoryKey === 'management') subCategoryIcon = '🔒';
+                        else if (subCategoryKey === 'deployment') subCategoryIcon = '🔫';
+                        else if (subCategoryKey === 'damage') subCategoryIcon = '💥';
+                        else if (subCategoryKey === 'fireRate') subCategoryIcon = '⚡';
+                        else if (subCategoryKey === 'range') subCategoryIcon = '🎯';
+                        else if (subCategoryKey === 'machineGun') subCategoryIcon = '🔫';
+                        else if (subCategoryKey === 'rocketLauncher') subCategoryIcon = '🚀';
+                        else if (subCategoryKey === 'mortar') subCategoryIcon = '💥';
+                        else if (subCategoryKey === 'turret') subCategoryIcon = '🗼';
+                        else if (subCategoryKey === 'health') subCategoryIcon = '💀';
+                        else if (subCategoryKey === 'aoe') subCategoryIcon = '💨';
+                        else if (subCategoryKey === 'chance') subCategoryIcon = '🍀';
+                        else if (subCategoryKey === 'power') subCategoryIcon = '⚡';
+                        else if (subCategoryKey === 'costReduction') subCategoryIcon = '💰';
                         else subCategoryIcon = '⚡';
                         
                         subCategoryNode.innerHTML = `
                             <div class="node-icon">${subCategoryIcon}</div>
                             <div class="node-level">${subCategoryData.title}</div>
+                            ${subCategoryData.isNew ? '<div class="new-badge">NEW</div>' : ''}
                         `;
                         
                         // Add click event to toggle sub-category
@@ -2134,12 +2424,18 @@
                                 upgradeNode.classList.add('selected');
                             }
                             
+                            // Add new upgrade styling
+                            if (upgrade.isNew) {
+                                upgradeNode.classList.add('new-upgrade');
+                            }
+                            
                             // Node content
                             upgradeNode.innerHTML = `
                                 <div class="node-icon">${upgrade.icon}</div>
                                 <div class="node-level">Lv.${upgrade.id}</div>
                                 ${!upgrade.unlocked ? `<div class="node-cost">${upgrade.cost} RP</div>` : ''}
                                 ${upgradeNode.classList.contains('locked') ? '<div class="lock-icon">🔒</div>' : ''}
+                                ${upgrade.isNew ? '<div class="new-badge">NEW</div>' : ''}
                             `;
                             
                             // Add click event
@@ -2222,12 +2518,18 @@
                                 upgradeNode.classList.add('selected');
                             }
                             
+                            // Add new upgrade styling
+                            if (upgrade.isNew) {
+                                upgradeNode.classList.add('new-upgrade');
+                            }
+                            
                             // Node content
                             upgradeNode.innerHTML = `
                                 <div class="node-icon">${upgrade.icon}</div>
                                 <div class="node-level">Lv.${upgrade.id}</div>
                                 ${!upgrade.unlocked ? `<div class="node-cost">${upgrade.cost} RP</div>` : ''}
                                 ${upgradeNode.classList.contains('locked') ? '<div class="lock-icon">🔒</div>' : ''}
+                                ${upgrade.isNew ? '<div class="new-badge">NEW</div>' : ''}
                             `;
                             
                             // Add click event
@@ -2376,6 +2678,12 @@
                 // Add toggle functionality
                 const isExpanded = expandedCategories.has(categoryKey);
                 mainCategoryHeader.classList.add(isExpanded ? 'expanded' : 'collapsed');
+                
+                // Add new category styling
+                if (categoryData.isNew) {
+                    mainCategoryHeader.classList.add('new-category');
+                }
+                
                 mainCategoryHeader.addEventListener('click', () => toggleCategory(categoryKey));
                 
                 mainCategoryContainer.appendChild(mainCategoryHeader);
@@ -2397,7 +2705,7 @@
                     subTreeContainer.dataset.subCategory = subCategoryKey;
                     
                     // Only show sub-category nodes for categories that truly have distinct sub-categories
-                    const showSubCategoryNodes = (categoryKey === 'combat' || categoryKey === 'support');
+                    const showSubCategoryNodes = (categoryKey === 'economy' || categoryKey === 'combat' || categoryKey === 'support' || categoryKey === 'laboratory' || categoryKey === 'walls' || categoryKey === 'farm' || categoryKey === 'deck' || categoryKey === 'garrison' || categoryKey === 'arsenal' || categoryKey === 'zombieWeakness' || categoryKey === 'landmine' || categoryKey === 'critical');
                     
                     if (showSubCategoryNodes) {
                         // Sub-category node (styled like other nodes)
@@ -2424,20 +2732,52 @@
                         const isSubCategoryExpanded = expandedSubCategories.has(subCategoryId);
                         subCategoryNode.classList.add(isSubCategoryExpanded ? 'expanded' : 'collapsed');
                         
+                        // Add new sub-category styling
+                        if (subCategoryData.isNew) {
+                            subCategoryNode.classList.add('new-subcategory');
+                        }
+                        
                         // Sub-category node content
                         let subCategoryIcon = '';
-                        if (subCategoryKey === 'training') subCategoryIcon = '🎖️';
+                        if (subCategoryKey === 'starting') subCategoryIcon = '💰';
+                        else if (subCategoryKey === 'generation') subCategoryIcon = '⚙️';
+                        else if (subCategoryKey === 'training') subCategoryIcon = '🎖️';
                         else if (subCategoryKey === 'weapons') subCategoryIcon = '🔫';
                         else if (subCategoryKey === 'airstrike') subCategoryIcon = '✈️';
                         else if (subCategoryKey === 'expeditions') subCategoryIcon = '🗺️';
-                        else if (subCategoryKey === 'npc') subCategoryIcon = '👤';
+                        else if (subCategoryKey === 'specialists') subCategoryIcon = '👤';
                         else if (subCategoryKey === 'heavyWeapons') subCategoryIcon = '🔫';
-                        else if (subCategoryKey === 'defensiveStructures') subCategoryIcon = '🏗️';
+                        else if (subCategoryKey === 'phoenix') subCategoryIcon = '❤️';
+                        else if (subCategoryKey === 'speed') subCategoryIcon = '⚡';
+                        else if (subCategoryKey === 'efficiency') subCategoryIcon = '🔬';
+                        else if (subCategoryKey === 'offense') subCategoryIcon = '⚡';
+                        else if (subCategoryKey === 'durability') subCategoryIcon = '🛡️';
+                        else if (subCategoryKey === 'regeneration') subCategoryIcon = '🔧';
+                        else if (subCategoryKey === 'grid') subCategoryIcon = '🏞️';
+                        else if (subCategoryKey === 'yield') subCategoryIcon = '🌾';
+                        else if (subCategoryKey === 'buildings') subCategoryIcon = '🏠';
+                        else if (subCategoryKey === 'reroll') subCategoryIcon = '🔄';
+                        else if (subCategoryKey === 'joker') subCategoryIcon = '🃏';
+                        else if (subCategoryKey === 'management') subCategoryIcon = '🔒';
+                        else if (subCategoryKey === 'deployment') subCategoryIcon = '🔫';
+                        else if (subCategoryKey === 'damage') subCategoryIcon = '💥';
+                        else if (subCategoryKey === 'fireRate') subCategoryIcon = '⚡';
+                        else if (subCategoryKey === 'range') subCategoryIcon = '🎯';
+                        else if (subCategoryKey === 'machineGun') subCategoryIcon = '🔫';
+                        else if (subCategoryKey === 'rocketLauncher') subCategoryIcon = '🚀';
+                        else if (subCategoryKey === 'mortar') subCategoryIcon = '💥';
+                        else if (subCategoryKey === 'turret') subCategoryIcon = '🗼';
+                        else if (subCategoryKey === 'health') subCategoryIcon = '💀';
+                        else if (subCategoryKey === 'aoe') subCategoryIcon = '💨';
+                        else if (subCategoryKey === 'chance') subCategoryIcon = '🍀';
+                        else if (subCategoryKey === 'power') subCategoryIcon = '⚡';
+                        else if (subCategoryKey === 'costReduction') subCategoryIcon = '💰';
                         else subCategoryIcon = '⚡';
                         
                         subCategoryNode.innerHTML = `
                             <div class="node-icon">${subCategoryIcon}</div>
                             <div class="node-level">${subCategoryData.title}</div>
+                            ${subCategoryData.isNew ? '<div class="new-badge">NEW</div>' : ''}
                         `;
                         
                         // Add click event to toggle sub-category
@@ -2541,12 +2881,18 @@
                             upgradeNode.classList.add('selected');
                         }
                         
+                        // Add new upgrade styling
+                        if (upgrade.isNew) {
+                            upgradeNode.classList.add('new-upgrade');
+                        }
+                        
                         // Node content
                         upgradeNode.innerHTML = `
                             <div class="node-icon">${upgrade.icon}</div>
                             <div class="node-level">Lv.${upgrade.id}</div>
                             ${!upgrade.unlocked ? `<div class="node-cost">${upgrade.cost} RP</div>` : ''}
                             ${upgradeNode.classList.contains('locked') ? '<div class="lock-icon">🔒</div>' : ''}
+                            ${upgrade.isNew ? '<div class="new-badge">NEW</div>' : ''}
                         `;
                         
                         // Add click event
@@ -2577,15 +2923,18 @@
         // Get icon for category
         function getIconForCategory(categoryKey) {
             const icons = {
-                buildings: '🏗️',
+                economy: '💰',
                 combat: '⚔️',
-                walls: '🧱',
-                garrison: '🏰',
-                farm: '🌾',
                 laboratory: '🧪',
+                walls: '🧱',
                 support: '🤝',
-                revive: '❤️',
-                reroll: '🔄'
+                farm: '🌾',
+                deck: '🃏',
+                garrison: '🏰',
+                arsenal: '🔫',
+                zombieWeakness: '🧟',
+                landmine: '💣',
+                critical: '🎯'
             };
             return icons[categoryKey] || '⭐';
         }
@@ -2924,7 +3273,7 @@
             
             tooltip.innerHTML = `
                 <div class="tooltip-icon">${upgrade.icon}</div>
-                <div class="tooltip-title">${upgrade.name}</div>
+                <div class="tooltip-title">${upgrade.name} ${upgrade.isNew ? '<span style="color: #32CD32; font-weight: bold; font-size: 12px;">NEW!</span>' : ''}</div>
                 <div class="tooltip-effect">${effectDisplay}</div>
                 <div class="tooltip-description">Level ${upgrade.id} upgrade for ${categoryData.title} - ${subCategoryData.title}</div>
                 <div class="tooltip-status ${statusClass}">${status}</div>
