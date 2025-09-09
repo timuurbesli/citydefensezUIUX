@@ -1404,21 +1404,13 @@
                 subCategories: {
                     starting: {
                         title: "Starting Resources",
-                        description: "Begin each run with additional resources to accelerate early game development.",
+                        description: "Begin each run with percentage bonus resources to accelerate early game development.",
                         isNew: true,
                         upgrades: [
-                            { id: 1, name: "Starting Resources I", cost: 100, effect: "Start with 500 of each resource", unlocked: false, icon: "💰", isNew: true },
-                            { id: 2, name: "Starting Resources II", cost: 300, effect: "Start with 1000 of each resource", unlocked: false, icon: "💎", isNew: true },
-                            { id: 3, name: "Starting Resources III", cost: 900, effect: "Start with 1500 of each resource", unlocked: false, icon: "👑", isNew: true }
-                        ]
-                    },
-                    generation: {
-                        title: "Resource Generation",
-                        description: "Increases passive resource generation across all systems.",
-                        isNew: true,
-                        upgrades: [
-                            { id: 1, name: "Resource Generation", cost: 100, effect: "+10% passive resource generation", unlocked: false, icon: "⚙️", isNew: true },
-                            { id: 2, name: "Economic Foundation", cost: 300, effect: "+20% passive resource generation", unlocked: false, icon: "🏭", isNew: true }
+                            { id: 1, name: "Starting Resources I", cost: 100, effect: "Start with +50% more resources", unlocked: false, icon: "💰", isNew: true },
+                            { id: 2, name: "Starting Resources II", cost: 300, effect: "Start with +75% more resources", unlocked: false, icon: "💎", isNew: true },
+                            { id: 3, name: "Starting Resources III", cost: 900, effect: "Start with +100% more resources", unlocked: false, icon: "👑", isNew: true },
+                            { id: 4, name: "Starting Resources IV", cost: 1800, effect: "Start with +200% more resources", unlocked: false, icon: "💎", isNew: true }
                         ]
                     }
                 }
@@ -1426,16 +1418,6 @@
             combat: {
                 title: "Combat",
                 subCategories: {
-                    heavyWeapons: {
-                        title: "Heavy Weapons",
-                        description: "Unlocks specialized heavy weapons for advanced tactical options.",
-                        upgrades: [
-                            { id: 1, name: "Machine Gun Arsenal", cost: 100, effect: "Unlocks Machine Gun", unlocked: false, icon: "🔫" },
-                            { id: 2, name: "Rocket Arsenal", cost: 300, effect: "Unlocks Rocket Launcher", unlocked: false, icon: "🚀" },
-                            { id: 3, name: "Artillery Arsenal", cost: 900, effect: "Unlocks Mortar", unlocked: false, icon: "💥" },
-                            { id: 4, name: "Turret Arsenal", cost: 1800, effect: "Unlocks Turret", unlocked: false, icon: "🗼" }
-                        ]
-                    },
                     airstrike: {
                         title: "Airstrike",
                         description: "Improves aerial support through cost reduction, damage enhancement, and new aircraft.",
@@ -1527,17 +1509,6 @@
                             { id: 4, name: "Impenetrable Walls", cost: 1800, effect: "+50% wall HP", unlocked: false, icon: "🛡️" }
                         ]
                     },
-                    regeneration: {
-                        title: "Regeneration",
-                        description: "Enables automatic wall repair and health recovery over time.",
-                        isNew: true,
-                        upgrades: [
-                            { id: 1, name: "Self Repair I", cost: 100, effect: "Main wall regenerates 1% HP each day", unlocked: false, icon: "🔧", isNew: true },
-                            { id: 2, name: "Self Repair II", cost: 300, effect: "Main wall regenerates 2% HP each day", unlocked: false, icon: "🔧", isNew: true },
-                            { id: 3, name: "Self Repair III", cost: 900, effect: "Main wall regenerates 3% HP each day", unlocked: false, icon: "🔧", isNew: true },
-                            { id: 4, name: "Rapid Recovery", cost: 1800, effect: "Main wall regenerates 5% HP each day", unlocked: false, icon: "💚", isNew: true }
-                        ]
-                    }
                 }
             },
             support: {
@@ -1568,6 +1539,17 @@
                             { id: 1, name: "Enhanced Specialists", cost: 100, effect: "Specialists buff effects +20%", unlocked: false, icon: "👤" },
                             { id: 2, name: "Empowered Specialists", cost: 300, effect: "Specialist buff effects +25%", unlocked: false, icon: "✨" },
                             { id: 3, name: "Legendary Specialists", cost: 900, effect: "Specialists buff effects +30%", unlocked: false, icon: "⭐" }
+                        ]
+                    },
+                    regeneration: {
+                        title: "Wall Regeneration",
+                        description: "Enables automatic wall repair and health recovery over time.",
+                        isNew: true,
+                        upgrades: [
+                            { id: 1, name: "Self Repair I", cost: 100, effect: "Main wall regenerates 1% HP each day", unlocked: false, icon: "🔧", isNew: true },
+                            { id: 2, name: "Self Repair II", cost: 300, effect: "Main wall regenerates 2% HP each day", unlocked: false, icon: "🔧", isNew: true },
+                            { id: 3, name: "Self Repair III", cost: 900, effect: "Main wall regenerates 3% HP each day", unlocked: false, icon: "🔧", isNew: true },
+                            { id: 4, name: "Rapid Recovery", cost: 1800, effect: "Main wall regenerates 5% HP each day", unlocked: false, icon: "💚", isNew: true }
                         ]
                     }
                 }
@@ -1823,12 +1805,14 @@
                             { id: 4, name: "Lethal Force", cost: 1800, effect: "+5% critical hit chance for all units", unlocked: false, icon: "💀", isNew: true }
                         ]
                     },
-                    power: {
-                        title: "Critical Power",
+                    damage: {
+                        title: "Critical Damage",
                         description: "Enhances the damage multiplier of critical strikes.",
                         isNew: true,
                         upgrades: [
-                            { id: 1, name: "Critical Mastery", cost: 100, effect: "+2x critical damage multiplier", unlocked: false, icon: "⚡", isNew: true }
+                            { id: 1, name: "Critical Damage I", cost: 100, effect: "+50% critical hit damage", unlocked: false, icon: "⚡", isNew: true },
+                            { id: 2, name: "Critical Damage II", cost: 300, effect: "+100% critical hit damage", unlocked: false, icon: "💥", isNew: true },
+                            { id: 3, name: "Critical Damage III", cost: 900, effect: "+150% critical hit damage", unlocked: false, icon: "🔥", isNew: true }
                         ]
                     }
                 }
@@ -2283,13 +2267,11 @@
                         // Sub-category node content
                         let subCategoryIcon = '';
                         if (subCategoryKey === 'starting') subCategoryIcon = '💰';
-                        else if (subCategoryKey === 'generation') subCategoryIcon = '⚙️';
                         else if (subCategoryKey === 'training') subCategoryIcon = '🎖️';
                         else if (subCategoryKey === 'weapons') subCategoryIcon = '🔫';
                         else if (subCategoryKey === 'airstrike') subCategoryIcon = '✈️';
                         else if (subCategoryKey === 'expeditions') subCategoryIcon = '🗺️';
                         else if (subCategoryKey === 'specialists') subCategoryIcon = '👤';
-                        else if (subCategoryKey === 'heavyWeapons') subCategoryIcon = '🔫';
                         else if (subCategoryKey === 'phoenix') subCategoryIcon = '❤️';
                         else if (subCategoryKey === 'speed') subCategoryIcon = '⚡';
                         else if (subCategoryKey === 'efficiency') subCategoryIcon = '🔬';
@@ -2313,7 +2295,6 @@
                         else if (subCategoryKey === 'health') subCategoryIcon = '💀';
                         else if (subCategoryKey === 'aoe') subCategoryIcon = '💨';
                         else if (subCategoryKey === 'chance') subCategoryIcon = '🍀';
-                        else if (subCategoryKey === 'power') subCategoryIcon = '⚡';
                         else if (subCategoryKey === 'costReduction') subCategoryIcon = '💰';
                         else subCategoryIcon = '⚡';
                         
@@ -2740,13 +2721,11 @@
                         // Sub-category node content
                         let subCategoryIcon = '';
                         if (subCategoryKey === 'starting') subCategoryIcon = '💰';
-                        else if (subCategoryKey === 'generation') subCategoryIcon = '⚙️';
                         else if (subCategoryKey === 'training') subCategoryIcon = '🎖️';
                         else if (subCategoryKey === 'weapons') subCategoryIcon = '🔫';
                         else if (subCategoryKey === 'airstrike') subCategoryIcon = '✈️';
                         else if (subCategoryKey === 'expeditions') subCategoryIcon = '🗺️';
                         else if (subCategoryKey === 'specialists') subCategoryIcon = '👤';
-                        else if (subCategoryKey === 'heavyWeapons') subCategoryIcon = '🔫';
                         else if (subCategoryKey === 'phoenix') subCategoryIcon = '❤️';
                         else if (subCategoryKey === 'speed') subCategoryIcon = '⚡';
                         else if (subCategoryKey === 'efficiency') subCategoryIcon = '🔬';
@@ -2770,7 +2749,6 @@
                         else if (subCategoryKey === 'health') subCategoryIcon = '💀';
                         else if (subCategoryKey === 'aoe') subCategoryIcon = '💨';
                         else if (subCategoryKey === 'chance') subCategoryIcon = '🍀';
-                        else if (subCategoryKey === 'power') subCategoryIcon = '⚡';
                         else if (subCategoryKey === 'costReduction') subCategoryIcon = '💰';
                         else subCategoryIcon = '⚡';
                         
