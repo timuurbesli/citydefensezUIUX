@@ -1398,44 +1398,51 @@
 
         // Upgrade Data with Sub-Categories - Updated to match Wiki Research System
         const upgradeData = {
-            economy: {
-                title: "Economy Boost",
-                isNew: true,
+           
+            airstrike: {
+                title: "Airstrike",
                 subCategories: {
-                    starting: {
-                        title: "Starting Resources",
-                        description: "Begin each run with percentage bonus resources to accelerate early game development.",
-                        isNew: true,
+                    costReduction: {
+                        title: "Cost Reduction",
+                        description: "Reduces the resource cost of airstrike operations.",
                         upgrades: [
-                            { id: 1, name: "Starting Resources I", cost: 100, effect: "Start with +50% more resources", unlocked: false, icon: "💰", isNew: true },
-                            { id: 2, name: "Starting Resources II", cost: 300, effect: "Start with +75% more resources", unlocked: false, icon: "💎", isNew: true },
-                            { id: 3, name: "Starting Resources III", cost: 900, effect: "Start with +100% more resources", unlocked: false, icon: "👑", isNew: true },
-                            { id: 4, name: "Starting Resources IV", cost: 1800, effect: "Start with +200% more resources", unlocked: false, icon: "💎", isNew: true }
+                            { id: 1, name: "Cheap Strikes", cost: 100, effect: "Airstrikes 10% cheaper", unlocked: false, icon: "💰" },
+                            { id: 2, name: "Budget Operations", cost: 300, effect: "Airstrikes 20% cheaper", unlocked: false, icon: "💎" },
+                            { id: 3, name: "Efficient Bombing", cost: 900, effect: "Airstrikes 30% cheaper", unlocked: false, icon: "⚡" },
+                            { id: 4, name: "Mass Production", cost: 1800, effect: "Airstrikes 50% cheaper", unlocked: false, icon: "🏭" }
+                        ]
+                    },
+                    usageCapacity: {
+                        title: "Usage Capacity",
+                        description: "Increases the maximum number of airstrikes available per night.",
+                        upgrades: [
+                            { id: 1, name: "Extra Sortie", cost: 100, effect: "+1 max airstrike per night", unlocked: false, icon: "✈️" },
+                            { id: 2, name: "Double Sortie", cost: 300, effect: "+1 max airstrike per night", unlocked: false, icon: "✈️" },
+                            { id: 3, name: "Triple Sortie", cost: 900, effect: "+1 max airstrike per night", unlocked: false, icon: "✈️" },
+                            { id: 4, name: "Maximum Sortie", cost: 1800, effect: "+1 max airstrike per night", unlocked: false, icon: "✈️" }
+                        ]
+                    },
+                    damageEnhancement: {
+                        title: "Damage Enhancement",
+                        description: "Dramatically increases the destructive power of airstrikes.",
+                        upgrades: [
+                            { id: 1, name: "Enhanced Ordinance", cost: 100, effect: "+50% airstrike damage", unlocked: false, icon: "💣" },
+                            { id: 2, name: "Devastating Strikes", cost: 300, effect: "+100% airstrike damage", unlocked: false, icon: "💥" },
+                            { id: 3, name: "One Shot", cost: 900, effect: "Airstrikes instantly destroy all enemies in target area", unlocked: false, icon: "🎯" }
+                        ]
+                    },
+                    tier2Plane: {
+                        title: "Tier-2 Plane",
+                        description: "Unlocks advanced aircraft with devastating multi-bomb capabilities.",
+                        upgrades: [
+                            { id: 1, name: "Tier-2 Bomber", cost: 1800, effect: "Unlocks tier-2 plane that launches 5 bombs at 1 strike!", unlocked: false, icon: "🚁" }
                         ]
                     }
                 }
             },
-            combat: {
-                title: "Combat",
+            soldiers: {
+                title: "Soldiers",
                 subCategories: {
-                    airstrike: {
-                        title: "Airstrike",
-                        description: "Improves aerial support through cost reduction, damage enhancement, and new aircraft.",
-                        upgrades: [
-                            { id: 1, name: "Cheap Strikes", cost: 100, effect: "Airstrikes 20% cheaper", unlocked: false, icon: "💰" },
-                            { id: 2, name: "Enhanced Ordinance", cost: 300, effect: "+50 airstrike damage", unlocked: false, icon: "💣" },
-                            { id: 3, name: "New Horizons", cost: 900, effect: "New aircraft for night use", unlocked: false, icon: "✈️" }
-                        ]
-                    },
-                    weapons: {
-                        title: "Weapons",
-                        description: "Enhances combat effectiveness through improved fire rate, magazine capacity, and damage.",
-                        upgrades: [
-                            { id: 1, name: "Rapid Fire", cost: 100, effect: "Soldiers attack faster", unlocked: false, icon: "🔫" },
-                            { id: 2, name: "Magazine Capacity", cost: 300, effect: "Magazine capacity -20%", unlocked: false, icon: "📦" },
-                            { id: 3, name: "High Damage", cost: 900, effect: "+25% soldier damage", unlocked: false, icon: "💥" }
-                        ]
-                    },
                     training: {
                         title: "Training",
                         description: "Enhances soldier level probabilities through RNG improvement when placing soldiers into combat positions.",
@@ -1445,6 +1452,36 @@
                             { id: 3, name: "Elite Training", cost: 900, effect: "Increase chance of spawning higher level soldier", unlocked: false, icon: "🥇" },
                             { id: 4, name: "Special Forces", cost: 1800, effect: "Increase chance of spawning higher level soldier", unlocked: false, icon: "🎖️" },
                             { id: 5, name: "Legendary Warriors", cost: 3600, effect: "Increase chance of spawning higher level soldier", unlocked: false, icon: "⭐" }
+                        ]
+                    },
+                    rangeEnhancement: {
+                        title: "Range Enhancement",
+                        description: "Extends the effective firing range of all soldiers.",
+                        upgrades: [
+                            { id: 1, name: "Extended Range", cost: 100, effect: "+10% soldier range", unlocked: false, icon: "🎯" },
+                            { id: 2, name: "Long Range", cost: 300, effect: "+20% soldier range", unlocked: false, icon: "🏹" },
+                            { id: 3, name: "Maximum Range", cost: 900, effect: "+30% soldier range", unlocked: false, icon: "🔭" },
+                            { id: 4, name: "Sniper Training", cost: 1800, effect: "+50% soldier range", unlocked: false, icon: "🎯" }
+                        ]
+                    },
+                    damageEnhancement: {
+                        title: "Damage Enhancement",
+                        description: "Increases the offensive power of all soldiers.",
+                        upgrades: [
+                            { id: 1, name: "High Damage", cost: 100, effect: "+25% soldier damage", unlocked: false, icon: "💥" },
+                            { id: 2, name: "Enhanced Firepower", cost: 300, effect: "+50% soldier damage", unlocked: false, icon: "🔥" },
+                            { id: 3, name: "Devastating Force", cost: 900, effect: "+75% soldier damage", unlocked: false, icon: "💀" },
+                            { id: 4, name: "Lethal Precision", cost: 1800, effect: "+100% soldier damage", unlocked: false, icon: "⚡" }
+                        ]
+                    },
+                    magazineCapacity: {
+                        title: "Magazine Capacity",
+                        description: "Improves ammunition efficiency and sustained fire capability.",
+                        upgrades: [
+                            { id: 1, name: "Extended Magazines", cost: 100, effect: "+20% magazine capacity", unlocked: false, icon: "📦" },
+                            { id: 2, name: "Large Capacity", cost: 300, effect: "+40% magazine capacity", unlocked: false, icon: "📦" },
+                            { id: 3, name: "High Capacity", cost: 900, effect: "+60% magazine capacity", unlocked: false, icon: "📦" },
+                            { id: 4, name: "Maximum Capacity", cost: 1800, effect: "+100% magazine capacity", unlocked: false, icon: "📦" }
                         ]
                     }
                 }
@@ -1474,14 +1511,13 @@
                     },
                     costReduction: {
                         title: "Cost Reduction",
-                        description: "Reduces the research point cost of all meta upgrades through advanced methodologies.",
-                        isNew: true,
+                        description: "Reduces the research point cost of all meta upgrades.",
                         upgrades: [
-                            { id: 1, name: "Efficient Research", cost: 100, effect: "5% reduction in all meta upgrade costs", unlocked: false, icon: "💰", isNew: true },
-                            { id: 2, name: "Optimized Studies", cost: 300, effect: "10% reduction in all meta upgrade costs", unlocked: false, icon: "📊", isNew: true },
-                            { id: 3, name: "Advanced Methods", cost: 900, effect: "15% reduction in all meta upgrade costs", unlocked: false, icon: "🧪", isNew: true },
-                            { id: 4, name: "Research Mastery", cost: 1800, effect: "20% reduction in all meta upgrade costs", unlocked: false, icon: "🎓", isNew: true },
-                            { id: 5, name: "Ultimate Efficiency", cost: 3600, effect: "25% reduction in all meta upgrade costs", unlocked: false, icon: "⚡", isNew: true }
+                            { id: 1, name: "Cost Efficiency", cost: 100, effect: "5% reduction in all meta upgrade costs", unlocked: false, icon: "💰" },
+                            { id: 2, name: "Optimized Studies", cost: 300, effect: "10% reduction in all meta upgrade costs", unlocked: false, icon: "📊" },
+                            { id: 3, name: "Advanced Methods", cost: 900, effect: "15% reduction in all meta upgrade costs", unlocked: false, icon: "🧪" },
+                            { id: 4, name: "Research Mastery", cost: 1800, effect: "20% reduction in all meta upgrade costs", unlocked: false, icon: "🎓" },
+                            { id: 5, name: "Ultimate Efficiency", cost: 3600, effect: "25% reduction in all meta upgrade costs", unlocked: false, icon: "⚡" }
                         ]
                     }
                 }
@@ -1508,7 +1544,7 @@
                             { id: 3, name: "Armored Walls", cost: 900, effect: "+30% wall HP", unlocked: false, icon: "⚔️" },
                             { id: 4, name: "Impenetrable Walls", cost: 1800, effect: "+50% wall HP", unlocked: false, icon: "🛡️" }
                         ]
-                    },
+                    }
                 }
             },
             support: {
@@ -1541,15 +1577,14 @@
                             { id: 3, name: "Legendary Specialists", cost: 900, effect: "Specialists buff effects +30%", unlocked: false, icon: "⭐" }
                         ]
                     },
-                    regeneration: {
+                    wallRegeneration: {
                         title: "Wall Regeneration",
-                        description: "Enables automatic wall repair and health recovery over time.",
-                        isNew: true,
+                        description: "Provides automatic healing for defensive structures.",
                         upgrades: [
-                            { id: 1, name: "Self Repair I", cost: 100, effect: "Main wall regenerates 1% HP each day", unlocked: false, icon: "🔧", isNew: true },
-                            { id: 2, name: "Self Repair II", cost: 300, effect: "Main wall regenerates 2% HP each day", unlocked: false, icon: "🔧", isNew: true },
-                            { id: 3, name: "Self Repair III", cost: 900, effect: "Main wall regenerates 3% HP each day", unlocked: false, icon: "🔧", isNew: true },
-                            { id: 4, name: "Rapid Recovery", cost: 1800, effect: "Main wall regenerates 5% HP each day", unlocked: false, icon: "💚", isNew: true }
+                            { id: 1, name: "Self Repair I", cost: 100, effect: "Main wall regenerates 1% HP each day", unlocked: false, icon: "🔧" },
+                            { id: 2, name: "Self Repair II", cost: 300, effect: "Main wall regenerates 2% HP each day", unlocked: false, icon: "🔧" },
+                            { id: 3, name: "Self Repair III", cost: 900, effect: "Main wall regenerates 3% HP each day", unlocked: false, icon: "🔧" },
+                            { id: 4, name: "Rapid Recovery", cost: 1800, effect: "Main wall regenerates 5% HP each day", unlocked: false, icon: "💚" }
                         ]
                     }
                 }
@@ -1557,7 +1592,7 @@
             farm: {
                 title: "Farm",
                 subCategories: {
-                    speed: {
+                    harvestSpeed: {
                         title: "Harvest Speed",
                         description: "Reduces the time needed for crop harvests.",
                         upgrades: [
@@ -1567,7 +1602,7 @@
                             { id: 4, name: "Instant Harvest", cost: 1800, effect: "Crops grow 1 day faster", unlocked: false, icon: "🌟" }
                         ]
                     },
-                    grid: {
+                    gridExpansion: {
                         title: "Grid Expansion",
                         description: "Adds more grid spaces to the farm for additional crops.",
                         upgrades: [
@@ -1577,7 +1612,7 @@
                             { id: 4, name: "Massive Expansion", cost: 1800, effect: "+4 crop grid expansion", unlocked: false, icon: "🌿" }
                         ]
                     },
-                    yield: {
+                    harvestYield: {
                         title: "Harvest Yield",
                         description: "Increases the amount of crops harvested from each plot.",
                         upgrades: [
@@ -1613,25 +1648,23 @@
                             { id: 4, name: "Maximum Rerolls", cost: 1800, effect: "Total reroll count 5", unlocked: false, icon: "🔄" }
                         ]
                     },
-                    joker: {
-                        title: "Joker Card",
-                        description: "Unlocks special transformation and swap cards for advanced deck manipulation.",
-                        isNew: true,
+                    specialCards: {
+                        title: "Special Cards",
+                        description: "Unlocks powerful transformation and swapping abilities.",
                         upgrades: [
-                            { id: 1, name: "Joker Card", cost: 100, effect: "Unlocks JOKER card that transforms existing buildings into selected type", unlocked: false, icon: "🃏", isNew: true },
-                            { id: 2, name: "Swap Card", cost: 300, effect: "Unlocks Swap Card that swaps selected buildings", unlocked: false, icon: "🔄", isNew: true }
+                            { id: 1, name: "Joker Card", cost: 100, effect: "Unlocks JOKER card that transforms existing buildings into selected type", unlocked: false, icon: "🃏" },
+                            { id: 2, name: "Swap Card", cost: 300, effect: "Unlocks Swap Card that swaps selected buildings", unlocked: false, icon: "🔄" }
                         ]
                     },
-                    management: {
+                    cardManagement: {
                         title: "Card Management",
-                        description: "Enhances card selection interface with additional slots and lock functionality.",
-                        isNew: true,
+                        description: "Enhances card system flexibility and selection options.",
                         upgrades: [
-                            { id: 1, name: "Card Lock I", cost: 100, effect: "Increase card lock count to 2", unlocked: false, icon: "🔒", isNew: true },
-                            { id: 2, name: "Extra Cards I", cost: 300, effect: "Building card count increases from 3 to 4", unlocked: false, icon: "🃏", isNew: true },
-                            { id: 3, name: "Card Lock II", cost: 900, effect: "Increase card lock count to 3", unlocked: false, icon: "🔒", isNew: true },
-                            { id: 4, name: "Extra Cards II", cost: 1800, effect: "Building card count increases from 4 to 5", unlocked: false, icon: "🃏", isNew: true },
-                            { id: 5, name: "Card Lock III", cost: 3600, effect: "Increase card lock count to 4", unlocked: false, icon: "🔒", isNew: true }
+                            { id: 1, name: "Card Lock I", cost: 100, effect: "Increase card lock count to 2", unlocked: false, icon: "🔒" },
+                            { id: 2, name: "Extra Cards I", cost: 300, effect: "Building card count increases from 3 to 4", unlocked: false, icon: "🃏" },
+                            { id: 3, name: "Card Lock II", cost: 900, effect: "Increase card lock count to 3", unlocked: false, icon: "🔒" },
+                            { id: 4, name: "Extra Cards II", cost: 1800, effect: "Building card count increases from 4 to 5", unlocked: false, icon: "🃏" },
+                            { id: 5, name: "Card Lock III", cost: 3600, effect: "Increase card lock count to 4", unlocked: false, icon: "🔒" }
                         ]
                     }
                 }
@@ -1639,7 +1672,7 @@
             garrison: {
                 title: "Garrison",
                 subCategories: {
-                    deployment: {
+                    basicGarrison: {
                         title: "Basic Garrison",
                         description: "Adds turrets to the left and right sides of walls.",
                         upgrades: [
@@ -1649,7 +1682,7 @@
                             { id: 4, name: "Master Garrison", cost: 1800, effect: "Adds 1 turret to each side", unlocked: false, icon: "🔫" }
                         ]
                     },
-                    damage: {
+                    turretDamage: {
                         title: "Turret Damage",
                         description: "Increases the damage output of wall-mounted turrets.",
                         upgrades: [
@@ -1678,141 +1711,160 @@
                     }
                 }
             },
-            arsenal: {
-                title: "Arsenal Mastery",
-                isNew: true,
+            economy: {
+                title: "Economy",
                 subCategories: {
-                    machineGun: {
-                        title: "Machine Gun Path",
-                        description: "Specialized enhancements for Machine Gun weapons focusing on fire rate, damage, and range.",
-                        isNew: true,
+                    startingResources: {
+                        title: "Starting Resources",
+                        description: "Increases the amount of resources available at the beginning of each run.",
                         upgrades: [
-                            { id: 1, name: "Machine Gun Unlock", cost: 100, effect: "Unlocks Machine Gun weapon", unlocked: false, icon: "🔫", isNew: true },
-                            { id: 2, name: "Rapid Fire", cost: 300, effect: "+25% Machine Gun fire rate", unlocked: false, icon: "⚡", isNew: true },
-                            { id: 3, name: "High Caliber", cost: 900, effect: "+30% Machine Gun damage", unlocked: false, icon: "💥", isNew: true },
-                            { id: 4, name: "Extended Barrel", cost: 1800, effect: "+20% Machine Gun range", unlocked: false, icon: "🎯", isNew: true }
+                            { id: 1, name: "Starting Resources I", cost: 100, effect: "Start with +50% more resources", unlocked: false, icon: "💰" },
+                            { id: 2, name: "Starting Resources II", cost: 300, effect: "Start with +75% more resources", unlocked: false, icon: "💎" },
+                            { id: 3, name: "Starting Resources III", cost: 900, effect: "Start with +100% more resources", unlocked: false, icon: "👑" },
+                            { id: 4, name: "Economic Foundation", cost: 1800, effect: "Start with +200% more resources", unlocked: false, icon: "💎" }
                         ]
                     },
-                    rocketLauncher: {
-                        title: "Rocket Launcher Path",
-                        description: "Specialized enhancements for Rocket Launcher weapons focusing on explosive power and range.",
-                        isNew: true,
+                    tradeMarketReroll: {
+                        title: "Trade Market Reroll",
+                        description: "Increases the number of times you can reroll the trade market to find better deals.",
                         upgrades: [
-                            { id: 1, name: "Rocket Arsenal", cost: 100, effect: "Unlocks Rocket Launcher weapon", unlocked: false, icon: "🚀", isNew: true },
-                            { id: 2, name: "Fast Reload", cost: 300, effect: "+25% Rocket Launcher fire rate", unlocked: false, icon: "🔄", isNew: true },
-                            { id: 3, name: "Explosive Warheads", cost: 900, effect: "+40% Rocket Launcher damage", unlocked: false, icon: "💣", isNew: true },
-                            { id: 4, name: "Long Range", cost: 1800, effect: "+25% Rocket Launcher range", unlocked: false, icon: "🎯", isNew: true }
+                            { id: 1, name: "Extra Reroll", cost: 100, effect: "+1 trade market reroll", unlocked: false, icon: "🔄" },
+                            { id: 2, name: "Double Reroll", cost: 300, effect: "+1 trade market reroll", unlocked: false, icon: "🔄" },
+                            { id: 3, name: "Triple Reroll", cost: 900, effect: "+1 trade market reroll", unlocked: false, icon: "🔄" }
                         ]
                     },
-                    mortar: {
-                        title: "Mortar Path",
-                        description: "Specialized enhancements for Mortar weapons focusing on area damage and range.",
-                        isNew: true,
+                    tradeEfficiency: {
+                        title: "Trade Efficiency",
+                        description: "Optimizes trade deals to provide better resource exchange rates.",
                         upgrades: [
-                            { id: 1, name: "Artillery Support", cost: 100, effect: "Unlocks Mortar weapon", unlocked: false, icon: "💥", isNew: true },
-                            { id: 2, name: "Quick Loading", cost: 300, effect: "+20% Mortar fire rate", unlocked: false, icon: "⚡", isNew: true },
-                            { id: 3, name: "Heavy Shells", cost: 900, effect: "+50% Mortar damage", unlocked: false, icon: "💣", isNew: true },
-                            { id: 4, name: "Extended Range", cost: 1800, effect: "+30% Mortar range", unlocked: false, icon: "🎯", isNew: true }
+                            { id: 1, name: "Trade Optimization", cost: 100, effect: "+10% trade efficiency", unlocked: false, icon: "📈" },
+                            { id: 2, name: "Advanced Trading", cost: 300, effect: "+50% trade efficiency", unlocked: false, icon: "💹" },
+                            { id: 3, name: "Master Trader", cost: 900, effect: "+100% trade efficiency", unlocked: false, icon: "🏆" }
+                        ]
+                    }
+                }
+            },
+            arsenalMastery: {
+                title: "Arsenal Mastery",
+                subCategories: {
+                    machineGunMastery: {
+                        title: "Machine Gun Mastery",
+                        description: "Enhances machine gun effectiveness through specialized upgrades.",
+                        upgrades: [
+                            { id: 1, name: "Machine Gun Unlock", cost: 100, effect: "Unlocks Machine Gun weapon", unlocked: false, icon: "🔫" },
+                            { id: 2, name: "Rapid Fire", cost: 300, effect: "+25% Machine Gun fire rate", unlocked: false, icon: "⚡" },
+                            { id: 3, name: "High Caliber", cost: 900, effect: "+30% Machine Gun damage", unlocked: false, icon: "💥" },
+                            { id: 4, name: "Extended Barrel", cost: 1800, effect: "+20% Machine Gun range", unlocked: false, icon: "🎯" }
                         ]
                     },
-                    turret: {
-                        title: "Turret Path",
-                        description: "Specialized enhancements for Turret weapons focusing on precision and damage.",
-                        isNew: true,
+                    rocketLauncherMastery: {
+                        title: "Rocket Launcher Mastery",
+                        description: "Improves rocket launcher performance and destructive capability.",
                         upgrades: [
-                            { id: 1, name: "Precision Weapons", cost: 100, effect: "Unlocks Turret", unlocked: false, icon: "🗼", isNew: true },
-                            { id: 2, name: "Steady Aim", cost: 300, effect: "+15% Turret fire rate", unlocked: false, icon: "🎯", isNew: true },
-                            { id: 3, name: "Armor Piercing", cost: 900, effect: "+60% Turret damage", unlocked: false, icon: "💥", isNew: true },
-                            { id: 4, name: "Scope Enhancement", cost: 1800, effect: "+40% Turret range", unlocked: false, icon: "🔍", isNew: true }
+                            { id: 1, name: "Rocket Arsenal", cost: 100, effect: "Unlocks Rocket Launcher weapon", unlocked: false, icon: "🚀" },
+                            { id: 2, name: "Fast Reload", cost: 300, effect: "+25% Rocket Launcher fire rate", unlocked: false, icon: "🔄" },
+                            { id: 3, name: "Explosive Warheads", cost: 900, effect: "+40% Rocket Launcher damage", unlocked: false, icon: "💣" },
+                            { id: 4, name: "Long Range", cost: 1800, effect: "+25% Rocket Launcher range", unlocked: false, icon: "🎯" }
+                        ]
+                    },
+                    mortarMastery: {
+                        title: "Mortar Mastery",
+                        description: "Enhances mortar artillery support and area denial capabilities.",
+                        upgrades: [
+                            { id: 1, name: "Artillery Support", cost: 100, effect: "Unlocks Mortar weapon", unlocked: false, icon: "💥" },
+                            { id: 2, name: "Quick Loading", cost: 300, effect: "+20% Mortar fire rate", unlocked: false, icon: "⚡" },
+                            { id: 3, name: "Heavy Shells", cost: 900, effect: "+50% Mortar damage", unlocked: false, icon: "💣" },
+                            { id: 4, name: "Extended Range", cost: 1800, effect: "+30% Mortar range", unlocked: false, icon: "🎯" }
+                        ]
+                    },
+                    turretMastery: {
+                        title: "Turret Mastery",
+                        description: "Maximizes turret precision and defensive effectiveness.",
+                        upgrades: [
+                            { id: 1, name: "Precision Weapons", cost: 100, effect: "Unlocks Turret", unlocked: false, icon: "🗼" },
+                            { id: 2, name: "Steady Aim", cost: 300, effect: "+15% Turret fire rate", unlocked: false, icon: "🎯" },
+                            { id: 3, name: "Armor Piercing", cost: 900, effect: "+60% Turret damage", unlocked: false, icon: "💥" },
+                            { id: 4, name: "Scope Enhancement", cost: 1800, effect: "+40% Turret range", unlocked: false, icon: "🔍" }
                         ]
                     }
                 }
             },
             zombieWeakness: {
                 title: "Zombie Weakness",
-                isNew: true,
                 subCategories: {
-                    speed: {
+                    speedReduction: {
                         title: "Speed Reduction",
-                        description: "Reduces zombie movement speed through various debilitating effects.",
-                        isNew: true,
+                        description: "Slows zombie movement to provide tactical advantages.",
                         upgrades: [
-                            { id: 1, name: "Slow Plague", cost: 100, effect: "Zombies move 10% slower", unlocked: false, icon: "🐌", isNew: true },
-                            { id: 2, name: "Heavy Limbs", cost: 300, effect: "Zombies move 15% slower", unlocked: false, icon: "⚖️", isNew: true },
-                            { id: 3, name: "Paralysis", cost: 900, effect: "Zombies move 20% slower", unlocked: false, icon: "🧊", isNew: true }
+                            { id: 1, name: "Slow Plague", cost: 100, effect: "Zombies move 10% slower", unlocked: false, icon: "🐌" },
+                            { id: 2, name: "Heavy Limbs", cost: 300, effect: "Zombies move 15% slower", unlocked: false, icon: "⚖️" },
+                            { id: 3, name: "Paralysis", cost: 900, effect: "Zombies move 20% slower", unlocked: false, icon: "🧊" }
                         ]
                     },
-                    health: {
+                    healthReduction: {
                         title: "Health Reduction",
-                        description: "Reduces zombie health through viral and cellular damage.",
-                        isNew: true,
+                        description: "Reduces zombie durability and survivability.",
                         upgrades: [
-                            { id: 1, name: "Viral Decay", cost: 100, effect: "Zombies have 15% less HP", unlocked: false, icon: "🦠", isNew: true },
-                            { id: 2, name: "Cellular Breakdown", cost: 300, effect: "Zombies have 25% less HP", unlocked: false, icon: "💀", isNew: true },
-                            { id: 3, name: "Complete Deterioration", cost: 900, effect: "Zombies have 35% less HP", unlocked: false, icon: "☠️", isNew: true }
+                            { id: 1, name: "Viral Decay", cost: 100, effect: "Zombies have 15% less HP", unlocked: false, icon: "🦠" },
+                            { id: 2, name: "Cellular Breakdown", cost: 300, effect: "Zombies have 25% less HP", unlocked: false, icon: "💀" },
+                            { id: 3, name: "Complete Deterioration", cost: 900, effect: "Zombies have 35% less HP", unlocked: false, icon: "☠️" }
                         ]
                     },
-                    damage: {
+                    damageReduction: {
                         title: "Damage Reduction",
-                        description: "Reduces zombie attack damage through physical weakness effects.",
-                        isNew: true,
+                        description: "Weakens zombie offensive capabilities.",
                         upgrades: [
-                            { id: 1, name: "Weakened Claws", cost: 100, effect: "Zombies deal 15% less damage", unlocked: false, icon: "🩹", isNew: true },
-                            { id: 2, name: "Muscle Atrophy", cost: 300, effect: "Zombies deal 25% less damage", unlocked: false, icon: "💪", isNew: true },
-                            { id: 3, name: "Complete Weakness", cost: 900, effect: "Zombies deal 35% less damage", unlocked: false, icon: "🤕", isNew: true }
+                            { id: 1, name: "Weakened Claws", cost: 100, effect: "Zombies deal 15% less damage", unlocked: false, icon: "🩹" },
+                            { id: 2, name: "Muscle Atrophy", cost: 300, effect: "Zombies deal 25% less damage", unlocked: false, icon: "💪" },
+                            { id: 3, name: "Complete Weakness", cost: 900, effect: "Zombies deal 35% less damage", unlocked: false, icon: "🤕" }
                         ]
                     }
                 }
             },
-            landmine: {
+            landmineEnhancement: {
                 title: "Landmine Enhancement",
-                isNew: true,
                 subCategories: {
-                    damage: {
-                        title: "Damage Path",
-                        description: "Increases the explosive power of landmines for maximum destruction.",
-                        isNew: true,
+                    damageEnhancement: {
+                        title: "Damage Enhancement",
+                        description: "Increases the destructive power of landmine explosions.",
                         upgrades: [
-                            { id: 1, name: "Improved Explosives", cost: 100, effect: "+25% landmine damage", unlocked: false, icon: "💥", isNew: true },
-                            { id: 2, name: "High Yield", cost: 300, effect: "+50% landmine damage", unlocked: false, icon: "💣", isNew: true },
-                            { id: 3, name: "Devastation", cost: 900, effect: "+75% landmine damage", unlocked: false, icon: "🔥", isNew: true }
+                            { id: 1, name: "Improved Explosives", cost: 100, effect: "+25% landmine damage", unlocked: false, icon: "💥" },
+                            { id: 2, name: "High Yield", cost: 300, effect: "+50% landmine damage", unlocked: false, icon: "💣" },
+                            { id: 3, name: "Devastation", cost: 900, effect: "+75% landmine damage", unlocked: false, icon: "🔥" }
                         ]
                     },
-                    aoe: {
+                    areaOfEffect: {
                         title: "Area of Effect",
-                        description: "Expands the blast radius of landmines to affect more enemies.",
-                        isNew: true,
+                        description: "Expands the blast radius of landmine explosions.",
                         upgrades: [
-                            { id: 1, name: "Wider Blast", cost: 100, effect: "+20% landmine AoE", unlocked: false, icon: "💨", isNew: true },
-                            { id: 2, name: "Extended Range", cost: 300, effect: "+35% landmine AoE", unlocked: false, icon: "🌊", isNew: true },
-                            { id: 3, name: "Massive Explosion", cost: 900, effect: "+50% landmine AoE", unlocked: false, icon: "🌋", isNew: true }
+                            { id: 1, name: "Wider Blast", cost: 100, effect: "+20% landmine AoE", unlocked: false, icon: "💨" },
+                            { id: 2, name: "Extended Range", cost: 300, effect: "+35% landmine AoE", unlocked: false, icon: "🌊" },
+                            { id: 3, name: "Massive Explosion", cost: 900, effect: "+50% landmine AoE", unlocked: false, icon: "🌋" }
                         ]
                     }
                 }
             },
-            critical: {
+            criticalStrike: {
                 title: "Critical Strike",
-                isNew: true,
                 subCategories: {
-                    chance: {
+                    criticalChance: {
                         title: "Critical Chance",
-                        description: "Increases the probability of critical hits for all units and weapons.",
-                        isNew: true,
+                        description: "Increases the probability of landing critical hits.",
                         upgrades: [
-                            { id: 1, name: "Lucky Strikes", cost: 100, effect: "+1% critical hit chance for all units", unlocked: false, icon: "🍀", isNew: true },
-                            { id: 2, name: "Precision Training", cost: 300, effect: "+2% critical hit chance for all units", unlocked: false, icon: "🎯", isNew: true },
-                            { id: 3, name: "Master Marksman", cost: 900, effect: "+3% critical hit chance for all units", unlocked: false, icon: "🏹", isNew: true },
-                            { id: 4, name: "Lethal Force", cost: 1800, effect: "+5% critical hit chance for all units", unlocked: false, icon: "💀", isNew: true }
+                            { id: 1, name: "Lucky Strikes", cost: 100, effect: "+1% critical hit chance for all units", unlocked: false, icon: "🍀" },
+                            { id: 2, name: "Precision Training", cost: 300, effect: "+2% critical hit chance for all units", unlocked: false, icon: "🎯" },
+                            { id: 3, name: "Master Marksman", cost: 900, effect: "+3% critical hit chance for all units", unlocked: false, icon: "🏹" },
+                            { id: 4, name: "Lethal Force", cost: 1800, effect: "+5% critical hit chance for all units", unlocked: false, icon: "💀" }
                         ]
                     },
-                    damage: {
+                    criticalDamage: {
                         title: "Critical Damage",
-                        description: "Enhances the damage multiplier of critical strikes.",
-                        isNew: true,
+                        description: "Amplifies the damage dealt by critical hits.",
                         upgrades: [
-                            { id: 1, name: "Critical Damage I", cost: 100, effect: "+50% critical hit damage", unlocked: false, icon: "⚡", isNew: true },
-                            { id: 2, name: "Critical Damage II", cost: 300, effect: "+100% critical hit damage", unlocked: false, icon: "💥", isNew: true },
-                            { id: 3, name: "Critical Damage III", cost: 900, effect: "+150% critical hit damage", unlocked: false, icon: "🔥", isNew: true }
+                            { id: 1, name: "Enhanced Lethality", cost: 100, effect: "+25% critical damage", unlocked: false, icon: "⚡" },
+                            { id: 2, name: "Devastating Strikes", cost: 300, effect: "+50% critical damage", unlocked: false, icon: "💥" },
+                            { id: 3, name: "Overwhelming Force", cost: 900, effect: "+75% critical damage", unlocked: false, icon: "🔥" },
+                            { id: 4, name: "Ultimate Destruction", cost: 1800, effect: "+100% critical damage", unlocked: false, icon: "💀" }
                         ]
                     }
                 }
@@ -3363,4 +3415,5 @@
         window.addEventListener('load', init);
     </script>
 </body>
+</html> 
 </html> 
